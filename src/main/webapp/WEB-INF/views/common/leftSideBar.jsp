@@ -20,9 +20,9 @@
 					화물관리
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondAir">
-					<li><a class="sidebar-link" href="#">1</a></li>
-					<li><a class="sidebar-link" href="#">2</a></li>
-					<li><a class="sidebar-link" href="#">3</a></li>
+					<li><a class="sidebar-link" href="/WEB-INF/views/cargo/cargoSearch.jsp">화물 조회</a></li>
+					<li><a class="sidebar-link" href="#">화물 등록</a></li>
+					<li><a class="sidebar-link" href="#">화물 상태 수정</a></li>
 				</ul></li>
 			<li class="sidebar-item">
 				<a class="sidebar-link d-flex align-items-center" data-bs-toggle="collapse" href="#bondSea" role="button" aria-expanded="false"> 
@@ -30,20 +30,21 @@
 					청구서 관리
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondSea">
-					<li><a class="sidebar-link" href="#">あ</a></li>
-					<li><a class="sidebar-link" href="#">い</a></li>
-					<li><a class="sidebar-link" href="#">う</a></li>
+					<li><a class="sidebar-link" href="#">청구서 조회</a></li>
+					<li><a class="sidebar-link" href="#">청구서 생성</a></li>
+					<li><a class="sidebar-link" href="#">청구서 수정</a></li>
+					<li><a class="sidebar-link" href="#">청구서 삭제</a></li>
 				</ul>
 			</li>
 			<li class="sidebar-item">
 				<a class="sidebar-link d-flex align-items-center" data-bs-toggle="collapse" href="#userControll" role="button" aria-expanded="false"> 
 					<span class="material-icons me-2">directions_boat</span>
-					유저 관리
+					마이페이지
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="userControll">
-					<li><a class="sidebar-link" href="#">あ</a></li>
-					<li><a class="sidebar-link" href="#">い</a></li>
-					<li><a class="sidebar-link" href="#">う</a></li>
+					<li><a class="sidebar-link" href="#">개인정보 수정</a></li>
+					<li><a class="sidebar-link" href="#">회사코드 생성</a></li>
+					<li><a class="sidebar-link" href="#">유저권한 부여</a></li>
 				</ul>
 			</li>
 		</ul>
