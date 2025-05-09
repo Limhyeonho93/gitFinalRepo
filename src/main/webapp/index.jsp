@@ -26,8 +26,8 @@
     <main class="content d-flex">
       <jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
       <div class="main-content flex-grow-1 p-4">
-        <h2>📦 화물관리 시스템 대시보드</h2>
-        <p>이곳에 화물 요약 현황, 알림, 업무 바로가기 등을 표시할 수 있습니다.</p>
+      <jsp:include page="/WEB-INF/views/user/join.jsp" />
+        
       </div>
     </main>
     <jsp:include page="/WEB-INF/views/common/footer.jsp" />
