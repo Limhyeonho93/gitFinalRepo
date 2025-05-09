@@ -25,7 +25,7 @@
 					<li><a class="sidebar-link" href="#">3</a></li>
 				</ul></li>
 			<li class="sidebar-item">
-				<aclass="sidebar-link d-flex align-items-center" data-bs-toggle="collapse" href="#bondSea" role="button" aria-expanded="false"> 
+				<a class="sidebar-link d-flex align-items-center" data-bs-toggle="collapse" href="#bondSea" role="button" aria-expanded="false"> 
 					<span class="material-icons me-2">directions_boat</span>
 					청구서 관리
 				</a>
@@ -36,11 +36,11 @@
 				</ul>
 			</li>
 			<li class="sidebar-item">
-				<aclass="sidebar-link d-flex align-items-center" data-bs-toggle="collapse" href="#bondSea" role="button" aria-expanded="false"> 
+				<a class="sidebar-link d-flex align-items-center" data-bs-toggle="collapse" href="#userControll" role="button" aria-expanded="false"> 
 					<span class="material-icons me-2">directions_boat</span>
 					유저 관리
 				</a>
-				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondSea">
+				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="userControll">
 					<li><a class="sidebar-link" href="#">あ</a></li>
 					<li><a class="sidebar-link" href="#">い</a></li>
 					<li><a class="sidebar-link" href="#">う</a></li>
