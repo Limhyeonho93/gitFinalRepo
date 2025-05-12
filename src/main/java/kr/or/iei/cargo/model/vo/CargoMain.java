@@ -12,6 +12,7 @@ public class CargoMain {
 	private String warehouseMoveid;
 	private String trackingNo;
 	private String manage_no;
+	private String receiverName;
 	private String receiverAdd;
 	private String receiverZip;
 	private String receiverTel;

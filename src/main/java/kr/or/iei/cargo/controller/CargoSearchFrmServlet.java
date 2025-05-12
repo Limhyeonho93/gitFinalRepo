@@ -33,7 +33,7 @@ public class CargoSearchFrmServlet extends HttpServlet {
 		
 		//화면 구현시 필요한 데이터 등록x
 		//페이지 이동
-	view.forward(request, response);
+		view.forward(request, response);
 		
 	}
 

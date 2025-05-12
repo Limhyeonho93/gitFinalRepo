@@ -14,9 +14,9 @@ public class CargoService {
 		dao=new CargoDao();
 	}
 	
-	public ArrayList<CargoMain> searchCargo() {
+	public ArrayList<CargoMain> searchCargo(String keyword) {
 		Connection conn =JDBCTemplate.getConnection();
-		ArrayList<CargoMain> list=dao.searchCargo(conn);
+		ArrayList<CargoMain> list=dao.searchCargo(conn, keyword);
 		JDBCTemplate.close(conn);
 		return list;
 	}

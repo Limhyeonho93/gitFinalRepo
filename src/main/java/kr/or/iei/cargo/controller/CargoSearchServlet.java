@@ -33,8 +33,10 @@ public class CargoSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String keyword=request.getParameter("keyword");
+		
 		CargoService service=new CargoService();
-		ArrayList<CargoMain> list=service.searchCargo();
+		ArrayList<CargoMain> list=service.searchCargo(keyword);
 		
 		//응답 데이터 JSON 변환. 백->프론트로 넘길때 객체로 넘길 수 없기 때문에 변환 필수
 		response.setContentType("application/json; charset=UTF-8");

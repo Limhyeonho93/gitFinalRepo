@@ -21,7 +21,6 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
 
-
 <!-- Custom CSS & JS -->
 <link rel="stylesheet" href="/resource/css/layout.css">
 <script src="/resource/js/layout.js" defer></script>
@@ -32,34 +31,43 @@
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content d-flex">
 			<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
-			<div>
-				<form>
-					<input type="text" id="search" placeholder="검색할 내용 입력">
-					<button type="button" onclick="searchCargo(this)">검색</button>
-				</form>
+			
+			
+			<div class="container-fluid" style="margin-top:30px; margin-bottom:10px;">
+				<div class="d-flex" style="gap:10px;">
+					<textarea class="form-control" id="inputText" placeholder="검색할 내용 입력" style="width:300px; height:40px;"></textarea>
+					
+					<button class="btn btn-outline-dark" type="button" id="search" >검색</button>
+				</div>
+				<div id="member_grid" class="ag-theme-alpine" style="height: 500px; width: 100%; margin-top:30px;"></div>
 			</div>
-			<div id="member_grid" class="ag-theme-alpine" style="height: 500px; width: 100%;"></div>
+			
+			
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
 	<script>
-		function searchCargo() {
-			var searchValue = $('#search').val();
-
-			if (searchValue.trim() !== "") {
-				console.log('검색어:', searchValue);
-
-			} else {
-				console.log('검색어 미입력');
-			}
-		}
-
+		
 		$(function() {
+			
+			//검색창
+			$('#search').on('click',function(){
+				var searchValue = $('#inputText').val();
+
+				if (searchValue.trim() !== "") {
+					console.log('검색어:', searchValue);
+					loadGrid();
+
+				} else {
+					console.log('검색어 미입력');
+				}
+			});
+
 			//AG-Gird 코드
 			//let gridData=[];
 			const gridOptions = {
 				columnDefs : [ {
-					headerName : "회사코드",
+					headerName : "회사코드", 
 					field : "compCd"
 				}, {
 					headerName : "창고이동ID",
@@ -68,17 +76,18 @@
 				rowData : null, // 데이터를 데이터베이스에서 가져온 이후에 넣는다 
 			};
 
-			loadGrid(); //검색 눌렀을때만 작동하도록 변경 예정 
-
+			//loadGrid(); //검색 눌렀을때만 작동하도록 변경 예정 
+	
+			let gridCreated = false;
+			
 			function loadGrid(e) { //이벤트가 발생했을때 e 이긴한데 지금은 발생하지 않고있음.
-
-				if (gridOptions && gridOptions.api) { // 기본 값 초기화
-					gridOptions.api.destroy();
-				}
+				
+				// 기존 그리드 제거(초기화)
+			    member_grid.innerHTML = "";
 
 				$.ajax({
 					url : "/srchCargo",
-					//data : 필요x
+					data : { keyword: $('#inputText').val() },
 					type : "get",
 					success : function(res) {
 						//gridData = res;
