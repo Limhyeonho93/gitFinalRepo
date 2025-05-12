@@ -20,7 +20,7 @@
 					화물관리
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondAir">
-					<li><a class="sidebar-link" href="/WEB-INF/views/cargo/cargoSearch.jsp">화물 조회</a></li>
+					<li><a class="sidebar-link" href="/cargo/search">화물 조회</a></li>
 					<li><a class="sidebar-link" href="#">화물 등록</a></li>
 					<li><a class="sidebar-link" href="#">화물 상태 수정</a></li>
 				</ul></li>
