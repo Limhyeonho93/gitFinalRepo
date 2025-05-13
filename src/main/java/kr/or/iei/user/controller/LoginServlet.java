@@ -13,16 +13,16 @@ import kr.or.iei.user.model.service.UserService;
 import kr.or.iei.user.model.vo.User;
 
 /**
- * Servlet implementation class JoinServlet
+ * Servlet implementation class LoginServlet
  */
-@WebServlet("/user/join")
-public class JoinServlet extends HttpServlet {
+@WebServlet("/user/login")
+public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public JoinServlet() {
+    public LoginServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,44 +31,34 @@ public class JoinServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 인코딩 - 필터 
+		// 1. 인코딩 - 필터
 		// 2. 값 추출
 		String userId = request.getParameter("userId");
-		String compCd = request.getParameter("compCd");
 		String userPw = request.getParameter("userPw");
-		String userName = request.getParameter("userName");
-		String deptName = request.getParameter("deptName");
-		String telNo = request.getParameter("telNo");
 		
-		// 3. 로직
-		User user = new User();
-		user.setUserId(userId);
-		user.setCompCd(compCd);
-		user.setUserPw(userPw);
-		user.setUserName(userName);
-		user.setDeptName(deptName);
-		user.setTelNo(telNo);
-		
+		// 3. 로직 - 입력한 정보와 DB에 있는 정보 비교
 		UserService service = new UserService();
-		int result = service.insertUser(user);
+		User loginUser = service.loginUser(userId, userPw);
 		
-		// 4. 결과 처리
+		// 4. 결과처리
+		RequestDispatcher view = null;
 		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-		
-		if(result > 0) {
-			request.setAttribute("title", "회원가입 성공");
-			request.setAttribute("msg", "회원가입이 완료되었습니다.");
-			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/");
-		}else {
-			request.setAttribute("title", "회원가입 실패");
-			request.setAttribute("msg", "회원가입에 실패하였습니다.");
-			request.setAttribute("icon", "error");
-			request.setAttribute("loc", "/");
+		if(loginUser == null) { // 로그인 실패
+			// 로그인 실패 시 이동할 페이지는 여기로
+			view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+			
+			// 화면에 보여줄거
+			request.setAttribute("title", "???");
+			request.setAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			request.setAttribute("icon", "error.png");
+			request.setAttribute("loc", "/user/loginForm");
+		}else { // Login successful
+            request.getSession().setAttribute("loginUser", loginUser);
+            response.sendRedirect(request.getContextPath() + "/index.jsp");
+            return;
 		}
-		//4.3 페이지 이동
-		view.forward(request, response);
+        view.forward(request, response);
+
 
 	}
 

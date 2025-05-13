@@ -35,7 +35,7 @@
 				method="post">
 				<div>
 					<label for="userId">유저 ID</label> <input type="text" id="userId"
-						name="userId" required>
+						name="userId" placeholder="무조건 숫자로 입력" required>
 				</div>
 				<div>
 					<label for="compCd">회사 코드</label> <input type="text" id="compCd"
@@ -61,6 +61,8 @@
 					<button type="submit">가입하기</button>
 				</div>
 			</form>
+			
+			<%-- 회원 가입 완료후 다시 메인 페이지로 돌아가게  --%>
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
