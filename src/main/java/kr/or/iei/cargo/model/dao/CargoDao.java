@@ -12,18 +12,36 @@ import kr.or.iei.common.JDBCTemplate;
 public class CargoDao {
 	
 	
-	public ArrayList<CargoMain> searchCargo(Connection conn, String keyword) {
+	public ArrayList<CargoMain> searchCargo(Connection conn, String[] searchValue,String searchOption) {
 		PreparedStatement pstmt=null;
 		ResultSet rset=null;
 		
 		ArrayList<CargoMain> list=new ArrayList<CargoMain>();
-		String query="select * from T_cargoMain where warehouse_moveId LIKE ? OR comp_cd LIKE ?";
+	    
+		StringBuilder query = new StringBuilder("SELECT * FROM T_cargoMain WHERE ");
+	    query.append(searchOption).append(" IN (");
+
+	    for (int i = 0; i < searchValue.length; i++) {
+	        query.append("?");
+	        if (i < searchValue.length - 1) {
+	            query.append(",");
+	        }
+	    }
+	    query.append(")");
 		
-		try {
-			pstmt=conn.prepareStatement(query);
-			
-			pstmt.setString(1, "%" + keyword + "%");
-			pstmt.setString(2, "%" + keyword + "%");
+	      try {
+	         //pstmt=conn.prepareStatement(query);
+	         
+	    	  pstmt = conn.prepareStatement(query.toString());
+
+	          for (int i = 0; i < searchValue.length; i++) {
+	              pstmt.setString(i + 1, searchValue[i]);
+	          }
+	    	  
+	         System.out.println(searchValue);
+	         System.out.println(query);
+
+	         //pstmt.setString(1, searchOption);
 			
 			rset=pstmt.executeQuery();
 			
@@ -32,7 +50,7 @@ public class CargoDao {
 				c.setCompCd(rset.getString("comp_cd")); //회사명으로 바꾸기 
 				c.setWarehouseMoveid(rset.getString("warehouse_moveId"));
 				c.setTrackingNo(rset.getString("tracking_no"));
-				c.setWarehouseMoveid(rset.getString("manage_no"));
+				c.setManageNo(rset.getString("manage_no"));
 				c.setReceiverName(rset.getString("receiver_name"));
 				c.setReceiverAdd(rset.getString("receiver_add"));
 				c.setReceiverZip(rset.getString("receiver_zip"));

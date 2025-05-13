@@ -32,7 +32,7 @@ public class JoinServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 1. 인코딩 - 필터 
-		// 2. 갑 추출
+		// 2. 값 추출
 		String userId = request.getParameter("userId");
 		String compCd = request.getParameter("compCd");
 		String userPw = request.getParameter("userPw");

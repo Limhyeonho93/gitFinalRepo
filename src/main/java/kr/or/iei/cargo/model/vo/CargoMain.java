@@ -11,7 +11,7 @@ public class CargoMain {
 	private String compCd;
 	private String warehouseMoveid;
 	private String trackingNo;
-	private String manage_no;
+	private String manageNo;
 	private String receiverName;
 	private String receiverAdd;
 	private String receiverZip;
