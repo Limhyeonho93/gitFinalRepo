@@ -46,7 +46,7 @@ public class LoginServlet extends HttpServlet {
 		if(loginUser == null) { // 로그인 실패
 			// 로그인 실패 시 이동할 페이지는 여기로
 			view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-			
+			System.out.println("loginCheck");
 			// 화면에 보여줄거
 			request.setAttribute("title", "???");
 			request.setAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
