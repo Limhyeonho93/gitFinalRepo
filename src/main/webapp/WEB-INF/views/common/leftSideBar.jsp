@@ -30,7 +30,7 @@
 					청구서 관리
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondSea">
-					<li><a class="sidebar-link" href="#">청구서 조회</a></li>
+					<li><a class="sidebar-link" href="/invoice/dateSearchFrm">청구서 조회</a></li>
 					<li><a class="sidebar-link" href="#">청구서 생성</a></li>
 					<li><a class="sidebar-link" href="#">청구서 수정</a></li>
 					<li><a class="sidebar-link" href="#">청구서 삭제</a></li>
