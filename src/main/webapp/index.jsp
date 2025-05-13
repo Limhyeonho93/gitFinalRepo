@@ -20,17 +20,18 @@
 <link rel="stylesheet" href="/resource/css/layout.css">
 <script src="/resource/js/layout.js" defer></script>
 </head>
+
 <body>
-	 <div class="wrap">
-    <jsp:include page="/WEB-INF/views/common/header.jsp" />
-    <main class="content d-flex">
-      <jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
-      <div class="main-content flex-grow-1 p-4">
-      <jsp:include page="/WEB-INF/views/user/join.jsp" />
-        
-      </div>
-    </main>
-    <jsp:include page="/WEB-INF/views/common/footer.jsp" />
-  </div>
+	<div class="wrap">
+		<jsp:include page="/WEB-INF/views/common/header.jsp" />
+		<main class="content d-flex">
+			<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
+			<div class="main-content flex-grow-1 p-4">
+				<jsp:include page="/WEB-INF/views/user/login.jsp" />
+
+			</div>
+		</main>
+		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+	</div>
 </body>
 </html>
