@@ -27,8 +27,8 @@
 		<main class="content d-flex">
 			<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
 			<div class="main-content flex-grow-1 p-4">
-				<jsp:include page="/WEB-INF/views/user/login.jsp" />
-
+			<%-- 메인 페이지에서는 그냥 메인 페이지만 보이게(ex 사진 등등) 하지만 url이나 다른 카테고리 클릭시 로그인 화면으로 이동 --%>
+			<main class="content"></main>
 			</div>
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />

@@ -27,4 +27,14 @@ public class UserService {
 		return result;
 	}
 
+	
+
+	public User loginUser(String userId, String userPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		User loginUser = dao.loginUser(conn, userId, userPw);
+		
+		JDBCTemplate.close(conn);
+		return loginUser;
+	}
+
 }

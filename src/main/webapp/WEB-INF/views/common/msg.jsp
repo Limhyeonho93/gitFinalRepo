@@ -25,9 +25,10 @@
             }
             
             if( loc != '' && loc != null){
-                location.href = loc;
+            	window.location.replace(loc);
             }
 		});
+	
 	</script>
 </body>
 </html>
