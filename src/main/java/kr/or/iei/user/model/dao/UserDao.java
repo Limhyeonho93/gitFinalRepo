@@ -56,6 +56,7 @@ public class UserDao {
 			rset = pstmt.executeQuery();
 
 			if (rset.next()) {
+
 				loginUser = new User();
 
 				loginUser.setUserId(rset.getString("user_id"));
@@ -71,7 +72,7 @@ public class UserDao {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
