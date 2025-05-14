@@ -46,7 +46,7 @@ public class CargoDao {
 			rset=pstmt.executeQuery();
 			
 			while(rset.next()) {
-				CargoMain c=new CargoMain();
+				CargoMain c= new CargoMain();
 				c.setCompCd(rset.getString("comp_cd")); //회사명으로 바꾸기 
 				c.setWarehouseMoveid(rset.getString("warehouse_moveId"));
 				c.setTrackingNo(rset.getString("tracking_no"));
@@ -76,5 +76,45 @@ public class CargoDao {
 		}
 
 		return list;
+	}
+
+	public int insertCargo(Connection conn, CargoMain cargo) {
+        PreparedStatement pstmt = null;
+        int result = 0;
+        
+        String query = "INSERT INTO T_cargoMain ("
+                + "comp_cd, warehouse_moveId, tracking_no, manage_no, "
+                + "receiver_name, receiver_add, receiver_zip, receiver_tel, "
+                + "seller_name, seller_add, seller_tel, gw, gwt, no) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			 pstmt.setString(1, cargo.getCompCd());
+		        pstmt.setString(2, cargo.getWarehouseMoveid());
+		        pstmt.setString(3, cargo.getTrackingNo());
+		        pstmt.setString(4, cargo.getManageNo());
+		        pstmt.setString(5, cargo.getReceiverName());
+		        pstmt.setString(6, cargo.getReceiverAdd());
+		        pstmt.setString(7, cargo.getReceiverZip());
+		        pstmt.setString(8, cargo.getReceiverTel());
+		        pstmt.setString(9, cargo.getSellerName());
+		        pstmt.setString(10, cargo.getSellerAdd());
+		        pstmt.setString(11, cargo.getSellerTel());
+		        pstmt.setInt(12, cargo.getGw());
+		        pstmt.setString(13, cargo.getGwt());
+		        pstmt.setInt(14, cargo.getNo());
+		        
+		        result = pstmt.executeUpdate();
+		        
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}finally {
+	        JDBCTemplate.close(pstmt);
+		}
+		return result;
 	}
 }
