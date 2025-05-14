@@ -18,7 +18,9 @@
 	rel="stylesheet">
 
 <!-- Custom CSS & JS -->
+
 <link rel="stylesheet" href="/resources/css/layout.css">
+
 <script src="/resources/js/layout.js" defer></script>
 </head>
 <body>
@@ -32,12 +34,12 @@
 				method="post">
 				<div>
 					<%-- 회원 아이디 입력 --%>
-					<label for="userId">User ID:</label> <input type="text" id="userId"
-						name="userId" required>
+					<label for="userId">아이디 입력 :</label> <input type="text" id="userId"
+						name="userId" placeholder="~@~.com 형식으로 입력" required>
 				</div>
 				<div>
 					<%-- 회원 비밀번호 --%>
-					<label for="password">Password:</label> <input type="password"
+					<label for="password">비밀번호 입력 :</label> <input type="password"
 						id="userPw" name="userPw" required>
 				</div>
 				<div>
