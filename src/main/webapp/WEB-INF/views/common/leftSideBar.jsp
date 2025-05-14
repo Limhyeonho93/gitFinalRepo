@@ -21,7 +21,7 @@
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondAir">
 					<li><a class="sidebar-link" href="/cargo/search">화물 조회</a></li>
-					<li><a class="sidebar-link" href="#">화물 등록</a></li>
+					<li><a class="sidebar-link" href="/cargo/cargoRegister">화물 등록</a></li>
 					<li><a class="sidebar-link" href="#">화물 상태 수정</a></li>
 				</ul></li>
 			<li class="sidebar-item">
@@ -42,9 +42,8 @@
 					마이페이지
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="userControll">
-					<li><a class="sidebar-link" href="#">개인정보 수정</a></li>
-					<li><a class="sidebar-link" href="#">회사코드 생성</a></li>
-					<li><a class="sidebar-link" href="#">유저권한 부여</a></li>
+					<li><a class="sidebar-link" href="/user/update">개인정보 수정</a></li>
+					<li><a class="sidebar-link" href="/user/userJoin">회원 생성</a></li>
 				</ul>
 			</li>
 		</ul>

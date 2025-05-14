@@ -1,5 +1,7 @@
 package kr.or.iei.user.model.vo;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,8 +17,8 @@ public class User {
 	private String userName; // 유저명
 	private String deptName; // 부서
 	private String telNo; // 연락처
-	private String regDate; // 등록일
-	private String updDate; // 갱신일
+	private Date regDate; // 등록일
+	private Date updDate; // 갱신일
 	
 
 }

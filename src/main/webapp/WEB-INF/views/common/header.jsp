@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
 <!DOCTYPE html>
@@ -19,11 +19,17 @@
 			<h5 class="mb-0">물류 화물관리 시스템</h5>
 		</div>
 		<div>
-			<c:if test="${not empty loginMember}">
-				<span class="me-3 text-white fw-bold">관리자</span>
-				<a href="${pageContext.request.contextPath}/member/logout"
-					class="btn btn-outline-light btn-sm">로그아웃</a>
-			</c:if>
+
+			<span class="me-3 text-white fw-bold">관리자</span>
+			<%Object user = session.getAttribute("user");
+			 if (user != null) {
+			%>
+			 <a href="${pageContext.request.contextPath}/user/logout" class="btn btn-outline-light btn-sm">로그아웃</a>
+			 <%} else { %>
+			 
+			 <a	href="${pageContext.request.contextPath}/user/loginFrm"	class="btn btn-outline-light btn-sm">로그인</a>
+			 <%} %>
+			 <a	href="${pageContext.request.contextPath}/user/companyJoinFrm"	class="btn btn-outline-light btn-sm">회원가입</a>
 		</div>
 	</header>
 </body>
