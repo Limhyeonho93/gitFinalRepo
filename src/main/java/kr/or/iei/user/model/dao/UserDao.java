@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import kr.or.iei.common.JDBCTemplate;
+import kr.or.iei.user.model.vo.Company;
 import kr.or.iei.user.model.vo.User;
 
 public class UserDao {
@@ -78,5 +79,57 @@ public class UserDao {
 		}
 
 		return loginUser;
+	}
+
+	public int insertCompany(Connection conn, Company company) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = "INSERT INTO T_CustomerInfo (comp_cd, comp_name, comp_addr, comp_zip, comp_tel, deal_flg, reg_date, upd_date, grade) VALUES (?, ?, ?, ?, ?, ?, sysdate, sysdate, ?)";
+		
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, company.getComp_cd());
+			pstmt.setString(2, company.getComp_name());
+			pstmt.setString(3, company.getComp_addr());
+			pstmt.setString(4, company.getComp_zip());
+			pstmt.setString(5, company.getComp_tel());
+			pstmt.setString(6, String.valueOf(company.getDeal_flg()));
+			pstmt.setString(7, String.valueOf(company.getGrade()));
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public boolean isValidCompanyCode(Connection conn, String compCd) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+        boolean isValid = false;
+
+		String query = "SELECT COUNT(*) FROM T_CustomerInfo WHERE comp_cd = ?";
+		
+		
+        try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, compCd);
+			
+			rset = pstmt.executeQuery();	
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+        return isValid;
 	}
 }

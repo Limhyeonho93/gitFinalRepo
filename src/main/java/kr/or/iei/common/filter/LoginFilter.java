@@ -49,9 +49,21 @@ public class LoginFilter extends HttpFilter implements Filter {
 		// 리다이렉트 (무한루프) ->예외처리
 		// 정적리소스(/resources/)도 예외처리를 해주지 않으면 동작 불가 (이미지가 꺠지거나 스크립트 오류가 발생할 수 있음)
 		
+		boolean isExcluded = uri.equals("/") 
+			    || uri.equals(req.getContextPath() + "/user/login") 
+			    || uri.equals(req.getContextPath() + "/user/logout")
+			    || uri.equals(req.getContextPath() + "/user/loginFrm") 
+			    || uri.equals(req.getContextPath() + "/user/companyJoin") 
+			    || uri.equals(req.getContextPath() + "/user/companyJoinFrm") 
+			    || uri.equals(req.getContextPath() + "/user/userJoin") 
+	            || uri.equals(req.getContextPath() + "/user/userJoinFrm") 
+			    || uri.startsWith(req.getContextPath() + "/resources/");
+
 		
-		boolean isExcluded = uri.equals("/") || uri.equals("/user/login") || uri.equals("/user/logout")
-				|| uri.equals("/user/loginFrm") || uri.equals("/user/join") || uri.equals("/user/joinFrm") || uri.startsWith("/resources/");
+		if (uri.startsWith("/resources/")) {
+		    chain.doFilter(request, response); // 필터 통과
+		    return;
+		}
 
 		if (isExcluded) {
 			chain.doFilter(request, response);

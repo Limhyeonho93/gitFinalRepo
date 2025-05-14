@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>회사 회원가입</title>
 
 <!-- Bootstrap & Icons -->
 <link
@@ -17,8 +17,8 @@
 	rel="stylesheet">
 
 <!-- Custom CSS & JS -->
-<link rel="stylesheet" href="/resource/css/layout.css">
-<script src="/resource/js/layout.js" defer></script>
+<link rel="stylesheet" href="/resources/css/layout.css">
+<script src="/resources/js/layout.js" defer></script>
 
 
 </head>
@@ -29,42 +29,69 @@
 		<main class="content d-flex">
 			<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
 
-			<h2 style="text-align: center;">회원가입</h2>
-
-			<form action="${pageContext.request.contextPath}/user/join"
+			<h2 class="text-center">회사 회원가입</h2>
+			<form action="${pageContext.request.contextPath}/user/companyJoin"
 				method="post">
-				<div>
-					<label for="userId">유저 ID</label> <input type="email" id="userId"
-						name="userId" placeholder="~@~.com 형식으로 입력" required>
+				<div class="mb-3">
+					<label for="compCd" class="form-label">회사 코드</label> <input
+						type="text" id="compCd" name="compCd" class="form-control"
+						maxlength="10"
+						pattern="^[A-Za-z0-9]{1,10}$"
+						placeholder="글자와 숫자 섞어서 최대 10글자" required>
 				</div>
-				<div>
-					<label for="compCd">회사 코드</label> <input type="text" id="compCd"
-						name="compCd">
+				<div class="mb-3">
+					<label for="compName" class="form-label">회사 이름</label> <input
+						type="text" id="compName" name="compName" class="form-control"
+						placeholder="회사 이름 입력" required>
 				</div>
-				<div>
-					<label for="userPw">비밀번호</label> <input type="password" id="userPw"
-						name="userPw" required>
+				<div class="mb-3" style="display: none;">
+					<input type="hidden" id="grade" name="grade" class="form-control"
+						value="2" readonly>
+					<%-- 등급 --%>
 				</div>
-				<div>
-					<label for="userName">유저명</label> <input type="text" id="userName"
-						name="userName">
+				<div class="mb-3">
+					<label for="compAddr" class="form-label">회사 주소</label> <input
+						type="text" id="compAddr" name="compAddr" class="form-control"
+						placeholder="회사 주소 입력" required>
 				</div>
-				<div>
-					<label for="deptName">부서</label> <input type="text" id="deptName"
-						name="deptName">
+				<div class="mb-3">
+					<label for="postalCode" class="form-label">우편번호</label> <input
+						type="text" id="postalCode" name="postalCode" class="form-control"
+						pattern="\\d{5}" placeholder="5자리 숫자 입력" >
 				</div>
-				<div>
-					<label for="telNo">연락처</label> <input type="text" id="telNo"
-						name="telNo">
+				<div class="mb-3">
+					<label for="compTel" class="form-label">회사 전화번호</label> <input
+						type="text" id="compTel" name="compTel" class="form-control"
+						placeholder="예: 02-123-4567"
+						>
 				</div>
-				<div>
-					<button type="submit">가입하기</button>
+				<div class="mb-3" style="display: none;">
+					<input type="hidden" id="transactionStatus"
+						name="transactionStatus" class="form-control" value="Y" readonly>
+					<%-- 거래상황 --%>
+				</div>
+				<div class="mb-3" style="display: none;">
+					<input type="hidden" id="regDate" name="regDate"
+						class="form-control" required>
+					<%-- 등록일 --%>
+				</div>
+				<div class="mb-3" style="display: none;">
+					<input type="hidden" id="updDate" name="updDate"
+						class="form-control" required>
+					<%-- 갱신일 --%>
+				</div>
+				<div class="text-center">
+					<button type="submit" class="btn btn-primary">가입하기</button>
 				</div>
 			</form>
-			
-			<%-- 회원 가입 완료후 다시 메인 페이지로 돌아가게  --%>
+
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
+	<script>
+		// 등록일 오늘 날짜로 지정
+		document.getElementById('regDate').value = new Date().toISOString()
+				.split('T')[0];
+	</script>
 </body>
 </html>

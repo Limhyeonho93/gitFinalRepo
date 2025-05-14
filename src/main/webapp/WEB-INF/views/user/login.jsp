@@ -18,7 +18,7 @@
 	rel="stylesheet">
 
 <!-- Custom CSS & JS -->
-<link rel="stylesheet" href="/resource/css/layout.css">
+<link rel="stylesheet" href="/resources/css/layout.css">
 <script src="/resources/js/layout.js" defer></script>
 </head>
 <body>
@@ -37,7 +37,7 @@
 				</div>
 				<div>
 					<%-- 회원 비밀번호 --%>
-					<label for="password">비밀번호 입력 :</label> <input type="password"
+					<label for="userPw">비밀번호 입력 :</label> <input type="password"
 						id="userPw" name="userPw" required>
 				</div>
 				<div>

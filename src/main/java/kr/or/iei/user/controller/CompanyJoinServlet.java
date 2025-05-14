@@ -10,72 +10,91 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kr.or.iei.user.model.service.UserService;
-import kr.or.iei.user.model.vo.User;
+import kr.or.iei.user.model.vo.Company;
 
 /**
  * Servlet implementation class JoinServlet
  */
-@WebServlet("/user/join")
-public class JoinServlet extends HttpServlet {
+@WebServlet("/user/companyJoin")
+public class CompanyJoinServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public JoinServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 인코딩 - 필터 
+	public CompanyJoinServlet() {
+		super();
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// 1. 인코딩 - 필터
 		// 2. 값 추출
-		String userId = request.getParameter("userId");
 		String compCd = request.getParameter("compCd");
-		String userPw = request.getParameter("userPw");
-		String userName = request.getParameter("userName");
-		String deptName = request.getParameter("deptName");
-		String telNo = request.getParameter("telNo");
-		
-		// 3. 로직
-		User user = new User();
-		user.setUserId(userId);
-		user.setCompCd(compCd);
-		user.setUserPw(userPw);
-		user.setUserName(userName);
-		user.setDeptName(deptName);
-		user.setTelNo(telNo);
-		
-		UserService service = new UserService();
-		int result = service.insertUser(user);
-		
-		// 4. 결과 처리
-		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-		
-		if(result > 0) {
-			request.setAttribute("title", "회원가입 성공");
-			request.setAttribute("msg", "회원가입이 완료되었습니다.");
-			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/");
-		}else {
+		String compName = request.getParameter("compName");
+		String grade = request.getParameter("grade");
+		String compAddr = request.getParameter("compAddr");
+		String postalCode = request.getParameter("postalCode");
+		String compTel = request.getParameter("compTel");
+		String transactionStatus = request.getParameter("transactionStatus");
+		String regDate = new java.sql.Date(System.currentTimeMillis()).toString(); // 현재 날짜
+		String updDate = null; // 초기값 null로 설정 == 관리자가 나중에 수정할수 있도록 할거임
+
+		// 2. 입력값 검증
+		// 회사 코드 검증
+		if (compCd == null || !compCd.matches("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{1,10}$")) {
 			request.setAttribute("title", "회원가입 실패");
-			request.setAttribute("msg", "회원가입에 실패하였습니다.");
+			request.setAttribute("msg", "회사 코드는 글자와 숫자가 섞인 최대 10글자여야 합니다.");
 			request.setAttribute("icon", "error");
-			request.setAttribute("loc", "/");
+			request.setAttribute("loc", "/user/CompanyJoinFrm");
+			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+			view.forward(request, response);
+			return;
 		}
-		//4.3 페이지 이동
-		view.forward(request, response);
+
+		// 3. 비즈니스 로직 처리
+        Company company = new Company();
+        
+        company.setComp_cd(compCd);
+        company.setComp_name(compName);
+        company.setComp_addr(compAddr);
+        company.setComp_zip(postalCode);
+        company.setComp_tel(compTel);
+        company.setDeal_flg(transactionStatus.charAt(0));
+        company.setGrade(grade.charAt(0));
+        company.setReg_date(java.sql.Date.valueOf(regDate));
+        company.setUpd_date(null); // 초기값 null로 설정
+
+        UserService service = new UserService();
+        int result = service.insertCompany(company);
+
+        // 4. 결과 처리
+        RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+        if (result > 0) {
+            request.setAttribute("title", "회원가입 성공");
+            request.setAttribute("msg", "회원가입이 완료되었습니다.");
+            request.setAttribute("icon", "success");
+            request.setAttribute("loc", "/");
+        } else {
+            request.setAttribute("title", "회원가입 실패");
+            request.setAttribute("msg", "회원가입에 실패하였습니다.");
+            request.setAttribute("icon", "error");
+            request.setAttribute("loc", "/user/companyJoinFrm");
+        }
+        view.forward(request, response);
 
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}

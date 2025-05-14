@@ -10,40 +10,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class JoinFrmServlet
+ * Servlet implementation class UserJoinFrmServlet
  */
-@WebServlet("/user/companyJoinFrm")
-public class CompanyJoinFrmServlet extends HttpServlet {
+@WebServlet("/user/userJoinFrm")
+public class UserJoinFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CompanyJoinFrmServlet() {
+    public UserJoinFrmServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 인코딩 - 필터 
-		// 2. 갑 추출
-		// 3. 로직
-		// 4. 결과 처리
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/user/companyJoin.jsp");
-		
-		// 4- 페이지로 이동.
-		view.forward(request, response);
-		
+		response.getWriter().append("Served at: ").append(request.getContextPath());
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/user/userJoin.jsp");
+        view.forward(request, response);
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

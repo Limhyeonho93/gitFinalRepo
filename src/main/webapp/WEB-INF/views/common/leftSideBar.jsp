@@ -43,7 +43,7 @@
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="userControll">
 					<li><a class="sidebar-link" href="/user/update">개인정보 수정</a></li>
-					<li><a class="sidebar-link" href="#">회원 생성</a></li>
+					<li><a class="sidebar-link" href="/user/userJoin">회원 생성</a></li>
 				</ul>
 			</li>
 		</ul>

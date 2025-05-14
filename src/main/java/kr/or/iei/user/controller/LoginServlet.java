@@ -37,12 +37,23 @@ public class LoginServlet extends HttpServlet {
 		// 2. 값 추출
 		String userId = request.getParameter("userId");
 		String userPw = request.getParameter("userPw");
+		
+		 // 3. 로직 - Null 체크 추가 (아이디와 비밀번호가 null인지 확인)
+	    if (userId == null || userPw == null) {
+	        RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+	        request.setAttribute("title", "로그인 실패");
+	        request.setAttribute("msg", "아이디와 비밀번호를 입력해주세요.");
+	        request.setAttribute("icon", "error");
+	        request.setAttribute("loc", "/user/loginFrm");
+	        view.forward(request, response);
+	        return;
+	    }
 
-		// 3. 로직 - 입력한 정보와 DB에 있는 정보 비교
+		// 3.1 로직 - 입력한 정보와 DB에 있는 정보 비교
 		UserService service = new UserService();
 		User loginUser = null; // 로그인시 관리자인지 아닌지 구별을 위해 null로 초기화
 
-		// 2. 관리자 로그인 처리
+		// 3.2 관리자 로그인 처리
 		if ("admin".equals(userId)) {
 			if ("12".equals(userPw)) { // 관리자 비밀번호 확인
 				loginUser = new User();
@@ -73,10 +84,7 @@ public class LoginServlet extends HttpServlet {
 
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
