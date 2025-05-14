@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import kr.or.iei.cargo.model.vo.CargoGoods;
 import kr.or.iei.cargo.model.vo.CargoMain;
 import kr.or.iei.common.JDBCTemplate;
 
@@ -38,10 +39,9 @@ public class CargoDao {
 	              pstmt.setString(i + 1, searchValue[i]);
 	          }
 	    	  
-	         System.out.println(searchValue);
-	         System.out.println(query);
+	         //System.out.println(searchValue);
+	         //System.out.println(query);
 
-	         //pstmt.setString(1, searchOption);
 			
 			rset=pstmt.executeQuery();
 			
@@ -74,7 +74,49 @@ public class CargoDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-
 		return list;
+	}
+
+	public CargoGoods srchCargoDetail(Connection conn, String trackingNo) {
+		PreparedStatement pstmt=null;
+		ResultSet rset=null;
+		
+		CargoGoods goods=new CargoGoods();
+		
+		String query="select * from T_cargoGoods where tracking_no = ? ";
+		
+		try {
+			pstmt=conn.prepareStatement(query);
+			pstmt.setString(1, trackingNo);
+			rset=pstmt.executeQuery();
+			
+			if(rset.next()) {
+				goods.setCompCd(rset.getString("comp_cd")); 
+				goods.setWarehouseMoveid(rset.getString("warehouse_moveId"));
+				goods.setTrackingNo(rset.getString("tracking_no"));	
+				goods.setManageNo(rset.getString("manage_no"));	
+				goods.setSeq(rset.getInt("seq"));
+				goods.setGoodsName(rset.getString("goods_name"));				
+				goods.setUnitPrice(rset.getInt("unit_price"));					
+				goods.setQty(rset.getInt("qty"));								
+				goods.setUnitWeight(rset.getFloat("unit_weight"));				
+				goods.setNo(rset.getInt("no"));									
+				goods.setDeliveryStop(rset.getString("delivery_stop"));			
+				goods.setUserId(rset.getString("user_id"));						
+				goods.setRegDate(rset.getString("reg_date"));					
+				goods.setUpdDate(rset.getString("upd_date"));
+			}
+			
+			System.out.println("dao:"+goods.getTrackingNo());
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+
+		return goods;
 	}
 }

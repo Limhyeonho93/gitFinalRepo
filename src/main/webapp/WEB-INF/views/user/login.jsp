@@ -18,8 +18,8 @@
 	rel="stylesheet">
 
 <!-- Custom CSS & JS -->
-<link rel="stylesheet" href="/resource/css/layout.css">
-<script src="/resource/js/layout.js" defer></script>
+<link rel="stylesheet" href="/resources/css/layout.css">
+<script src="/resources/js/layout.js" defer></script>
 </head>
 <body>
 	<div class="wrap">
