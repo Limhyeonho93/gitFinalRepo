@@ -1,29 +1,32 @@
 package kr.or.iei.invoice.controller;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import kr.or.iei.invoice.model.service.InvoiceService;
-import kr.or.iei.invoice.model.vo.CompInfo;
+import kr.or.iei.invoice.model.vo.CargoUnitInvoice;
+import kr.or.iei.invoice.model.vo.Invoice;
 
 /**
- * Servlet implementation class InvoiceSearchFrmServlet
+ * Servlet implementation class InvoiceDetailGridServlet
  */
-@WebServlet("/invoice/dateSearchFrm")
-public class InvoiceSearchFrmServlet extends HttpServlet {
+@WebServlet("/invoice/dataDetailGrid")
+public class InvoiceDetailGridServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public InvoiceSearchFrmServlet() {
+	public InvoiceDetailGridServlet() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -34,9 +37,17 @@ public class InvoiceSearchFrmServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/invoice/invoiceSearch.jsp");
-		
-		view.forward(request, response);
+
+		String compCd = request.getParameter("compCd");
+		String from = request.getParameter("from");
+		String to = request.getParameter("to");
+
+		InvoiceService service = new InvoiceService();
+
+		ArrayList<CargoUnitInvoice> arr = service.trackingNoInvoice(from, to, compCd);
+		response.setContentType("application/json; charset=UTF-8");
+		Gson gson = new Gson();
+		response.getWriter().print(gson.toJson(arr)); // 클라이언트에 JSON 응답
 	}
 
 	/**
