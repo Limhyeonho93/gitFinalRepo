@@ -18,13 +18,8 @@
 	rel="stylesheet">
 
 <!-- Custom CSS & JS -->
-<<<<<<< HEAD
-<link rel="stylesheet" href="/resources/css/layout.css">
-=======
-
 <link rel="stylesheet" href="/resources/css/layout.css">
 
->>>>>>> master
 <script src="/resources/js/layout.js" defer></script>
 </head>
 <body>
