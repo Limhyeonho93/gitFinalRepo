@@ -1,30 +1,29 @@
-package kr.or.iei.cargo.controller;
+package kr.or.iei.invoice.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-
-import kr.or.iei.cargo.model.service.CargoService;
-import kr.or.iei.cargo.model.vo.CargoMain;
+import kr.or.iei.invoice.model.service.InvoiceService;
+import kr.or.iei.invoice.model.vo.CompInfo;
 
 /**
- * Servlet implementation class CargoSearchServlet
+ * Servlet implementation class InvoiceDetailFrmServlet
  */
-@WebServlet("/srchCargo")
-public class CargoSearchServlet extends HttpServlet {
+@WebServlet("/invoice/detailFrm")
+public class InvoiceDetailFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CargoSearchServlet() {
+    public InvoiceDetailFrmServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,19 +32,24 @@ public class CargoSearchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String[] searchValue = request.getParameterValues("searchValue");
-		String searchOption=request.getParameter("searchOption");
-		//System.out.println(searchValue);
-		//System.out.println(searchOption);
+		// TODO Auto-generated method stub
+		
+		String compCd = request.getParameter("compCd");
+		String from = request.getParameter("from");
+		String to = request.getParameter("to");
 
-		CargoService service=new CargoService();
-		ArrayList<CargoMain> list=service.searchCargo(searchValue,searchOption);
+		InvoiceService service = new InvoiceService();
 		
-		//응답 데이터 JSON 변환. 백->프론트로 넘길때 객체로 넘길 수 없기 때문에 변환 필수
-		response.setContentType("application/json; charset=UTF-8");
-		Gson gson = new Gson();
-		response.getWriter().print(gson.toJson(list));  // 클라이언트에 JSON 응답
+		ArrayList<CompInfo> compInfoArr = service.getAllSeellerComp();
 		
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/invoice/detailSearch.jsp");
+		
+		request.setAttribute("compCd", compCd);
+		request.setAttribute("from", from);
+		request.setAttribute("to", to);
+		request.setAttribute("compInfoArr", compInfoArr);
+		
+		view.forward(request, response);
 	}
 
 	/**

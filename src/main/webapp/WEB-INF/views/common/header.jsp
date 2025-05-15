@@ -21,8 +21,15 @@
 		<div>
 
 			<span class="me-3 text-white fw-bold">관리자</span>
+			<%Object user = session.getAttribute("user");
+			 if (user != null) {
+			%>
+			 <a href="${pageContext.request.contextPath}/user/logout" class="btn btn-outline-light btn-sm">로그아웃</a>
+			 <%} else { %>
+			 
 			 <a	href="${pageContext.request.contextPath}/user/loginFrm"	class="btn btn-outline-light btn-sm">로그인</a>
-			 <a	href="${pageContext.request.contextPath}/user/joinFrm"	class="btn btn-outline-light btn-sm">회원가입</a>
+			 <%} %>
+			 <a	href="${pageContext.request.contextPath}/user/companyJoinFrm"	class="btn btn-outline-light btn-sm">회원가입</a>
 		</div>
 	</header>
 </body>

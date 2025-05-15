@@ -34,8 +34,8 @@
 			<form action="${pageContext.request.contextPath}/user/join"
 				method="post">
 				<div>
-					<label for="userId">유저 ID</label> <input type="text" id="userId"
-						name="userId" placeholder="무조건 숫자로 입력" required>
+					<label for="userId">유저 ID</label> <input type="email" id="userId"
+						name="userId" placeholder="~@~.com 형식으로 입력" required>
 				</div>
 				<div>
 					<label for="compCd">회사 코드</label> <input type="text" id="compCd"

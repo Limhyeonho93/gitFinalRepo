@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>청구서 조회</title>
+<title>청구서 상세 조회</title>
 
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
@@ -14,17 +16,25 @@
 <script src="/resources/js/layout.js" defer></script>
 
 <!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css"
+	rel="stylesheet">
 
 <!-- AG Grid CSS -->
-<link href="https://cdn.jsdelivr.net/npm/ag-grid-community@33.2.4/styles/ag-grid.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/ag-grid-community@33.2.4/styles/ag-theme-alpine.min.css" rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/ag-grid-community@33.2.4/styles/ag-grid.min.css"
+	rel="stylesheet">
+<link
+	href="https://cdn.jsdelivr.net/npm/ag-grid-community@33.2.4/styles/ag-theme-alpine.min.css"
+	rel="stylesheet">
 
 <!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <!-- AG Grid JS -->
-<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@33.2.4/dist/ag-grid-community.min.js"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/ag-grid-community@33.2.4/dist/ag-grid-community.min.js"></script>
 
 <!-- Bootstrap JS -->
 <script
@@ -33,7 +43,8 @@
 	href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/i18n/jquery-ui-i18n.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/i18n/jquery-ui-i18n.min.js"></script>
 <style>
 /* 페이지와 그리드의 크기 기본 설정 */
 html, body {
@@ -51,30 +62,6 @@ html, body {
 .toolbar {
 	margin-bottom: 5px;
 }
-
-.textarea-search {
-	position: relative;
-	display: block;
-	height: 38px;
-}
-
-.textarea-search textarea {
-	height: 34px;
-	resize: none;
-	overflow: auto;
-}
-
-.textarea-search textarea.input-sm {
-	height: 30px;
-}
-
-.textarea-search textarea:FOCUS {
-	height: 250px;
-	width: 250px;
-	position: absolute;
-	top: -20px;
-	z-index: 4;
-}
 </style>
 
 </head>
@@ -87,7 +74,14 @@ html, body {
 				style="margin-top: 30px; margin-bottom: 10px;">
 
 				<div class="input-group mb-1">
-					<span class="input-group-text">청구 기간</span>
+					<span class="input-group-text">검색 회사</span> <span
+						style="display: inline-block; width: 250px; margin-right: 10px;">
+						<select class="form-select" id="compCd">
+							<c:forEach var="compInfo" items="${compInfoArr}">
+								<option value="${compInfo.compCd}">${compInfo.compName}</option>
+							</c:forEach>
+					</select>
+					</span> <span class="input-group-text">검색 기간</span>
 					<div class="col-mb-2">
 						<input type="text" class="form-control datepicker" size="15"
 							id="from" placeholder="기간 시작" aria-label="기간 시작"
@@ -98,14 +92,12 @@ html, body {
 						<input type="text" class="form-control datepicker" size="15"
 							id="to" placeholder="기간 종료" aria-label="기간 종료" autocomplete="off">
 					</div>
-
-					
 					<button class="btn btn-outline-dark" type="button" id="search">검색</button>
 				</div>
-
-				<br>
 				<div class="d-flex justify-content-end mb-2">
-  					<input type="text" id="filterTextBox" class="form-control form-control-sm" placeholder="퀵 서치" style="width: 300px;">
+					<input type="text" id="filterTextBox"
+						class="form-control form-control-sm" placeholder="퀵 서치"
+						style="width: 300px;">
 				</div>
 
 				<div id="myGrid" class="ag-theme-alpine"></div>
@@ -117,6 +109,9 @@ html, body {
 </body>
 <script type="text/javascript">
 	$(function() {
+		let from = '${from}';
+		let to = '${to}';
+		let compCd = '${compCd}';
 		// jquery datepicker 한국 로컬버젼
 		$('.datepicker').datepicker(
 				{
@@ -141,67 +136,85 @@ html, body {
 					showMonthAfterYear : true,
 					yearSuffix : "년"
 				});
+		if(from == ""){
+			$('#from').datepicker('setDate', new Date());
+			$('#to').datepicker('setDate', new Date());
+		}else{
+			$('#from').datepicker('setDate', from);
+			$('#to').datepicker('setDate', to);
+			$('#compCd').val(compCd);
+
+		}
 		// 초기 날짜의 값 설정
-		$('#from').datepicker('setDate', new Date());
-		$('#to').datepicker('setDate', new Date());
 
 		// 그리드에 들어갈 칼럼 해더 정의
 		const columnDefs = [
-				{
-					headerName : '',
-					field : "idx",
-					minWidth : 50,
-					width : 50,
-					maxWidth : 50,
-					pinned : 'left',
-					headerCheckboxSelection : true,
-					headerCheckboxSelectionFilteredOnly : true,
-					checkboxSelection : true,
-				},
+                {
+                    headerName: '',
+                    field: "idx",
+                    minWidth: 50,
+                    width: 50,
+                    maxWidth: 50,
+                    pinned: 'left',
+                    headerCheckboxSelection: true,
+                    headerCheckboxSelectionFilteredOnly: true,
+                    checkboxSelection: true,
+                },
+                {
+                    headerName: "회사이름",
+                    field: "compName",
+                    width: 160,
+                    pinned: 'left',
+                },
+                {
+                    headerName: "창고 이동 ID",
+                    field: "warehouseMoveid",
+                    pinned: 'left'
+                },
+                {
+                    headerName: "송장번호",
+                    field: "trackingNo",
+                    width: 160,
+                    pinned: 'left',
 
-				{
-					headerName : "회사이름",
-					field : "compName",
-					width : 160,
-					pinned : 'left',
-					cellStyle: {color: 'blue', textDecoration: "underline",cursor: "pointer"  },
-					
-					cellRenderer: function(params) {
-					    if (!params.data || !params.data.compCd) return '';
-
-					    const from = document.getElementById('from').value;
-					    const to = document.getElementById('to').value;
-
-					    const href = '/invoice/detailFrm?compCd='+ params.data.compCd+'&from='+$('#from').val()+'&to='+$('#to').val();
-
-					    return "<a href='" + href + "' style='color: blue; text-decoration: underline;'>" + params.data.compName + "</a>";
-					  }
-				},
-				{
-					headerName : "총 청구 금액",
-					field : "totalPayment"
-				},
-				{
-					headerName : "총 중량",
-					field : "totalWeight",
-					width : 160,
-					pinned : 'left'
-				},
-				{
-					headerName : "화물 갯수",
-					field : "totalWeight"
-				},
-				{
-					headerName : "청구서 다운로드",
-					field : "",
-					cellRenderer : function() {
-						return '<button class="btn btn-outline-success btn-sm" type="button" style="margin-left:12px;">다운로드</button>';
-					}
-				} ];
+                },
+                {
+                    headerName: "사내 관리번호",
+                    field: "manageNo",
+                },
+                {
+                    headerName: "반입시간",
+                    field: "inDate"
+                },
+                {
+                    headerName: "반출시간",
+                    field: "outDate"
+                },
+                {
+                    headerName: "화물갯수",
+                    field: "no"
+                },
+                {
+                    headerName: "화물중량",
+                    field: "gw"
+                },
+                {
+                    headerName: "받는이 이름",
+                    field: "receiverName",
+                },
+                {
+                    headerName: "받는이 주소",
+                    field: "receiverAdd"
+                },
+                {
+                    headerName: "셀러 이름",
+                    field: "sellerName"
+                },
+            ];
 
 		// grid 옵션 정의
 		const gridOptions = {
-			// 해더
+			// 해덩
 			columnDefs : columnDefs,
 			// 33버젼으론 넘어가면서 기존 테마라고 설정해야된다.
 			theme : "legacy",
@@ -242,10 +255,11 @@ html, body {
 			const offset = headerHeight + searchBoxHeight + footerHeight + gridTopMargin;
 
 			$.ajax({
-				url : "/invoice/dataGrid",
+				url : "/invoice/dataDetailGrid",
 				data : {
 					from : $('#from').val(),
 					to : $('#to').val(),
+					compCd : $('#compCd').val(),
 				},
 				type : "get",
 			}).done(function(res) {
@@ -271,6 +285,7 @@ html, body {
 		$('#search').on('click', function(e) {
 			loadGrid();
 		})
+		
 	});
 </script>
 </html>
