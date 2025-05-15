@@ -33,13 +33,14 @@ public class LoginFilter extends HttpFilter implements Filter {
 	public void destroy() {
 		// TODO Auto-generated method stub
 	}
-
+	
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		//사용자가 로그인을 하지않고 url로 접근할 때 로그인 세션 정보를 확인하고 없을 경우 로그인 페이지로 빼주기 위한 필터
 		//로그인, 로그아웃 페이지가 없어서 오류뜰듯 
+		
 		 HttpServletRequest req = (HttpServletRequest) request;
 		 HttpServletResponse resp = (HttpServletResponse) response;
 		 
@@ -48,7 +49,7 @@ public class LoginFilter extends HttpFilter implements Filter {
 		 
 		 //사용자가 /user/loginForm에 접근할 때 필터가 요청을 가로채서 세션이 없다고 판단하고 다시 /user/loginForm으로 리다이렉트 (무한루프) ->예외처리
 		 //정적리소스(/resources/)도 예외처리를 해주지 않으면 동작 불가 (이미지가 꺠지거나 스크립트 오류가 발생할 수 있음)
-		 if(uri.equals("/user/login") || uri.equals("/user/logout") || uri.equals("/user/loginForm") ||  uri.startsWith("/resources/")) { 
+		 if(uri.equals("/user/login") || uri.equals("/user/logout") || uri.equals("/user/loginFrm") ||  uri.startsWith("/resources/")) { 
 			 chain.doFilter(request, response);
 			 
 			 return;
@@ -60,7 +61,6 @@ public class LoginFilter extends HttpFilter implements Filter {
 			 resp.sendRedirect(req.getContextPath() + "/user/login");
 			 return;
 		 }
-		 
 		 chain.doFilter(request, response);
 	}
 
@@ -69,6 +69,6 @@ public class LoginFilter extends HttpFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 		// TODO Auto-generated method stub
+	
 	}
-
 }

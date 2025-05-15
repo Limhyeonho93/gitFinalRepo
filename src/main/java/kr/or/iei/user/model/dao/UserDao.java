@@ -52,7 +52,7 @@ public class UserDao {
 
 			pstmt.setString(1, userId);
 			pstmt.setString(2, userPw);
-
+			
 			rset = pstmt.executeQuery();
 
 			if (rset.next()) {
@@ -66,7 +66,6 @@ public class UserDao {
 				loginUser.setTelNo(rset.getString("tel_no"));
 				loginUser.setRegDate(rset.getDate("reg_date"));
 				loginUser.setUpdDate(rset.getDate("upd_date"));
-
 			}
 
 		} catch (SQLException e) {
@@ -77,5 +76,60 @@ public class UserDao {
 		}
 
 		return loginUser;
+	}
+	
+	public int updateUser(Connection conn, User updUser) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;	//실패는 0, 성공은 1
+		
+		String query =
+		        "UPDATE T_USERS " +
+		        "SET USER_NAME = ?, TEL_NO = ? " +
+		        "WHERE USER_ID = ?"; 
+		
+			try {
+				pstmt = conn.prepareStatement(query);
+				
+				pstmt.setString(1, updUser.getUserName());
+				pstmt.setString(2, updUser.getTelNo());
+				pstmt.setString(3, updUser.getUserId());
+				
+				result = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				JDBCTemplate.close(pstmt);
+			}
+		
+		return result;
+	}
+
+	public int updateUserPw(Connection conn, String userId, String newUserPw) {
+		PreparedStatement pstmt = null;
+		
+		int result = 0;
+		String query = "UPDATE T_Users " +
+					   "SET user_pw  = ?, " +        
+					   "    upd_date = SYSDATE " +    // 갱신일도 함께 업데이트 해줌
+					   "WHERE user_id = ? ";
+	
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setString(1, newUserPw);
+			pstmt.setString(2, userId);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		
+		return result;
 	}
 }

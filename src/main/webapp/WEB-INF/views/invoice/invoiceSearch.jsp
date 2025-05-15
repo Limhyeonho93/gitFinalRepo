@@ -10,8 +10,8 @@
 	rel="stylesheet">
 
 <!-- Custom CSS & JS -->
-<link rel="stylesheet" href="/resource/css/layout.css">
-<script src="/resource/js/layout.js" defer></script>
+<link rel="stylesheet" href="/resources/css/layout.css">
+<script src="/resources/js/layout.js" defer></script>
 
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">

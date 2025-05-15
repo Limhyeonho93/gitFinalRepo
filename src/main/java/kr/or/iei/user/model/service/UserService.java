@@ -37,4 +37,31 @@ public class UserService {
 		return loginUser;
 	}
 
+	public int updateUser(User updUser) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateUser(conn, updUser);
+		
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+		
+	}
+
+	public int updateUserPw(String userId, String newUserPw) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.updateUserPw(conn, userId, newUserPw);
+		if(result > 0) {
+			JDBCTemplate.commit(conn);
+		}else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+		
+	}					
 }
+

@@ -9,8 +9,8 @@
 	rel="stylesheet">
 
 <!-- Custom CSS & JS -->
-<link rel="stylesheet" href="/resource/css/layout.css">
-<script src="/resource/js/layout.js" defer></script>
+<link rel="stylesheet" href="/resources/css/layout.css">
+<script src="/resources/js/layout.js" defer></script>
 
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -35,7 +35,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/i18n/jquery-ui-i18n.min.js"></script>
 
 <!-- SweetAlert -->
-<script src="/resource/js/sweetalert.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
 
 <style type="text/css">
 
