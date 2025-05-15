@@ -13,9 +13,6 @@ import kr.or.iei.invoice.model.vo.DailyInsertInvoice;
 import kr.or.iei.invoice.model.vo.ShoppingCost;
 
 public class InsertInvoiceData implements Runnable{
-	  public static void main(String[] args) {
-	        new InsertInvoiceData().run(); // 바로 실행
-	    }
 	public void run() {
 		System.out.println("ssss");
 		LocalDate yesterday = LocalDate.now().minusDays(1);
