@@ -4,20 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<!-- ag-Grid JS -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<!-- ✅ ag-Grid JS -->
-<script
-	src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.noStyle.js"></script>
-
-
-<!-- Bootstrap & Icons -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <title>화물 조회</title>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
 	rel="stylesheet">
@@ -25,8 +11,6 @@
 <!-- Custom CSS & JS -->
 <link rel="stylesheet" href="/resources/css/layout.css">
 <script src="/resources/js/layout.js" defer></script>
-<<<<<<< HEAD
-=======
 
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -116,7 +100,6 @@ modal css
 }
 
 </style>
->>>>>>> master
 
 </head>
 <body>
@@ -125,12 +108,9 @@ modal css
 		<main class="content d-flex">
 			<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
 			
-			
 			<%-- 검색창 (AG-grid) --%>
 			<div class="container-fluid" style="margin-top:30px; margin-bottom:10px;">
 				<div class="d-flex" style="gap:10px;">
-					<textarea class="form-control" id="inputText" placeholder="검색할 내용 입력" style="width:300px; height:40px;"></textarea>
-					
 					<select class="form-select" id="searchOption" aria-label="Default select example">
 						<option value="warehouse_moveId" selected>창고이동ID</option>
 						<option value="tracking_no">송장번호</option>
@@ -141,10 +121,8 @@ modal css
 					</div>
 					<button class="btn btn-outline-dark" type="button" id="search" >검색</button>
 				</div>
-				<div id="member_grid" class="ag-theme-alpine" style="height: 500px; width: 100%; margin-top:30px;"></div>
 				<div id=myGrid class="ag-theme-alpine"></div>
 			</div>
-			
 			
 			<%-- 상세정보 창 띄우기(모달) --%>
 
@@ -159,6 +137,7 @@ modal css
 						      <%-- 상세 내용(const contentHtml)이 여기에 들어감 --%>
 						 </div>
 						 <div class="modal-footer">
+						 	  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">수정</button>
 						      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 					     </div>
 				    </div>
@@ -177,12 +156,10 @@ modal css
 				var searchValue = $('#inputText').val();
 
 				if (searchValue.trim() !== "") {
-					console.log('검색어:', searchValue);
 					//console.log('검색어:', searchValue);
 					loadGrid();
 
 				} else {
-					console.log('검색어 미입력');
 					//console.log('검색어 미입력');
 				}
 			});
@@ -347,22 +324,16 @@ modal css
 				}, ],
 				rowData : null, // 데이터를 데이터베이스에서 가져온 이후에 넣는다 
 			};
-
 			*/
 			//loadGrid(); //검색 눌렀을때만 작동하도록 변경 예정 
 	
-			let gridCreated = false;
 			// html로드된 순간 grid표시후 재 로드 X
 			const gridDiv = document.getElementById('myGrid');
 			const gridApi = agGrid.createGrid(gridDiv, gridOptions);
 			
 			
-			function loadGrid(e) { //이벤트가 발생했을때 e 이긴한데 지금은 발생하지 않고있음.
 			function loadGrid(e) { //이벤트가 발생했을때 e이긴한데 지금은 발생하지 않고있음.
 				
-				// 기존 그리드 제거(초기화)
-			    member_grid.innerHTML = "";
-
 				//검색창에 입력된 값 가져오기
 				let inputTextArr = $('#inputText').val().split(/\r?\n/).map(x => x.trim()).filter(x => x.length > 0);
 				
@@ -375,7 +346,6 @@ modal css
 				//검색했을때 동작
 				$.ajax({
 					url : "/srchCargo",
-					data : { keyword: $('#inputText').val() },
 					data : {
 						searchValue: inputTextArr, 
 						searchOption: $("#searchOption").val()
@@ -383,7 +353,6 @@ modal css
 					traditional: true, // 배열로 보낼시 꼭 추가
 					type : "get",
 					success : function(res) {
-						//gridData = res;
 						// 기존 행 모두 제거
 						
 						const allData = [];
@@ -399,7 +368,6 @@ modal css
 
 						agGrid.createGrid(document
 								.getElementById('member_grid'), gridOptions);
-
 						*/
 					},
 					error : function(err) {
@@ -420,8 +388,6 @@ modal css
 		
 		
 	</script>
-	
-	
 
 </body>
 </html>

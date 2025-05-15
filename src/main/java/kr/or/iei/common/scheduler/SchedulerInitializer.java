@@ -16,7 +16,7 @@ public class SchedulerInitializer implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("[✅ SchedulerListener 시작됨]");
+        //System.out.println("[✅ SchedulerListener 시작됨]");
         scheduler = Executors.newScheduledThreadPool(2);
 
         // 1시에 시작하는 딜레이 계산 후 하루 주기로 실행
@@ -30,7 +30,7 @@ public class SchedulerInitializer implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         scheduler.shutdownNow();
-        System.out.println("[🛑 SchedulerListener 종료됨]");
+        //System.out.println("[🛑 SchedulerListener 종료됨]");
     }
 
     // 다음 1AM까지 남은 분 계산
