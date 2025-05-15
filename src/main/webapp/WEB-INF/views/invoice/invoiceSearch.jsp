@@ -99,19 +99,13 @@ html, body {
 							id="to" placeholder="기간 종료" aria-label="기간 종료" autocomplete="off">
 					</div>
 
-					<div style="margin-left: 15px; width: 250px;"
-						class="col-sm-2 textarea-search">
-						<textarea class="form-control form-control-md"></textarea>
-					</div>
+					
 					<button class="btn btn-outline-dark" type="button" id="search">검색</button>
 				</div>
 
 				<br>
-				<div class="col-auto">
-					<span><input type="text" id="filterTextBox"
-						class="form-control form-control-sm" placeholder="퀵 서치"
-						style="width: 300px;"> </span>
-					<hr>
+				<div class="d-flex justify-content-end mb-2">
+  					<input type="text" id="filterTextBox" class="form-control form-control-sm" placeholder="퀵 서치" style="width: 300px;">
 				</div>
 
 				<div id="myGrid" class="ag-theme-alpine"></div>
@@ -223,6 +217,13 @@ html, body {
 			debounceVerticalScrollbar : true,
 			enableCellTextSelection : true,
 			suppressRowClickSelection : true,
+			onGridReady: function (params) {
+				$('#filterTextBox').on('input', function () {
+				const value = $(this).val();
+				params.api.setGridOption("quickFilterText", value);
+				});
+
+			}
 
 		};
 

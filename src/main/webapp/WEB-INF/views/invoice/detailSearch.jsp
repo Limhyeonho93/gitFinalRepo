@@ -74,15 +74,14 @@ html, body {
 				style="margin-top: 30px; margin-bottom: 10px;">
 
 				<div class="input-group mb-1">
-					<span class="input-group-text">검색 회사</span>
-						<span style="display: inline-block; width: 250px; margin-right:10px;">
-							<select class="form-select" id="compCd">
-								<c:forEach var="compInfo" items="${compInfoArr}">
+					<span class="input-group-text">검색 회사</span> <span
+						style="display: inline-block; width: 250px; margin-right: 10px;">
+						<select class="form-select" id="compCd">
+							<c:forEach var="compInfo" items="${compInfoArr}">
 								<option value="${compInfo.compCd}">${compInfo.compName}</option>
-								</c:forEach>
-							</select>
-						</span>
-					<span class="input-group-text">검색 기간</span>
+							</c:forEach>
+					</select>
+					</span> <span class="input-group-text">검색 기간</span>
 					<div class="col-mb-2">
 						<input type="text" class="form-control datepicker" size="15"
 							id="from" placeholder="기간 시작" aria-label="기간 시작"
@@ -96,7 +95,9 @@ html, body {
 					<button class="btn btn-outline-dark" type="button" id="search">검색</button>
 				</div>
 				<div class="d-flex justify-content-end mb-2">
-  					<input type="text" id="filterTextBox" class="form-control form-control-sm" placeholder="퀵 서치" style="width: 300px;">
+					<input type="text" id="filterTextBox"
+						class="form-control form-control-sm" placeholder="퀵 서치"
+						style="width: 300px;">
 				</div>
 
 				<div id="myGrid" class="ag-theme-alpine"></div>
@@ -229,6 +230,13 @@ html, body {
 			debounceVerticalScrollbar : true,
 			enableCellTextSelection : true,
 			suppressRowClickSelection : true,
+			onGridReady: function (params) {
+				$('#filterTextBox').on('input', function () {
+				const value = $(this).val();
+				params.api.setGridOption("quickFilterText", value);
+				});
+
+			}
 
 		};
 
@@ -277,6 +285,7 @@ html, body {
 		$('#search').on('click', function(e) {
 			loadGrid();
 		})
+		
 	});
 </script>
 </html>

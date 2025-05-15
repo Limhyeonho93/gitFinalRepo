@@ -30,7 +30,7 @@ public class SchedulerInitializer implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
         scheduler.shutdownNow();
-        System.out.println("[🛑 SchedulerListener 종료됨]");
+        System.out.println("[ SchedulerListener 종료됨]");
     }
 
     // 다음 1AM까지 남은 분 계산
