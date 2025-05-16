@@ -24,6 +24,8 @@
 					<li><a class="sidebar-link" href="/cargo/cargoRegister">화물 단건 등록</a></li>
 					<li><a class="sidebar-link" href="/cargo/cargoBatchRegFrm">화물 일괄 등록</a></li>
 					<li><a class="sidebar-link" href="#">화물 상태 수정</a></li>
+					<li><a class="sidebar-link" href="/bonded/searchFrm">입출고 관리</a></li>
+					
 				</ul></li>
 			<li class="sidebar-item">
 				<a class="sidebar-link d-flex align-items-center" data-bs-toggle="collapse" href="#bondSea" role="button" aria-expanded="false"> 
