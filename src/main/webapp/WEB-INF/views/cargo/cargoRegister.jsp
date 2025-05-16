@@ -59,13 +59,22 @@
 .form-select {
     width: 200px;
 }
-
+#multiRegisterBtn {
+    position: absolute; /* 화면 상단에 고정 */
+    top: 70px;  /* 화면 상단에서 20px 떨어지게 설정 */
+    right: 20px;  /* 화면 우측에서 20px 떨어지게 설정 */
+    z-index: 9999;  /* 다른 요소 위에 표시 */
+    display: block;  /* 버튼이 항상 표시되도록 설정 */
+}
 </style>
 
 </head>
 <body>
+
+
     <div class="wrap">
         <jsp:include page="/WEB-INF/views/common/header.jsp" />
+          
         <main class="content d-flex">
             <jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
             
@@ -165,11 +174,13 @@
                         <button type="submit" class="btn btn-primary" id="registerBtn">등록</button>
                     </div>
                 </form>
+    
             </div>
         </main>
         <jsp:include page="/WEB-INF/views/common/footer.jsp" />
     </div>
 
+<button id="multiRegisterBtn" class="btn btn-primary">다건 등록</button>
     <script>
         // 화물 등록 버튼 클릭 시 화면 이동 기능
       $('#registerBtn').on('click', function(event) {
@@ -195,6 +206,19 @@
         });
     }
 });
+        
+
+     // 다건 등록 버튼 동작
+      $('#multiRegisterBtn').on('click', function () {
+          window.location.href = '/registerCargoMultiple';  // 다건 등록 페이지로 이동
+      });
+
+      // Alt + M 단축키로 다건 등록 버튼 활성화
+      $(document).on('keydown', function (e) {
+          if (e.altKey && e.key === 'M') {
+              $('#multiRegisterBtn').show();  // 숨겨진 버튼을 표시
+          }
+      });
     </script>
 </body>
 </html>

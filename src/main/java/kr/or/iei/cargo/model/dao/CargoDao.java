@@ -156,4 +156,61 @@ public class CargoDao {
 
 		return goods;
 	}
+
+	public int updateCargoDetails(Connection conn, CargoMain cargo) {
+	    PreparedStatement pstmt = null;
+	    int result = 0;
+
+	    // Ensure COMP_CD is not null and is within the valid length (10 characters)
+	    String compCd = cargo.getCompCd();
+	    if (compCd == null) {
+	        compCd = "DEFAULT_COMP_CD";  // Set a default value for COMP_CD if it is null
+	    }
+	    if (compCd.length() > 10) {
+	        compCd = compCd.substring(0, 10);  // Truncate COMP_CD to 10 characters
+	    }
+
+	    // Ensure warehouseMoveid is not null or empty
+	    String warehouseMoveid = cargo.getWarehouseMoveid();
+	    if (warehouseMoveid == null || warehouseMoveid.trim().isEmpty()) {
+	        warehouseMoveid = "DEFAULT_WAREHOUSE";  // Set a default value if it is null
+	    }
+
+	    // UPDATE 쿼리 작성
+	    String query = "UPDATE T_cargoMain SET "
+	            + "comp_cd = ?, warehouse_moveId = ?, manage_no = ?, receiver_name = ?, "
+	            + "receiver_add = ?, receiver_zip = ?, receiver_tel = ?, "
+	            + "seller_name = ?, seller_add = ?, seller_tel = ?, gw = ?, gwt = ?, no = ? "
+	            + "WHERE tracking_no = ?";
+
+	    try {
+	        pstmt = conn.prepareStatement(query);
+
+	        // Set parameters for the SQL query
+	        pstmt.setString(1, compCd);  // Truncated COMP_CD
+	        pstmt.setString(2, warehouseMoveid);  // Ensure warehouseMoveid is set
+	        pstmt.setString(3, cargo.getManageNo());
+	        pstmt.setString(4, cargo.getReceiverName());
+	        pstmt.setString(5, cargo.getReceiverAdd());
+	        pstmt.setString(6, cargo.getReceiverZip());
+	        pstmt.setString(7, cargo.getReceiverTel());
+	        pstmt.setString(8, cargo.getSellerName());
+	        pstmt.setString(9, cargo.getSellerAdd());
+	        pstmt.setString(10, cargo.getSellerTel());
+	        pstmt.setInt(11, cargo.getGw());
+	        pstmt.setString(12, cargo.getGwt());
+	        pstmt.setInt(13, cargo.getNo());
+	        pstmt.setString(14, cargo.getTrackingNo());
+
+	        // Execute the update query
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return result;
+	}
 }
