@@ -68,7 +68,6 @@ public class UserDao {
 				loginUser.setTelNo(rset.getString("tel_no"));
 				loginUser.setRegDate(rset.getDate("reg_date"));
 				loginUser.setUpdDate(rset.getDate("upd_date"));
-
 			}
 
 		} catch (SQLException e) {
@@ -81,15 +80,65 @@ public class UserDao {
 		return loginUser;
 	}
 
+	public int updateUser(Connection conn, User updUser) {
+		PreparedStatement pstmt = null;
+
+		int result = 0; // 실패는 0, 성공은 1
+
+		String query = "UPDATE T_USERS " + "SET USER_NAME = ?, TEL_NO = ? " + "WHERE USER_ID = ?";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, updUser.getUserName());
+			pstmt.setString(2, updUser.getTelNo());
+			pstmt.setString(3, updUser.getUserId());
+
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+
+		return result;
+	}
+
+	public int updateUserPw(Connection conn, String userId, String newUserPw) {
+		PreparedStatement pstmt = null;
+
+		int result = 0;
+		String query = "UPDATE T_Users " + "SET user_pw  = ?, " + "    upd_date = SYSDATE " + // 갱신일도 함께 업데이트 해줌
+				"WHERE user_id = ? ";
+
+		try {
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, newUserPw);
+			pstmt.setString(2, userId);
+
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+
+	}
+
 	public int insertCompany(Connection conn, Company company) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		
+
 		String query = "INSERT INTO T_CustomerInfo (comp_cd, comp_name, comp_addr, comp_zip, comp_tel, deal_flg, reg_date, upd_date, grade) VALUES (?, ?, ?, ?, ?, ?, sysdate, sysdate, ?)";
-		
+
 		try {
 			pstmt = conn.prepareStatement(query);
-			
+
 			pstmt.setString(1, company.getComp_cd());
 			pstmt.setString(2, company.getComp_name());
 			pstmt.setString(3, company.getComp_addr());
@@ -97,39 +146,39 @@ public class UserDao {
 			pstmt.setString(5, company.getComp_tel());
 			pstmt.setString(6, String.valueOf(company.getDeal_flg()));
 			pstmt.setString(7, String.valueOf(company.getGrade()));
-			
+
 			result = pstmt.executeUpdate();
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(pstmt);
 		}
+
 		return result;
 	}
 
 	public boolean isValidCompanyCode(Connection conn, String compCd) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-        boolean isValid = false;
+		boolean isValid = false;
 
 		String query = "SELECT COUNT(*) FROM T_CustomerInfo WHERE comp_cd = ?";
-		
-		
-        try {
+
+		try {
 			pstmt = conn.prepareStatement(query);
-			
+
 			pstmt.setString(1, compCd);
-			
-			rset = pstmt.executeQuery();	
-			
+
+			rset = pstmt.executeQuery();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
 
-        return isValid;
+		return isValid;
 	}
 }

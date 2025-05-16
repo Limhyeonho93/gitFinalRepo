@@ -13,8 +13,8 @@ import kr.or.iei.invoice.model.vo.DailyInsertInvoice;
 import kr.or.iei.invoice.model.vo.ShoppingCost;
 
 public class InsertInvoiceData implements Runnable{
+	
 	public void run() {
-		System.out.println("ssss");
 		LocalDate yesterday = LocalDate.now().minusDays(1);
 		String yesterdayStr = yesterday.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         InvoiceService service = new InvoiceService();
@@ -53,14 +53,11 @@ public class InsertInvoiceData implements Runnable{
             }
 
             if (matchedPrice > 0) {
-                System.out.println("✅ 청구 대상: " + compCd + " / " + outDate + " / 등급 " + disGrade + " / 무게 " + totalWeight + "kg → ₩" + matchedPrice);
-
             	 int[] summary = summaryMap.getOrDefault(compCd, new int[]{0, 0});
                  summary[0] += totalWeight;
                  summary[1] += matchedPrice;
                  summaryMap.put(compCd, summary);
             } else {
-                System.out.println("❌ 요율 매칭 실패: " + compCd + " / " + disGrade + " / 무게 " + totalWeight + "kg");
             }
         }
         
@@ -69,8 +66,6 @@ public class InsertInvoiceData implements Runnable{
         	String compCd = entry.getKey();
             int weight = entry.getValue()[0];
             int amount = entry.getValue()[1];
-            System.out.println(yesterdayStr);
-            System.out.println(compCd);
 
             int res = service.insertInvoice(compCd, yesterdayStr, amount, weight);
             
