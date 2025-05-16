@@ -13,6 +13,7 @@ public class Company {
 
 	private String comp_cd; // 회사 코드
 	private String comp_name; // 회사명
+	private String email; // 이메일
 	private String comp_addr; // 회사 주소
 	private String comp_zip; // 우편번호
 	private String comp_tel; // 회사 전화번호

@@ -35,9 +35,13 @@
 				<div class="mb-3">
 					<label for="compCd" class="form-label">회사 코드</label> <input
 						type="text" id="compCd" name="compCd" class="form-control"
-						maxlength="10"
-						pattern="^[A-Za-z0-9]{1,10}$"
+						maxlength="10" pattern="^[A-Za-z0-9]{1,10}$"
 						placeholder="글자와 숫자 섞어서 최대 10글자" required>
+				</div>
+				<div class="mb-3">
+					<label for="postalCode" class="form-label">우편번호</label> <input
+						type="text" id="postalCode" name="postalCode" class="form-control"
+						pattern="\\d{5}" placeholder="5자리 숫자 입력">
 				</div>
 				<div class="mb-3">
 					<label for="compName" class="form-label">회사 이름</label> <input
@@ -50,20 +54,19 @@
 					<%-- 등급 --%>
 				</div>
 				<div class="mb-3">
+					<label for="email" class="form-label">이메일</label> <input
+						type="email" id="email" name="email" class="form-control"
+						placeholder="이메일을 입력하세요" required>
+				</div>
+				<div class="mb-3">
 					<label for="compAddr" class="form-label">회사 주소</label> <input
 						type="text" id="compAddr" name="compAddr" class="form-control"
 						placeholder="회사 주소 입력" required>
 				</div>
 				<div class="mb-3">
-					<label for="postalCode" class="form-label">우편번호</label> <input
-						type="text" id="postalCode" name="postalCode" class="form-control"
-						pattern="\\d{5}" placeholder="5자리 숫자 입력" >
-				</div>
-				<div class="mb-3">
 					<label for="compTel" class="form-label">회사 전화번호</label> <input
 						type="text" id="compTel" name="compTel" class="form-control"
-						placeholder="예: 02-123-4567"
-						>
+						placeholder="예: 02-123-4567">
 				</div>
 				<div class="mb-3" style="display: none;">
 					<input type="hidden" id="transactionStatus"

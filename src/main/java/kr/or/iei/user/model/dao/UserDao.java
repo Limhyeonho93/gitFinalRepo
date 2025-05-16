@@ -68,6 +68,7 @@ public class UserDao {
 				loginUser.setTelNo(rset.getString("tel_no"));
 				loginUser.setRegDate(rset.getDate("reg_date"));
 				loginUser.setUpdDate(rset.getDate("upd_date"));
+				
 			}
 
 		} catch (SQLException e) {
@@ -134,13 +135,14 @@ public class UserDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 
-		String query = "INSERT INTO T_CustomerInfo (comp_cd, comp_name, comp_addr, comp_zip, comp_tel, deal_flg, reg_date, upd_date, grade) VALUES (?, ?, ?, ?, ?, ?, sysdate, sysdate, ?)";
+		String query = "INSERT INTO T_CustomerInfo (comp_cd, comp_name, email, comp_zip, comp_tel, deal_flg, reg_date, upd_date, grade) VALUES (?, ?, ?, ?, ?, ?, sysdate, sysdate, ?)";
 
 		try {
 			pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, company.getComp_cd());
 			pstmt.setString(2, company.getComp_name());
+			 pstmt.setString(3, company.getEmail()); 
 			pstmt.setString(3, company.getComp_addr());
 			pstmt.setString(4, company.getComp_zip());
 			pstmt.setString(5, company.getComp_tel());
