@@ -1,6 +1,7 @@
 package kr.or.iei.cargo.model.service;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import kr.or.iei.cargo.model.dao.CargoDao;
@@ -109,4 +110,26 @@ public class CargoService {
 	
 
 
+	public boolean updateCargoDetails(CargoMain cargo) {
+		Connection conn = JDBCTemplate.getConnection();
+	    try {
+	        // DAO 메서드를 호출하여 예외는 DAO에서 처리하게 합니다.
+	        int result = dao.updateCargoDetails(conn, cargo);
+
+	        if (result > 0) {
+	            JDBCTemplate.commit(conn);
+	            return true;
+	        } else {
+	            JDBCTemplate.rollback(conn);
+	            return false;
+	        }
+	    } catch (Exception e) { 
+	        e.printStackTrace();
+	        JDBCTemplate.rollback(conn);
+	        return false;
+	    } finally {
+	        JDBCTemplate.close(conn);
+	    }
+	}
 }
+	       

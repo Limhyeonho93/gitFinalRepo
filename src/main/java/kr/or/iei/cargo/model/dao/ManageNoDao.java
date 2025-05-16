@@ -192,7 +192,7 @@ public class ManageNoDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
-		String wareCd = null;
+		String wareCd = "WARESEOUL";
 
 		String query = "SELECT ware_cd FROM m_ziplist mz WHERE mz.zip LIKE ? AND ROWNUM = 1";
 
