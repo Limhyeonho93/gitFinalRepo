@@ -31,7 +31,7 @@ public class LoginFilter extends HttpFilter implements Filter {
 	 */
 	public void destroy() {
 	}
-
+	
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
@@ -85,5 +85,4 @@ public class LoginFilter extends HttpFilter implements Filter {
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
 	}
-
 }

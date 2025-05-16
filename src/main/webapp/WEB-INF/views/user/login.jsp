@@ -19,7 +19,6 @@
 
 <!-- Custom CSS & JS -->
 <link rel="stylesheet" href="/resources/css/layout.css">
-
 <script src="/resources/js/layout.js" defer></script>
 </head>
 <body>

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+   pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,11 +7,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<nav class="side-navbar bg-sidebar-bg text-white">
-		<div
-			class="sidebar-header d-flex align-items-center p-3 border-bottom border-secondary">
-			<h4 class="text-white mb-0">물류관리</h4>
-		</div>
+   <nav class="side-navbar bg-sidebar-bg text-white">
+      <div
+         class="sidebar-header d-flex align-items-center p-3 border-bottom border-secondary">
+         <h4 class="text-white mb-0">물류관리</h4>
+      </div>
 
 		<ul class="list-unstyled">
 			<li class="sidebar-item">
@@ -45,6 +45,9 @@
 					마이페이지
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="userControll">
+				<%-- 조정필요 --%>
+					<li><a class="sidebar-link" href="/user/userUpdate">개인정보 수정</a></li>
+					<li><a class="sidebar-link" href="#">회원 생성</a></li>
 					<li><a class="sidebar-link" href="/user/update">개인정보 수정</a></li>
 					<li><a class="sidebar-link" href="/user/userJoin">회원 생성</a></li>
 				</ul>

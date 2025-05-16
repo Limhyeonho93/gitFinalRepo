@@ -57,7 +57,7 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<main class="content d-flex">
 		<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
-		
+			
 		    <div class="center-div">
 			      <form action="/cargo/cargoBatchReg" method="post" enctype="multipart/form-data">
 			          <h3 class="text-center mb-4">화물 등록</h3>
