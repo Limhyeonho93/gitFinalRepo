@@ -39,9 +39,9 @@
 						placeholder="글자와 숫자 섞어서 최대 10글자" required>
 				</div>
 				<div class="mb-3">
-					<label for="postalCode" class="form-label">우편번호</label> <input
-						type="text" id="postalCode" name="postalCode" class="form-control"
-						pattern="\\d{5}" placeholder="5자리 숫자 입력">
+					<label for="password" class="form-label">비밀번호</label> <input
+						type="password" id="password" name="password" class="form-control"
+						placeholder="비밀번호를 입력하세요" required>
 				</div>
 				<div class="mb-3">
 					<label for="compName" class="form-label">회사 이름</label> <input

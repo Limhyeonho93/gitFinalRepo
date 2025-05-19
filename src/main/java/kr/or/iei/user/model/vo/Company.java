@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class Company {
 
 	private String comp_cd; // 회사 코드
+	private String comp_pw; // 회사 비밀번호
 	private String comp_name; // 회사명
 	private String email; // 이메일
 	private String comp_addr; // 회사 주소

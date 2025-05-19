@@ -14,6 +14,44 @@ public class UserService {
 		dao = new UserDao();
 	}
 
+	//
+	
+	public User loginUser(String email, String password) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    User loginUser = dao.loginUser(conn, email, password);
+	    JDBCTemplate.close(conn);
+	    return loginUser;
+	}
+
+	
+	public int registerCompany(Company company, String password) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    int result = 0;
+
+	    try {
+	        int companyResult = dao.insertCompanyInfo(conn, company);
+	        if (companyResult > 0) {
+	            int userResult = dao.insertUser(conn, company.getEmail(), password, company.getComp_cd());
+	            if (userResult > 0) {
+	                JDBCTemplate.commit(conn);
+	                result = 1;
+	            } else {
+	                JDBCTemplate.rollback(conn);
+	            }
+	        } else {
+	            JDBCTemplate.rollback(conn);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        JDBCTemplate.rollback(conn);
+	    } finally {
+	        JDBCTemplate.close(conn);
+	    }
+
+	    return result;
+	}
+	
+	//
 	public int insertUser(User user) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.insertUser(conn, user);
