@@ -17,8 +17,12 @@ public class User {
 	private String userName; // 유저명
 	private String deptName; // 부서
 	private String telNo; // 연락처
+	
+	
 	private Date regDate; // 등록일
 	private Date updDate; // 갱신일
-	
-
+	private String userLevel;// 유저권한 1: 물류회사 2:셀러 관리자 3: 셀러 일반
+    private String grade; // 회사 등급 2에 고정
+    
 }
+

@@ -1,31 +1,25 @@
-package kr.or.iei.invoice.controller;
+package kr.or.iei.cargo.controller;
 
 import java.io.IOException;
-import java.sql.Date;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
-
-import kr.or.iei.invoice.model.service.InvoiceService;
-import kr.or.iei.invoice.model.vo.Invoice;
+import kr.or.iei.cargo.model.service.CargoService;
 
 /**
- * Servlet implementation class InvoiceSearchGrid
+ * Servlet implementation class DeleteCargoServlet
  */
-@WebServlet("/invoice/dataGrid")
-public class InvoiceSearchGridServlet extends HttpServlet {
+@WebServlet("/cargo/deleteCargo")
+public class DeleteCargoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InvoiceSearchGridServlet() {
+    public DeleteCargoServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,18 +28,15 @@ public class InvoiceSearchGridServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		Date from = Date.valueOf(request.getParameter("from"));
-		Date to = Date.valueOf(request.getParameter("to"));
-		
-		InvoiceService service = new InvoiceService();
-		
-		ArrayList<Invoice> arr = service.allInvoice(from,to);
-		// 3. 응답 데이터 JSON 변환
+		request.setCharacterEncoding("UTF-8");
 	    response.setContentType("application/json; charset=UTF-8");
-	    Gson gson = new Gson();
-	    response.getWriter().print(gson.toJson(arr));  // 클라이언트에 JSON 응답
 
+	    String trackingNo = request.getParameter("trackingNo");
+
+	    // 실제 삭제 로직 수행 (예: 서비스 호출)
+	    boolean result = new CargoService().deleteCargo(trackingNo);
+
+	    response.getWriter().write("{\"success\": " + result + "}");
 	}
 
 	/**

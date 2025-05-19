@@ -3,6 +3,7 @@ package kr.or.iei.cargo.controller;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
@@ -11,11 +12,21 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import kr.or.iei.cargo.model.service.CargoService;
+import kr.or.iei.cargo.model.service.ManageNoService;
+import kr.or.iei.cargo.model.vo.CargoGoods;
+import kr.or.iei.cargo.model.vo.CargoMain;
+import kr.or.iei.user.model.vo.User;
+
 public class CargoMainImport {
 
 	// 엑셀 파일을 읽는 메서드
-	public void readExcel(InputStream file) {
-
+	public String readExcel(InputStream file, User loginUser) {
+		String resultMessage="엑셀 파일이 업로드 되었습니다.";
+		
+		//시퀀스 값
+		int seq = 1;
+		
 		// try-with-resources 문법: 자동으로 파일 및 리소스를 닫아줌
 		try (Workbook wb = new XSSFWorkbook(file)) { // .xlsx 전용 처리 클래스
 			// 첫 번째 시트 가져오기
@@ -42,6 +53,7 @@ public class CargoMainImport {
 				String goodsName = "";
 				String unitPrice = "";
 				String no = "";
+				String unitWeight="";
 
 				// 각 행의 셀(Cell)을 반복
 				for (Cell cell : row) {
@@ -72,27 +84,28 @@ public class CargoMainImport {
 				        case 8: // I열 (seller_tel)
 				            sellerTel = cellValue;
 				            break;
-				        case 9: // J열 (gw)
-				            gw = cellValue; // 숫자도 문자열로 처리
+				        case 9: // J열 (unitWeight)  //중량 //여기도 문제. 중량
+				        	unitWeight = cellValue; 
 				            break;
-				        case 10: // K열 (gwt)
+				        case 10: // K열 (gwt)   //여기가 문제. 중량단위 
 				            gwt = cellValue;
 				            break;
-				        case 11: // L열 (qty)
-				            qty = cellValue; // 숫자도 문자열로 처리
+				        case 11: // L열 (no)    //화물갯수
+				        	no = cellValue; 
 				            break;
 				        case 12: // M열 (goods_name)
 				            goodsName = cellValue;
 				            break;
 				        case 13: // N열 (unit_price)
-				            unitPrice = cellValue; // 숫자도 문자열로 처리
+				            unitPrice = cellValue; 
 				            break;
-				        case 14: // O열 (no)
-				            no = cellValue; // 숫자도 문자열로 처리
+				        case 14: // O열 (qty)		//상품갯수
+				        	qty = cellValue; 
 				            break;
 				    }
 				}
-				 // 출력 (한 행을 출력)
+
+				// 출력 (한 행을 출력)
                 System.out.println("Tracking Number: " + trackingNo + " | Receiver Name: " + receiverName);
                 System.out.println("Receiver Address: " + receiverAdd + " | Receiver Zip: " + receiverZip);
                 System.out.println("Receiver Tel: " + receiverTel);
@@ -102,11 +115,55 @@ public class CargoMainImport {
                 System.out.println("Goods Name: " + goodsName + " | Unit Price: " + unitPrice);
                 System.out.println("No: " + no);
                 System.out.println("----------------------------------------------------");
+                
+                ManageNoService mns = new ManageNoService();
+                String wareCdId = mns.findZipWareCd(receiverZip); //창고이동ID생성
+                
+                
+                CargoGoods goods=new CargoGoods();
+                goods.setCompCd(loginUser.getCompCd()); // 회사코드
+                goods.setWarehouseMoveid(wareCdId); // 창고이동ID 
+                goods.setTrackingNo(trackingNo); // 송장번호
+                goods.setSeq(seq); // 시퀀스
+                goods.setGoodsName(goodsName); // 상품명
+                goods.setUnitPrice(unitPrice != null && !unitPrice.isEmpty() ? Integer.parseInt(unitPrice) : 0); // 상품단가 
+                goods.setQty(qty != null && !qty.isEmpty() ? Integer.parseInt(qty) : 0); // 상품개수
+                goods.setUnitWeight(unitWeight != null && !unitWeight.isEmpty() ? Float.parseFloat(unitWeight) : 0f); // 중량
+                goods.setNo(no != null && !no.isEmpty() ? Integer.parseInt(no) : 0); // 화물갯수
+                goods.setUserId(loginUser.getUserId()); // 갱신자
+                
+                CargoMain main=new CargoMain();
+                main.setCompCd(loginUser.getCompCd()); // 회사코드
+                main.setWarehouseMoveid(wareCdId); // 창고이동ID
+                main.setTrackingNo(trackingNo); // 송장번호
+                main.setReceiverName(receiverName); // 수취인 이름
+                main.setReceiverAdd(receiverAdd); // 수취인 주소
+                main.setReceiverZip(receiverZip); // 수취인 우편번호
+                main.setReceiverTel(receiverTel); // 수취인 전화번호
+                main.setSellerName(sellerName); // 판매자 이름
+                main.setSellerAdd(sellerAdd); // 판매자 주소
+                main.setSellerTel(sellerTel); // 판매자 전화번호
+                main.setGw(gw != null && !gw.isEmpty() ? Integer.parseInt(gw) : 0); // 총 중량 
+                main.setGwt(gwt); // 총 중량 단위
+                main.setNo(no != null && !no.isEmpty() ? Integer.parseInt(no) : 0); // 화물갯수
+                main.setDeliveryStop("N"); // 배송중지flg
+                main.setUserId(loginUser.getUserId()); // 갱신자
+                
+                CargoService service=new CargoService();
+                int result=service.insertBatchCargo(main,goods,loginUser);
+                seq++;
+                
+                if(result<=0) {
+                	resultMessage="엑셀 파일 처리 중 오류가 발생하였습니다.";
+                	break;
+                }
+                
 			}
-
 		} catch (IOException e) {
 			// 파일이 없거나 읽을 수 없을 경우 오류 출력
 			e.printStackTrace();
+			resultMessage="엑셀 파일을 읽는 중 오류가 발생하였습니다.";
 		}
+		return resultMessage; 
 	}
 }

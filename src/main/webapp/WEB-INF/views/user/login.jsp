@@ -28,6 +28,7 @@
 			<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
 
 			<h1>로그인 페이지</h1>
+			
 			<form action="${pageContext.request.contextPath}/user/login"
 				method="post">
 				<div>

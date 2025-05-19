@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class LoginFilter
  */
-@WebFilter("/noWay")
+@WebFilter("/noWay/eqwr")
 public class LoginFilter extends HttpFilter implements Filter {
 
 	/**
@@ -44,6 +44,7 @@ public class LoginFilter extends HttpFilter implements Filter {
 
 		// 로그인 검증이 필요없는 페이지(로그인페이지, 로그아웃페이지)일 때는 예외처리
 		String uri = req.getRequestURI();
+
 
 		// 사용자가 /user/loginForm에 접근할 때 필터가 요청을 가로채서 세션이 없다고 판단하고 다시 /user/loginForm으로
 		// 리다이렉트 (무한루프) ->예외처리
@@ -74,9 +75,12 @@ public class LoginFilter extends HttpFilter implements Filter {
 			return;
 		}
 
+		// 로그인 안하고 접근했을때 이동 및 안내 메세지
 		HttpSession session = req.getSession(false);
+		
 		if (session == null || session.getAttribute("user") == null) {
 			// 로그인 정보 없으면 로그인 페이지로 이동
+            req.getSession().setAttribute("errorMessage", "로그인이 필요한 섹션입니다. 로그인 화면으로 이동합니다.");
 			resp.sendRedirect(req.getContextPath() + "/user/login");
 			return;
 		}
