@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet Filter implementation class LoginFilter
  */
-@WebFilter("/noWay")
+@WebFilter("/noWay/eqwr")
 public class LoginFilter extends HttpFilter implements Filter {
 
 	/**

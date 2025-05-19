@@ -17,10 +17,10 @@ public class User {
 	private String userName; // 유저명
 	private String deptName; // 부서
 	private String telNo; // 연락처
+	
+	
 	private Date regDate; // 등록일
 	private Date updDate; // 갱신일
-    private int grade; // 회사 등급 2에 고정
-
-	
-
+    private String grade; // 회사 등급 2에 고정
+    
 }
