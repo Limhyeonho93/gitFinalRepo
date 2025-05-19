@@ -43,10 +43,8 @@
 					마이페이지
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="userControll">
-				<%-- 조정필요 --%>
-					<li><a class="sidebar-link" href="/user/userUpdate">개인정보 수정</a></li>
-					<li><a class="sidebar-link" href="#">회원 생성</a></li>
-					<li><a class="sidebar-link" href="/user/update">개인정보 수정</a></li>
+				
+					<li><a class="sidebar-link" href="/user/userUpdateFrm">개인정보 수정</a></li>
 					<li><a class="sidebar-link" href="/user/userJoin">회원 생성</a></li>
 				</ul>
 			</li>

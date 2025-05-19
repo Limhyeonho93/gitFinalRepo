@@ -56,7 +56,11 @@ public class LoginFilter extends HttpFilter implements Filter {
 			    || uri.equals(req.getContextPath() + "/user/companyJoin") 
 			    || uri.equals(req.getContextPath() + "/user/companyJoinFrm") 
 			    || uri.equals(req.getContextPath() + "/user/userJoin") 
-	            || uri.equals(req.getContextPath() + "/user/userJoinFrm") 
+	            || uri.equals(req.getContextPath() + "/user/userJoinFrm")
+	            || uri.equals(req.getContextPath() + "/user/forgotPwFrm")
+	            || uri.equals(req.getContextPath() + "/user/forgotPw")
+	            || uri.equals(req.getContextPath() + "/user/userUpdateFrm")
+	            || uri.equals(req.getContextPath() + "/user/userUpdate")
 			    || uri.startsWith(req.getContextPath() + "/resources/");
 
 		

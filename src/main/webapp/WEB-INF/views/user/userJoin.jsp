@@ -62,6 +62,7 @@
 			<div class="text-center">
 				<button type="submit" class="btn btn-primary">회원 가입</button>
 			</div>
+			
 		</form>
 	</div>
 </body>

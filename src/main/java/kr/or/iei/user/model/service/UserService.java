@@ -81,7 +81,29 @@ public class UserService {
 		}
 		JDBCTemplate.close(conn);
 		return result;
-		
-	}					
+	}
+
+	public User userChk(String userId, String userName) {	//
+		Connection conn = JDBCTemplate.getConnection();
+		User chkUser = dao.forgotPw(conn, userId, userName);
+		JDBCTemplate.close(conn);
+		System.out.println("return chkUser 값 : " + chkUser);
+		return chkUser;
+	}
+
+	public int updateTempPw(String userId, String tempPw) {	//임시 비밀번호 확인
+		 Connection conn = JDBCTemplate.getConnection();
+		    UserDao dao = new UserDao();
+		    int result = dao.updateTempPw(conn, userId, tempPw);
+		    
+		    if (result > 0) {
+		    	JDBCTemplate.commit(conn);
+		    }else {
+		    	JDBCTemplate.rollback(conn);
+		    }	
+		    JDBCTemplate.close(conn);
+		    
+		    return result;
+	}
 }
 

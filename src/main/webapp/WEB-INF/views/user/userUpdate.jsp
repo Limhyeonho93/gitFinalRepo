@@ -7,8 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>개인정보 수정 페이지</title>
-<script src="/resources/js/sweetalert.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
 
 <!-- Bootstrap & Icons -->
 <link
@@ -53,7 +53,7 @@
 							<tr>
 								<th>아이디</th>
 								<td class="User">
-								${loginUser.userId}
+									<input type="text" name="userId" value="${loginUser.userId}" readonly>
 								</td>
 							</tr>
 							<tr> 
@@ -68,7 +68,7 @@
 							</tr>
 							<tr>
 								<th>
-									<label for="UName">이름</label>
+									<label for="UserName">이름</label>
 								</th>
 								<td class="User">
 									<div class="input-wrap">
@@ -86,7 +86,7 @@
 							<tr>
 								<th>회사코드</th>
 								<td class="User">
-								${loginUser.compCd}
+									<input type="text" name="compCd" value="${loginUser.compCd}" readonly>
 								</td>
 							</tr>
 							<tr>
@@ -108,7 +108,9 @@
 							</tr>
 							<tr>
 								<th>등록일</th>
-								<td>${loginUser.regDate}</td>
+								<td>
+									<input type="text" name="regDate" value="${loginUser.regDate}" readonly>
+								</td>
 							</tr>
 						</table>
 						<div class="userUpdate-btn">

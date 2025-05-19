@@ -178,7 +178,53 @@ public class UserDao {
 			JDBCTemplate.close(rset);
 			JDBCTemplate.close(pstmt);
 		}
-
+		
 		return isValid;
 	}
+
+	public User forgotPw(Connection conn, String userId, String userName) {
+		PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        User chkUser = null;
+
+        String query = "select user_id, user_name from t_users where user_id = ? and user_name = ?";
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, userId);
+            pstmt.setString(2, userName);
+            rset = pstmt.executeQuery();
+            
+            if (rset.next()) {
+            	chkUser = new User();
+            	chkUser.setUserId(rset.getString("user_id"));
+            	chkUser.setUserName(rset.getString("user_name"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(rset);
+            JDBCTemplate.close(pstmt);
+        }
+        return chkUser;
+    }
+
+	public int updateTempPw(Connection conn, String userId, String tempPw) {
+		PreparedStatement pstmt = null;
+	    int result = 0;
+	    String query = "UPDATE t_users SET user_pw = ? WHERE user_id = ?";
+	    try {
+	        pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, tempPw);
+	        pstmt.setString(2, userId);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+	    return result;
+	}
+
 }

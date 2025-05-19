@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<c:url var="forgotPwUrl" value="/user/forgotPwFrm"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,14 +43,16 @@
 				<div>
 					<button type="submit">로그인</button>
 				</div>
+				<div>
+					<a href="${pageContext.request.contextPath}/user/companyJoinFrm">회원가입</a>
+					<a href="javascript:void(0)" onclick="location.href='${forgotPwUrl}'">비밀번호 찾기</a>
+				</div>
 			</form>
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
 	<script>
-		
-	<%-- 아이디 중복 체크 확인 --%>
-		
+	
 	</script>
 </body>
 </html>
