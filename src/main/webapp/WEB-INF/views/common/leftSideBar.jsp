@@ -53,15 +53,6 @@
 					<span class="material-icons me-2">group</span>
 
 					마이페이지
-<<<<<<< HEAD
-				</a>
-				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="userControll">
-				
-					<li><a class="sidebar-link" href="/user/userUpdateFrm">개인정보 수정</a></li>
-					<li><a class="sidebar-link" href="/user/userJoin">회원 생성</a></li>
-				</ul>
-			</li>
-=======
 			</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu"
 					id="userControll">
@@ -76,7 +67,6 @@
 						</c:if>
 					</c:if>
 				</ul></li>
->>>>>>> master
 		</ul>
 	</nav>
 </body>

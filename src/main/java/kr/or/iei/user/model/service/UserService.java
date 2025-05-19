@@ -14,8 +14,6 @@ public class UserService {
 		dao = new UserDao();
 	}
 
-	
-
 	public User loginUser(String userId, String userPw) {
 		Connection conn = JDBCTemplate.getConnection();
 		User loginUser = dao.loginUser(conn, userId, userPw);
@@ -23,7 +21,6 @@ public class UserService {
 		JDBCTemplate.close(conn);
 		return loginUser;
 	}
-
 
 	public int updateUser(User updUser) {
 		Connection conn = JDBCTemplate.getConnection();
@@ -52,8 +49,6 @@ public class UserService {
 
 	}
 
-
-
 	public int insertUser(User user) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.insertUser(conn, user);
@@ -64,10 +59,9 @@ public class UserService {
 		}
 		JDBCTemplate.close(conn);
 		return result;
-<<<<<<< HEAD
 	}
 
-	public User userChk(String userId, String userName) {	//
+	public User userChk(String userId, String userName) { //
 		Connection conn = JDBCTemplate.getConnection();
 		User chkUser = dao.forgotPw(conn, userId, userName);
 		JDBCTemplate.close(conn);
@@ -75,25 +69,19 @@ public class UserService {
 		return chkUser;
 	}
 
-	public int updateTempPw(String userId, String tempPw) {	//임시 비밀번호 확인
-		 Connection conn = JDBCTemplate.getConnection();
-		    UserDao dao = new UserDao();
-		    int result = dao.updateTempPw(conn, userId, tempPw);
-		    
-		    if (result > 0) {
-		    	JDBCTemplate.commit(conn);
-		    }else {
-		    	JDBCTemplate.rollback(conn);
-		    }	
-		    JDBCTemplate.close(conn);
-		    
-		    return result;
-	}
-}
-=======
-		
-	}
->>>>>>> master
+	public int updateTempPw(String userId, String tempPw) { // 임시 비밀번호 확인
+		Connection conn = JDBCTemplate.getConnection();
+		UserDao dao = new UserDao();
+		int result = dao.updateTempPw(conn, userId, tempPw);
 
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+
+		return result;
+	}
 
 }

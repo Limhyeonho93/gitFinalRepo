@@ -130,7 +130,6 @@ public class UserDao {
 		return result;
 	}
 
-<<<<<<< HEAD
 	public boolean isValidCompanyCode(Connection conn, String compCd) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -200,7 +199,4 @@ public class UserDao {
 	    return result;
 	}
 
-=======
-	
->>>>>>> master
 }
