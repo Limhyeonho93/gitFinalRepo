@@ -9,19 +9,21 @@ import java.util.ArrayList;
 import kr.or.iei.cargo.model.vo.CargoGoods;
 import kr.or.iei.cargo.model.vo.CargoMain;
 import kr.or.iei.common.JDBCTemplate;
+import kr.or.iei.user.model.vo.User;
 
 public class CargoDao {
 	
 	//화물 조회
-	public ArrayList<CargoMain> searchCargo(Connection conn, String[] searchValue, String searchOption) {
+	public ArrayList<CargoMain> searchCargo(Connection conn, String[] searchValue, String searchOption, User loginUser) {
 		System.out.println("searchCargo dao");
 		
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
 		ArrayList<CargoMain> list = new ArrayList<CargoMain>();
-
+		
 		StringBuilder query = new StringBuilder("SELECT * FROM T_cargoMain WHERE ");
+		
 		query.append(searchOption).append(" IN (");
 
 		for (int i = 0; i < searchValue.length; i++) {
@@ -31,6 +33,11 @@ public class CargoDao {
 			}
 		}
 		query.append(")");
+		
+		// 유저 권한에 따라서 쿼리문 변경하기 위해서
+		if (!loginUser.getUserLevel().equals("1")) {
+		    query.append(" AND comp_cd = '" + loginUser.getCompCd() + "'");
+		}
 
 		try {
 			// pstmt=conn.prepareStatement(query);
@@ -87,8 +94,8 @@ public class CargoDao {
 
 		String query = "INSERT INTO T_cargoMain (" + "comp_cd, warehouse_moveId, tracking_no, manage_no, "
 				+ "receiver_name, receiver_add, receiver_zip, receiver_tel, "
-				+ "seller_name, seller_add, seller_tel, gw, gwt, no) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "seller_name, seller_add, seller_tel, gw, gwt, no, delivery_Stop, User_Id, reg_Date, upd_Date) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, sysdate)";
 
 		try {
 			pstmt = conn.prepareStatement(query);
@@ -107,6 +114,8 @@ public class CargoDao {
 			pstmt.setInt(12, cargo.getGw());
 			pstmt.setString(13, cargo.getGwt());
 			pstmt.setInt(14, cargo.getNo());
+			pstmt.setString(15, cargo.getDeliveryStop());
+			pstmt.setString(16, cargo.getUserId());
 
 			result = pstmt.executeUpdate();
 

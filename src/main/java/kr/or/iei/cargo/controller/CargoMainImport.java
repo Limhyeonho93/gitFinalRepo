@@ -16,11 +16,12 @@ import kr.or.iei.cargo.model.service.CargoService;
 import kr.or.iei.cargo.model.service.ManageNoService;
 import kr.or.iei.cargo.model.vo.CargoGoods;
 import kr.or.iei.cargo.model.vo.CargoMain;
+import kr.or.iei.user.model.vo.User;
 
 public class CargoMainImport {
 
 	// 엑셀 파일을 읽는 메서드
-	public String readExcel(InputStream file, String compCd , String userId) {
+	public String readExcel(InputStream file, User loginUser) {
 		String resultMessage="엑셀 파일이 업로드 되었습니다.";
 		
 		//시퀀스 값
@@ -120,19 +121,19 @@ public class CargoMainImport {
                 
                 
                 CargoGoods goods=new CargoGoods();
-                goods.setCompCd(compCd); // 회사코드
+                goods.setCompCd(loginUser.getCompCd()); // 회사코드
                 goods.setWarehouseMoveid(wareCdId); // 창고이동ID 
                 goods.setTrackingNo(trackingNo); // 송장번호
                 goods.setSeq(seq); // 시퀀스
                 goods.setGoodsName(goodsName); // 상품명
                 goods.setUnitPrice(unitPrice != null && !unitPrice.isEmpty() ? Integer.parseInt(unitPrice) : 0); // 상품단가 
-                goods.setQty(qty != null && !qty.isEmpty() ? Integer.parseInt(qty) : 0); // 상품갯수
+                goods.setQty(qty != null && !qty.isEmpty() ? Integer.parseInt(qty) : 0); // 상품개수
                 goods.setUnitWeight(unitWeight != null && !unitWeight.isEmpty() ? Float.parseFloat(unitWeight) : 0f); // 중량
                 goods.setNo(no != null && !no.isEmpty() ? Integer.parseInt(no) : 0); // 화물갯수
-                goods.setUserId(userId); // 갱신자
+                goods.setUserId(loginUser.getUserId()); // 갱신자
                 
                 CargoMain main=new CargoMain();
-                main.setCompCd(compCd); // 회사코드
+                main.setCompCd(loginUser.getCompCd()); // 회사코드
                 main.setWarehouseMoveid(wareCdId); // 창고이동ID
                 main.setTrackingNo(trackingNo); // 송장번호
                 main.setReceiverName(receiverName); // 수취인 이름
@@ -146,10 +147,10 @@ public class CargoMainImport {
                 main.setGwt(gwt); // 총 중량 단위
                 main.setNo(no != null && !no.isEmpty() ? Integer.parseInt(no) : 0); // 화물갯수
                 main.setDeliveryStop("N"); // 배송중지flg
-                main.setUserId(userId); // 갱신자
+                main.setUserId(loginUser.getUserId()); // 갱신자
                 
                 CargoService service=new CargoService();
-                int result=service.insertBatchCargo(main,goods);
+                int result=service.insertBatchCargo(main,goods,loginUser);
                 seq++;
                 
                 if(result<=0) {

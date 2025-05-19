@@ -68,6 +68,8 @@ public class UserDao {
 				loginUser.setTelNo(rset.getString("tel_no"));
 				loginUser.setRegDate(rset.getDate("reg_date"));
 				loginUser.setUpdDate(rset.getDate("upd_date"));
+				loginUser.setUserLevel(rset.getString("user_level"));
+
 			}
 
 		} catch (SQLException e) {
