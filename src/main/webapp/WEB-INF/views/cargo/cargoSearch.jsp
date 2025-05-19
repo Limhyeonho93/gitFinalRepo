@@ -101,7 +101,10 @@ modal css
 */
 .th-label {
 	width: 30%;
+	vertical-align: middle;
+	white-space: nowrap;
 }
+
 </style>
 
 </head>
@@ -147,17 +150,18 @@ modal css
 							<%-- 상세 내용(const contentHtml)이 여기에 들어감 --%>
 						</div>
 						<div class="modal-footer">
-	<button type="button" class="btn btn-danger" id="deleteModalBtn">삭제</button>
-    <button type="button" class="btn btn-primary" id="updateBtn">수정</button>
-    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-
+							<button type="button" class="btn btn-danger" id="deleteModalBtn">삭제</button>
+						    <button type="button" class="btn btn-primary" id="updateBtn">수정</button>
+						    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
 						</div>
 					</div>
 				</div>
 			</div>
+			
 		</main>
 		<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 	</div>
+	
 <script type="text/javascript">
     $(function() {
         
@@ -200,6 +204,11 @@ modal css
     {
         headerName: "송장번호",
         field: "trackingNo",
+        cellStyle: function() {
+            return { 'color': 'blue',
+            		 'textDecoration' : "underline", 
+                	 'cursor' : "pointer" };
+        },
         width: 160,
         pinned: 'left',
         onCellClicked: function(params) {
@@ -249,9 +258,6 @@ modal css
             {
                 headerName: "받는이 이름",
                 field: "receiverName",
-                cellStyle: function() {
-                    return { 'color': 'blue' };
-                }
             },
             {
                 headerName: "받는이 주소",

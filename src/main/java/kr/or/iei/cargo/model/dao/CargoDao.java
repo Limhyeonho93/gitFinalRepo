@@ -183,9 +183,6 @@ public class CargoDao {
 	    PreparedStatement pstmt = null;
 	    
 	    String query = "UPDATE T_CARGOMAIN SET "
-	            + "COMP_CD = ?, "
-	            + "WAREHOUSE_MOVEID = ?, "
-	            + "Tracking_No = ? , "
 	            + "RECEIVER_NAME = ?, "
 	            + "RECEIVER_ADD = ?, "
 	            + "RECEIVER_ZIP = ?, "
@@ -203,22 +200,19 @@ public class CargoDao {
 	    try {
 	    	pstmt=conn.prepareStatement(query);
 	    	
-	    	pstmt.setString(1, cargoMain.getCompCd());
-	        pstmt.setString(2, cargoMain.getWarehouseMoveid());
-	        pstmt.setString(3, cargoMain.getTrackingNo());
-	        pstmt.setString(4, cargoMain.getReceiverName());      
-	        pstmt.setString(5, cargoMain.getReceiverAdd());         
-	        pstmt.setString(6, cargoMain.getReceiverZip());      
-	        pstmt.setString(7, cargoMain.getReceiverTel());
-	        pstmt.setString(8, cargoMain.getSellerName()); 
-	        pstmt.setString(9, cargoMain.getSellerAdd());
-	        pstmt.setString(10, cargoMain.getSellerTel());
-	        pstmt.setInt(11, cargoMain.getGw());          
-	        pstmt.setString(12, cargoMain.getGwt());          
-	        pstmt.setInt(13, cargoMain.getNo()); 
-	        pstmt.setString(14, cargoMain.getDeliveryStop());
-	        pstmt.setString(15, cargoMain.getUserId()); 
-	        pstmt.setString(16, cargoMain.getTrackingNo());
+	        pstmt.setString(1, cargoMain.getReceiverName());      
+	        pstmt.setString(2, cargoMain.getReceiverAdd());         
+	        pstmt.setString(3, cargoMain.getReceiverZip());      
+	        pstmt.setString(4, cargoMain.getReceiverTel());
+	        pstmt.setString(5, cargoMain.getSellerName()); 
+	        pstmt.setString(6, cargoMain.getSellerAdd());
+	        pstmt.setString(7, cargoMain.getSellerTel());
+	        pstmt.setInt(8, cargoMain.getGw());          
+	        pstmt.setString(9, cargoMain.getGwt());          
+	        pstmt.setInt(10, cargoMain.getNo()); 
+	        pstmt.setString(11, cargoMain.getDeliveryStop());
+	        pstmt.setString(12, cargoMain.getUserId()); 
+	        pstmt.setString(13, cargoMain.getTrackingNo());
 
 	        result = pstmt.executeUpdate();
 	    } catch (SQLException e) {
