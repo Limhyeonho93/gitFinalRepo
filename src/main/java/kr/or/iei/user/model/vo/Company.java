@@ -20,4 +20,7 @@ public class Company {
 	private Date reg_date; // 등록일
 	private Date upd_date; // 갱신일
 	private char grade; // 등급
+	private String userId;
+	private String comp_div;
+	
 }

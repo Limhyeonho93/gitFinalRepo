@@ -9,14 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class DailyWarehouseSummary {
 
-	private String wareCd;
+    private String wareCd;
     private String wareName;
     private String manageNo;
+    private String warehouseMoveid;
 
     private int totalWeight; // sum(gw)
-    private int totalQty;    // sum(no)
-    private int allCount;	// cargoCount
-    private int tbCount;   // impbondedCount
+    private int totalQty; // sum(no)
+    private int allCount; // cargoCount
+    private int tbCount; // impbondedCount
 
     private int inCount;
     private int outCount;

@@ -4,7 +4,7 @@
 
     <head>
         <meta charset="UTF-8">
-        <title>창고 작업</title>
+        <title>화물 추적</title>
 
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -76,6 +76,9 @@
                 top: -20px;
                 z-index: 4;
             }
+            #myGridModal {
+   				height: 300px;
+			}
         </style>
 
     </head>
@@ -88,10 +91,16 @@
                 <div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
 
                     <div class="input-group mb-1">
-                        <span class="input-group-text">작업날짜</span>
-                        <div class="col-mb-2">
-                            <input type="text" class="form-control datepicker" size="15" id="searchDate"
-                                autocomplete="off">
+                    	<span>
+                        <select class="form-select" id="searchOption" aria-label="Default select example" style="display: inline-block; width: 250px; margin-right: 10px;">
+                            <option value="warehouse_moveId" selected>창고이동ID</option>
+                            <option value="tracking_no">송장번호</option>
+                            <option value="manage_no">사내관리번호</option>
+                        </select>
+                        </span>
+                        <div style="margin-left: 15px; width: 250px;" class="col-sm-2 textarea-search">
+                            <textarea class="form-control form-control-md" id="searchValue"
+                                placeholder="검색할 내용 입력"></textarea>
                         </div>
 
 
@@ -106,184 +115,119 @@
                     <div id="myGrid" class="ag-theme-alpine"></div>
 
                 </div>
+                <!-- Modal -->
+                <div class="modal fade-lg" id="trackingModal" tabindex="-1" aria-labelledby="trackingModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="trackingModalLabel">화물 상세 이력</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div id="myGridModal" class="ag-theme-alpine"></div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal"
+                                    style="width:90px;">닫기</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
             </main>
             <jsp:include page="/WEB-INF/views/common/footer.jsp" />
         </div>
     </body>
     <script type="text/javascript">
         $(function () {
-            // jquery datepicker 한국 로컬버젼
-            $('.datepicker').datepicker(
-                {
-                    closeText: "닫기",
-                    prevText: "&#x3C;전",
-                    nextText: "후&#x3E;",
-                    currentText: "당일",
-                    monthNames: ["1月", "2月", "3月", "4月", "5月", "6月", "7月",
-                        "8月", "9月", "10月", "11月", "12月"],
-                    monthNamesShort: ["1月", "2月", "3月", "4月", "5月", "6月",
-                        "7月", "8月", "9月", "10月", "11月", "12月"],
-                    dayNames: ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일",
-                        "토요일"],
-                    dayNamesShort: ["<font color='red'>일</font>", "월", "화",
-                        "수", "목", "금", "<font color='blue'>토</font>"],
-                    dayNamesMin: ["<font color='red'>일</font>", "월", "화",
-                        "수", "목", "금", "<font color='blue'>토</font>"],
-                    weekHeader: "주",
-                    dateFormat: "yy-mm-dd",
-                    firstDay: 0,
-                    isRTL: false,
-                    showMonthAfterYear: true,
-                    yearSuffix: "년"
-                });
-            // 초기 날짜의 값 설정
-            $('#searchDate').datepicker('setDate', new Date());
-
-
             // 그리드에 들어갈 칼럼 해더 정의
             const columnDefs = [
                 {
-                    headerName: '',
-                    field: "idx",
-                    minWidth: 50,
-                    width: 50,
-                    maxWidth: 50,
-                    pinned: 'left',
-                    headerCheckboxSelection: true,
-                    headerCheckboxSelectionFilteredOnly: true,
-                    checkboxSelection: true,
-                },
-
-                {
-                    headerName: "창고이름",
-                    field: "wareName",
-                    width: 160,
+                    headerName: "회사이름",
+                    field: "compName",
                     pinned: 'left',
 
                 },
                 {
-                    headerName: "총 중량",
-                    field: "totalWeight",
+                    headerName: "창고이동ID",
+                    field: "warehouseMoveid",
                     pinned: 'left',
-                    maxWidth: 100
 
                 },
                 {
-                    headerName: "화물 수량 총합",
-                    field: "totalQty",
+                    headerName: "송장번호",
+                    field: "trackingNo",
                     pinned: 'left',
-                    maxWidth: 130
-                },
-                {
-                    headerName: "송장 건수",
-                    field: "allCount",
-                    pinned: 'left',
-                    maxWidth: 130
-                },
-                {
-                    headerName: "작업시작",
-                    field: "",
-                    cellRenderer: function (params) {
-                        var yymmdd = $('#searchDate').val().replace(/-/g, '').slice(2);
+                    cellStyle: function() {
+                        return { color: 'blue',
+                            textDecoration: 'underline',
+                            cursor: 'pointer'
+                        };
+                    },
+                    onCellClicked: function (params) {
+                    	if (!params.data.manageNo) {
+                    	    swal("알림", "관리번호가 없습니다.", "warning");
+                    	    return;
+                    	}
+                        $.ajax({
+                            url: "/tracking/trackingDetail",
+                            data: {
+                                manageNo: params.data.manageNo,
+                            },
+                            type: "get",
+                        })
+                            .done(function (result) {
+                                // 모달 그리드 초기화 후 데이터 바인딩
+                                const oldData = [];
+                                gridModalApi.forEachNode(node => oldData.push(node.data));
+                                gridModalApi.applyTransaction({ remove: oldData });
+                                gridModalApi.applyTransaction({ add: result });
 
-                        if (params.data.allCount == params.data.tbCount) {
-                            var completeBtn = $('<button>', {
-                                class: 'btn btn-outline-secondary btn-sm',
-                                disabled: true,
-                                style: 'margin-left:12px;'
-                            }).html('<i class="fa-solid fa-check text-success"></i> 완료');
+                                trackingModal.show();
+                            }).fail(function (err) {
+                                console.error("모달 데이터 조회 실패", err);
 
-                            return completeBtn[0]; // jQuery 객체 → DOM 반환
-                        } else {
-                            var startBtn = $('<button>', {
-                                class: 'btn btn-outline-primary btn-sm',
-                                type: 'button',
-                                style: 'margin-left:12px;'
-                            }).text('작업시작');
-
-                            startBtn.on('click', function () {
-                                startBondedTask(yymmdd, params.data.wareCd);
                             });
-
-                            return startBtn[0];
-                        }
-                    }
+                        trackingModal.show();
+                    },
                 },
                 {
-                    headerName: "반입 갯수",
-                    field: "inCount"
+                    headerName: "관리번호",
+                    field: "manageNo",
+                    pinned: 'left',
                 },
                 {
-                    headerName: "반입 작업",
-                    field: "",
-                    cellRenderer: function (params) {
-                        var yymmdd = $('#searchDate').val().replace(/-/g, '').slice(2);
+                    headerName: "최근 화물 상태",
+                    field: "stateTitle",
 
-                        if (params.data.tbCount == params.data.inCount && params.data.tbCount != 0) {
-                            var completeBtn = $('<button>', {
-                                class: 'btn btn-outline-secondary btn-sm',
-                                disabled: true,
-                                style: 'margin-left:12px;'
-                            }).html('<i class="fa-solid fa-check text-success"></i> 반입 완료');
-
-                            return completeBtn[0]; // jQuery 객체 → DOM 반환
-                        } else if(params.data.tbCount == 0){
-                        	
-                        } else {
-                            var startBtn = $('<button>', {
-                                class: 'btn btn-outline-success btn-sm',
-                                type: 'button',
-                                style: 'margin-left:12px;'
-                            }).text('반입');
-
-                            startBtn.on('click', function () {
-                                updateBondedTask(yymmdd, params.data.wareCd, "imp");
-                            });
-
-                            return startBtn[0];
-                        }
-                    }
                 },
                 {
-                    headerName: "반출 갯수",
-                    field: "outCount"
+                    headerName: "갱신일",
+                    field: "stateChange"
+                },
+            ];
+
+            const columnModalDefs = [
+                {
+                    headerName: "창고 ID",
+                    field: "warehouseMoveid",
                 },
                 {
-                    headerName: "반출 작업",
-                    field: "",
-                    cellRenderer: function (params) {
-                    	console.log(params.data.wareName);
-                    	console.log(params.data.tbCount);
-                    	console.log(params.data.outCount);
-                    	console.log(params.data.inCount);
-
-                        var yymmdd = $('#searchDate').val().replace(/-/g, '').slice(2);
-
-                        if (params.data.tbCount == params.data.outCount && params.data.tbCount != 0) {
-                            var completeBtn = $('<button>', {
-                                class: 'btn btn-outline-secondary btn-sm',
-                                disabled: true,
-                                style: 'margin-left:12px;'
-                            }).html('<i class="fa-solid fa-check text-success"></i> 반출 완료');
-
-                            return completeBtn[0]; // jQuery 객체 → DOM 반환
-                        } else if(params.data.tbCount != 0 && params.data.inCount != 0){
-                            var startBtn = $('<button>', {
-                                class: 'btn btn-outline-danger btn-sm',
-                                type: 'button',
-                                style: 'margin-left:12px;'
-                            }).text('반출');
-
-                            startBtn.on('click', function () {
-                                updateBondedTask(yymmdd, params.data.wareCd, "exp");
-                            });
-
-                            return startBtn[0];
-                        	
-                        } else {
-                        }
-                    }
-                }
+                    headerName: "관리번호",
+                    field: "manageNo",
+                },
+                {
+                    headerName: "화물 상태",
+                    field: "stateTitle",
+                },
+                {
+                    headerName: "갱신일",
+                    field: "stateChange"
+                },
             ];
 
             // grid 옵션 정의
@@ -313,27 +257,51 @@
                 }
 
             };
+            const gridModalOptions = {
+                columnDefs: columnModalDefs,
+                theme: "legacy",
+                defaultColDef: {
+                    editable: false,
+                    flex: 1,
+                    minWidth: 75,
+                    resizable: true,
+                    filter: true,
+                },
+                rowSelection: "multiple",
+                debounceVerticalScrollbar: true,
+                enableCellTextSelection: true,
+                suppressRowClickSelection: true,
+            };
 
-            loadGrid();
+            // 2. 모달용 grid 생성
+            const gridModalDiv = document.getElementById('myGridModal');
+            const gridModalApi = agGrid.createGrid(gridModalDiv, gridModalOptions);
+
+
             // 전역으로 grid관리 첫번쨰만 생성해서 메모리 절약
             const gridDiv = document.getElementById('myGrid');
             const gridApi = agGrid.createGrid(gridDiv, gridOptions);
 
             // grid를 발생시키는 함수
             function loadGrid() {
-                var yymmdd = $('#searchDate').val().replace(/-/g, '').slice(2);
                 const headerHeight = document.querySelector('.navbar')?.offsetHeight || 60;
                 const searchBoxHeight = document.querySelector('.input-group')?.offsetHeight || 60;
                 const footerHeight = 0;
                 const gridTopMargin = 50;
 
                 const offset = headerHeight + searchBoxHeight + footerHeight + gridTopMargin;
+
+                // 검색 내용
+                let searchValArr = $('#searchValue').val().split(/\r?\n/).map(x => x.trim()).filter(x => x.length > 0);
                 // 날짜 글자로 yymmdd로 변경
                 $.ajax({
-                    url: "/bonded/searchGrid",
+                    url: "/tracking/trackingGrid",
                     data: {
-                        searchDate: yymmdd,
+                           searchValue: searchValArr,  // <- key 이름을 "searchValue"로 명확히
+                    	   searchOption: $('#searchOption').val(),
                     },
+                    traditional: true,
+
                     type: "get",
                 }).done(function (res) {
                     // 기존 행 모두 제거
@@ -347,12 +315,18 @@
                 }).fail(function (e) {
                     swal({
                         title: "알림",
-                        text: "검증중에 에러가 발생했습니다.",
+                        text: "검색중에 에러가 발생했습니다.",
                         icon: "warning",
                     });
                 });
 
             }
+
+            // modal변수선언
+            var trackingModal = new bootstrap.Modal($('#trackingModal'), {
+                keyboard: false,
+                backdrop: false
+            })
 
             // 검색시 그리드 기동
             $('#search').on('click', function (e) {
@@ -361,7 +335,7 @@
             // 창고 작업 시작
             function startBondedTask(yymmdd, wareCd) {
                 $.ajax({
-                    url: "/bonded/insertBond",
+                    url: "/tracking/insertBond",
                     data: {
                         searchDate: yymmdd,
                         wareCd: wareCd,
@@ -388,6 +362,7 @@
             };
             // 반입 반출 시작
             function updateBondedTask(yymmdd, wareCd, updateColumn) {
+
                 console.log(updateColumn);
                 $.ajax({
                     url: "/bonded/updateBonded",
@@ -405,6 +380,7 @@
                         rseStr = "반출";
                     }
                     if (res === "success") {
+
                         alert(rseStr + " 작업 성공했습니다.");
                     } else {
                         alert(rseStr + " 작업 실패했습니다.");
@@ -420,6 +396,7 @@
                 });
 
             };
+
         });
 
 

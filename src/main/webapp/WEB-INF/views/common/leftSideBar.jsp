@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+   
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,7 +26,9 @@
 					<li><a class="sidebar-link" href="/cargo/cargoRegister">화물 단건 등록</a></li>
 					<li><a class="sidebar-link" href="/cargo/cargoBatchRegFrm">화물 일괄 등록</a></li>
 					<li><a class="sidebar-link" href="#">화물 상태 수정</a></li>
-					<li><a class="sidebar-link" href="/bonded/searchFrm">입출고 관리</a></li>
+					<c:if test="${user.userLevel eq '1'}">
+						<li><a class="sidebar-link" href="/bonded/searchFrm">입출고 관리</a></li>
+					</c:if>
 					
 				</ul></li>
 			<li class="sidebar-item">
@@ -34,9 +38,8 @@
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondSea">
 					<li><a class="sidebar-link" href="/invoice/dateSearchFrm">청구서 조회</a></li>
-					<li><a class="sidebar-link" href="#">청구서 생성</a></li>
-					<li><a class="sidebar-link" href="#">청구서 수정</a></li>
-					<li><a class="sidebar-link" href="#">청구서 삭제</a></li>
+					<li><a class="sidebar-link" href="/invoice/detailFrm">청구서 상세</a></li>
+					<li><a class="sidebar-link" href="/tracking/searchList">화물 추적</a></li>
 				</ul>
 			</li>
 			<li class="sidebar-item">
@@ -50,6 +53,8 @@
 					<li><a class="sidebar-link" href="#">회원 생성</a></li>
 					<li><a class="sidebar-link" href="/user/update">개인정보 수정</a></li>
 					<li><a class="sidebar-link" href="/user/userJoin">회원 생성</a></li>
+					<li><a class="sidebar-link" href="/user/customerInfoList">회사 정보</a></li>
+					
 				</ul>
 			</li>
 		</ul>

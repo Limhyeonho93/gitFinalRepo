@@ -1,7 +1,6 @@
-package kr.or.iei.invoice.controller;
+package kr.or.iei.user.controller;
 
 import java.io.IOException;
-import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
@@ -13,21 +12,22 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 
-import kr.or.iei.invoice.model.service.InvoiceService;
-import kr.or.iei.invoice.model.vo.Invoice;
+import kr.or.iei.tracking.model.vo.TrackingJoin;
+import kr.or.iei.user.model.service.CustomerInfoService;
+import kr.or.iei.user.model.vo.Company;
 import kr.or.iei.user.model.vo.User;
 
 /**
- * Servlet implementation class InvoiceSearchGrid
+ * Servlet implementation class CustomerInfoGrid
  */
-@WebServlet("/invoice/dataGrid")
-public class InvoiceSearchGridServlet extends HttpServlet {
+@WebServlet("/user/getCustomerGrid")
+public class CustomerInfoGrid extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InvoiceSearchGridServlet() {
+    public CustomerInfoGrid() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,26 +36,21 @@ public class InvoiceSearchGridServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		Date from = Date.valueOf(request.getParameter("from"));
-		Date to = Date.valueOf(request.getParameter("to"));
-		
-		InvoiceService service = new InvoiceService();
+		CustomerInfoService service = new CustomerInfoService();
 		
 		HttpSession session = request.getSession(false); // 기존 세션만 가져옴
 		User loginUser = (User) session.getAttribute("user");
 		
-		ArrayList<Invoice> arr = new ArrayList<Invoice>();
+		ArrayList<Company> arr = new ArrayList<Company>();
 		if(loginUser.getUserLevel().equals("1")) {
-			arr = service.allInvoice(from,to);
+			arr = service.getCustomerInfo();
 		}else {
-			arr = service.allSelerInvoice(from,to,loginUser);
+			arr = service.getSelerCustomerInfo(loginUser);
 		}
-		
-		// 3. 응답 데이터 JSON 변환
-	    response.setContentType("application/json; charset=UTF-8");
-	    Gson gson = new Gson();
-	    response.getWriter().print(gson.toJson(arr));  // 클라이언트에 JSON 응답
+
+		response.setContentType("application/json; charset=UTF-8");
+		Gson gson = new Gson();
+		response.getWriter().print(gson.toJson(arr)); // 클라이언트에 JSON 응답
 
 	}
 

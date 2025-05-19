@@ -11,174 +11,176 @@ import kr.or.iei.user.model.vo.User;
 
 public class UserDao {
 
-	public int insertUser(Connection conn, User user) {
-		PreparedStatement pstmt = null;
+   public int insertUser(Connection conn, User user) {
+      PreparedStatement pstmt = null;
 
-		int result = 0;
+      int result = 0;
 
-		String query = "INSERT INTO T_USERS (user_id, comp_cd, user_pw, user_name, dept_name, tel_no, reg_date, upd_date ) VALUES (?, ?, ?, ?, ?, ?, sysdate, sysdate)";
+      String query = "INSERT INTO T_USERS (user_id, comp_cd, user_pw, user_name, dept_name, tel_no, reg_date, upd_date ) VALUES (?, ?, ?, ?, ?, ?, sysdate, sysdate)";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+      try {
+         pstmt = conn.prepareStatement(query);
 
-			pstmt.setString(1, user.getUserId());
-			pstmt.setString(2, user.getCompCd());
-			pstmt.setString(3, user.getUserPw());
-			pstmt.setString(4, user.getUserName());
-			pstmt.setString(5, user.getDeptName());
-			pstmt.setString(6, user.getTelNo());
+         pstmt.setString(1, user.getUserId());
+         pstmt.setString(2, user.getCompCd());
+         pstmt.setString(3, user.getUserPw());
+         pstmt.setString(4, user.getUserName());
+         pstmt.setString(5, user.getDeptName());
+         pstmt.setString(6, user.getTelNo());
 
-			result = pstmt.executeUpdate();
+         result = pstmt.executeUpdate();
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}
+      } catch (SQLException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } finally {
+         JDBCTemplate.close(pstmt);
+      }
 
-		return result;
-	}
+      return result;
+   }
 
-	public User loginUser(Connection conn, String userId, String userPw) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
+   public User loginUser(Connection conn, String userId, String userPw) {
+      PreparedStatement pstmt = null;
+      ResultSet rset = null;
 
-		User loginUser = null;
+      User loginUser = null;
 
-		String query = "SELECT * FROM T_USERS WHERE user_id = ? AND user_pw = ?";
+      String query = "SELECT * FROM T_USERS WHERE user_id = ? AND user_pw = ?";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+      try {
+         pstmt = conn.prepareStatement(query);
 
-			pstmt.setString(1, userId);
-			pstmt.setString(2, userPw);
+         pstmt.setString(1, userId);
+         pstmt.setString(2, userPw);
 
-			rset = pstmt.executeQuery();
+         rset = pstmt.executeQuery();
 
-			if (rset.next()) {
+         if (rset.next()) {
 
-				loginUser = new User();
+            loginUser = new User();
 
-				loginUser.setUserId(rset.getString("user_id"));
-				loginUser.setCompCd(rset.getString("comp_cd"));
-				loginUser.setUserPw(rset.getString("user_pw"));
-				loginUser.setUserName(rset.getString("user_name"));
-				loginUser.setDeptName(rset.getString("dept_name"));
-				loginUser.setTelNo(rset.getString("tel_no"));
-				loginUser.setRegDate(rset.getDate("reg_date"));
-				loginUser.setUpdDate(rset.getDate("upd_date"));
-			}
+            loginUser.setUserId(rset.getString("user_id"));
+            loginUser.setCompCd(rset.getString("comp_cd"));
+            loginUser.setUserPw(rset.getString("user_pw"));
+            loginUser.setUserName(rset.getString("user_name"));
+            loginUser.setDeptName(rset.getString("dept_name"));
+            loginUser.setTelNo(rset.getString("tel_no"));
+            loginUser.setRegDate(rset.getDate("reg_date"));
+            loginUser.setUpdDate(rset.getDate("upd_date"));
+            loginUser.setUserLevel(rset.getString("user_level"));
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
-		}
+         }
 
-		return loginUser;
-	}
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } finally {
+         JDBCTemplate.close(rset);
+         JDBCTemplate.close(pstmt);
+      }
 
-	public int updateUser(Connection conn, User updUser) {
-		PreparedStatement pstmt = null;
+      return loginUser;
+   }
 
-		int result = 0; // 실패는 0, 성공은 1
+   public int updateUser(Connection conn, User updUser) {
+      PreparedStatement pstmt = null;
 
-		String query = "UPDATE T_USERS " + "SET USER_NAME = ?, TEL_NO = ? " + "WHERE USER_ID = ?";
+      int result = 0; // 실패는 0, 성공은 1
 
-		try {
-			pstmt = conn.prepareStatement(query);
+      String query = "UPDATE T_USERS " + "SET USER_NAME = ?, TEL_NO = ? " + "WHERE USER_ID = ?";
 
-			pstmt.setString(1, updUser.getUserName());
-			pstmt.setString(2, updUser.getTelNo());
-			pstmt.setString(3, updUser.getUserId());
+      try {
+         pstmt = conn.prepareStatement(query);
 
-			result = pstmt.executeUpdate();
+         pstmt.setString(1, updUser.getUserName());
+         pstmt.setString(2, updUser.getTelNo());
+         pstmt.setString(3, updUser.getUserId());
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}
+         result = pstmt.executeUpdate();
 
-		return result;
-	}
+      } catch (SQLException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } finally {
+         JDBCTemplate.close(pstmt);
+      }
 
-	public int updateUserPw(Connection conn, String userId, String newUserPw) {
-		PreparedStatement pstmt = null;
+      return result;
+   }
 
-		int result = 0;
-		String query = "UPDATE T_Users " + "SET user_pw  = ?, " + "    upd_date = SYSDATE " + // 갱신일도 함께 업데이트 해줌
-				"WHERE user_id = ? ";
+   public int updateUserPw(Connection conn, String userId, String newUserPw) {
+      PreparedStatement pstmt = null;
 
-		try {
-			pstmt = conn.prepareStatement(query);
+      int result = 0;
+      String query = "UPDATE T_Users " + "SET user_pw  = ?, " + "    upd_date = SYSDATE " + // 갱신일도 함께 업데이트 해줌
+            "WHERE user_id = ? ";
 
-			pstmt.setString(1, newUserPw);
-			pstmt.setString(2, userId);
+      try {
+         pstmt = conn.prepareStatement(query);
 
-			result = pstmt.executeUpdate();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}
-		return result;
+         pstmt.setString(1, newUserPw);
+         pstmt.setString(2, userId);
 
-	}
+         result = pstmt.executeUpdate();
+      } catch (SQLException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } finally {
+         JDBCTemplate.close(pstmt);
+      }
+      return result;
 
-	public int insertCompany(Connection conn, Company company) {
-		PreparedStatement pstmt = null;
-		int result = 0;
+   }
 
-		String query = "INSERT INTO T_CustomerInfo (comp_cd, comp_name, comp_addr, comp_zip, comp_tel, deal_flg, reg_date, upd_date, grade) VALUES (?, ?, ?, ?, ?, ?, sysdate, sysdate, ?)";
+   public int insertCompany(Connection conn, Company company) {
+      PreparedStatement pstmt = null;
+      int result = 0;
 
-		try {
-			pstmt = conn.prepareStatement(query);
+      String query = "INSERT INTO T_CustomerInfo (comp_cd, comp_name, comp_addr, comp_zip, comp_tel, deal_flg, reg_date, upd_date, grade) VALUES (?, ?, ?, ?, ?, ?, sysdate, sysdate, ?)";
 
-			pstmt.setString(1, company.getComp_cd());
-			pstmt.setString(2, company.getComp_name());
-			pstmt.setString(3, company.getComp_addr());
-			pstmt.setString(4, company.getComp_zip());
-			pstmt.setString(5, company.getComp_tel());
-			pstmt.setString(6, String.valueOf(company.getDeal_flg()));
-			pstmt.setString(7, String.valueOf(company.getGrade()));
+      try {
+         pstmt = conn.prepareStatement(query);
 
-			result = pstmt.executeUpdate();
+         pstmt.setString(1, company.getComp_cd());
+         pstmt.setString(2, company.getComp_name());
+         pstmt.setString(3, company.getComp_addr());
+         pstmt.setString(4, company.getComp_zip());
+         pstmt.setString(5, company.getComp_tel());
+         pstmt.setString(6, String.valueOf(company.getDeal_flg()));
+         pstmt.setString(7, String.valueOf(company.getGrade()));
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}
+         result = pstmt.executeUpdate();
 
-		return result;
-	}
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } finally {
+         JDBCTemplate.close(pstmt);
+      }
 
-	public boolean isValidCompanyCode(Connection conn, String compCd) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		boolean isValid = false;
+      return result;
+   }
 
-		String query = "SELECT COUNT(*) FROM T_CustomerInfo WHERE comp_cd = ?";
+   public boolean isValidCompanyCode(Connection conn, String compCd) {
+      PreparedStatement pstmt = null;
+      ResultSet rset = null;
+      boolean isValid = false;
 
-		try {
-			pstmt = conn.prepareStatement(query);
+      String query = "SELECT COUNT(*) FROM T_CustomerInfo WHERE comp_cd = ?";
 
-			pstmt.setString(1, compCd);
+      try {
+         pstmt = conn.prepareStatement(query);
 
-			rset = pstmt.executeQuery();
+         pstmt.setString(1, compCd);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rset);
-			JDBCTemplate.close(pstmt);
-		}
+         rset = pstmt.executeQuery();
 
-		return isValid;
-	}
+      } catch (SQLException e) {
+         e.printStackTrace();
+      } finally {
+         JDBCTemplate.close(rset);
+         JDBCTemplate.close(pstmt);
+      }
+
+      return isValid;
+   }
 }
