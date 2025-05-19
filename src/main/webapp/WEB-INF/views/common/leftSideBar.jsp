@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
+<<<<<<< HEAD
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+=======
+   pageEncoding="UTF-8"%>
+>>>>>>> master
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,11 +13,11 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<nav class="side-navbar bg-sidebar-bg text-white">
-		<div
-			class="sidebar-header d-flex align-items-center p-3 border-bottom border-secondary">
-			<h4 class="text-white mb-0">물류관리</h4>
-		</div>
+   <nav class="side-navbar bg-sidebar-bg text-white">
+      <div
+         class="sidebar-header d-flex align-items-center p-3 border-bottom border-secondary">
+         <h4 class="text-white mb-0">물류관리</h4>
+      </div>
 
 		<ul class="list-unstyled">
 			<li class="sidebar-item"><a
@@ -29,6 +33,8 @@
 					<li><a class="sidebar-link" href="/cargo/cargoBatchRegFrm">화물
 							일괄 등록</a></li>
 					<li><a class="sidebar-link" href="#">화물 상태 수정</a></li>
+					<li><a class="sidebar-link" href="/bonded/searchFrm">입출고 관리</a></li>
+					
 				</ul></li>
 			<li class="sidebar-item"><a
 				class="sidebar-link d-flex align-items-center"
