@@ -33,7 +33,7 @@ public class CargoRegisterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 파라미터 받아오기
         String compCd = request.getParameter("compCd");
-        //String warehouseMoveid = request.getParameter("warehouseMoveid");
+
         String trackingNo = request.getParameter("trackingNo");
         String receiverName = request.getParameter("receiverName");
         String receiverAdd = request.getParameter("receiverAdd");
@@ -67,9 +67,11 @@ public class CargoRegisterServlet extends HttpServlet {
         String wareCdId = mns.findZipWareCd(receiverZip);
         
         //세션에서 회사코드와 사내 관리번호 가져옴 
-      HttpSession session = request.getSession();
-      //String compCd =((User) session.getAttribute("user")).getCompCd();
-       String userId= ((User) session.getAttribute("user")).getUserId();
+
+		HttpSession session = request.getSession();
+		//String compCd =((User) session.getAttribute("user")).getCompCd();
+	    String userId= ((User) session.getAttribute("user")).getUserId();
+
 
 
         // CargoMain 객체 생성
@@ -109,19 +111,20 @@ public class CargoRegisterServlet extends HttpServlet {
         int result = service.insertCargo(cargo,goods);
         
         RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-       if(result>0) {
-          request.setAttribute("title", "성공");
-          request.setAttribute("msg", "화물 등록 완료");
-          request.setAttribute("icon", "success");
-          request.setAttribute("loc", "/cargo/search");
-       }else {
-          request.setAttribute("title", "실패");
-          request.setAttribute("msg", "화물 등록 중 오류가 발생되었습니다.");
-          request.setAttribute("icon", "error");
-          request.setAttribute("loc", "/cargo/cargoRegister");
-       }
-         
-       view.forward(request, response);
+	    if(result>0) {
+	    	request.setAttribute("title", "성공");
+	    	request.setAttribute("msg", "화물 등록 완료");
+	    	request.setAttribute("icon", "success");
+	    	request.setAttribute("loc", "/cargo/search");
+	    }else {
+	    	request.setAttribute("title", "실패");
+	    	request.setAttribute("msg", "화물 등록 중 오류가 발생되었습니다.");
+	    	request.setAttribute("icon", "error");
+	    	request.setAttribute("loc", "/cargo/cargoRegister");
+	    }
+	      
+	    view.forward(request, response);
+
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

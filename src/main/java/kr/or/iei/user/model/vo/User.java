@@ -17,21 +17,12 @@ public class User {
 	private String userName; // 유저명
 	private String deptName; // 부서
 	private String telNo; // 연락처
+	
+	
 	private Date regDate; // 등록일
 	private Date updDate; // 갱신일
-	private String userLevel;
-
-
-
-public User(String userId, String compCd, String userPw, String userName, String deptName, String telNo) {
-    this.userId = userId;
-    this.compCd = compCd;
-    this.userPw = userPw;
-    this.userName = userName;
-    this.deptName = deptName;
-    this.telNo = telNo;
-    this.regDate = new Date(System.currentTimeMillis()); // 기본값으로 현재 시간 설정
-    this.updDate = this.regDate; // 등록일과 갱신일을 동일하게 처리
+	private String userLevel;// 유저권한 1: 물류회사 2:셀러 관리자 3: 셀러 일반
+    private String grade; // 회사 등급 2에 고정
+    
 }
 
-}

@@ -81,6 +81,8 @@ public class LoginServlet extends HttpServlet {
 			request.getSession().setAttribute("user", loginUser);
 			response.sendRedirect(request.getContextPath() + "/index.jsp");
 		}
+		
+		// 회원이 
 
 	}
 
