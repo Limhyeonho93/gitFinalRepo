@@ -35,24 +35,29 @@ public class CargoService {
 
 		return goods;
 	}
-	
-	//화물 한 건 등록(T_cargoMain)
-	public int insertCargo(CargoMain cargo) {
-		Connection conn = JDBCTemplate.getConnection();
-		int result = 0;
+	 //화물 단 건 등록 
+	   public int insertCargo(CargoMain cargo, CargoGoods goods) {
+	      Connection conn = JDBCTemplate.getConnection();
+	      int result = 0;
 
-		result = dao.insertCargo(conn, cargo);
+	      result = dao.insertCargo(conn, cargo);
+	      
+	        if (result > 0) {
+	           System.out.println("CargoMain insert완");
+	            result = dao.insertCargoGoods(conn, goods);
+	            if(result>0) {
+	               JDBCTemplate.commit(conn);
+	            }else {
+	               JDBCTemplate.rollback(conn);
+	            }
+	        }else {
+	           JDBCTemplate.rollback(conn);
+	        }
 
-		if (result > 0) {
-			JDBCTemplate.commit(conn);
-		} else {
-			JDBCTemplate.rollback(conn);
-		}
+	      JDBCTemplate.close(conn);
+	      return result;
+	   }
 
-		JDBCTemplate.close(conn);
-
-		return result;
-	}
 	
 	//화물 일괄 등록
 	public int insertBatchCargo(CargoMain cargoMain, CargoGoods cargoGoods) {
@@ -131,5 +136,37 @@ public class CargoService {
 	        JDBCTemplate.close(conn);
 	    }
 	}
+
+
+	public boolean deleteCargo(String trackingNo) {
+		Connection conn = JDBCTemplate.getConnection();
+	    boolean resultFlag = false;
+	   
+	    try {
+	    
+	    // CargoGoods 삭제
+	    int goodsResult = dao.deleteCargoGoodsByTrackingNo(conn, trackingNo);
+	    
+	    // CargoMain 삭제
+	    int mainResult = dao.deleteCargoMainsByTrackingNo(conn, trackingNo);
+	    
+	    if (goodsResult > 0 && mainResult > 0) {
+	    	JDBCTemplate.commit(conn);
+	    	resultFlag = true;
+	    }else {
+	    	JDBCTemplate.rollback(conn);
+	    }
+	} catch (Exception e) {
+		e.printStackTrace();
+		JDBCTemplate.rollback(conn);
+	} finally {
+		JDBCTemplate.close(conn);
+	}
+	    
+		return resultFlag;
+	}
+
+
+	
 }
 	       

@@ -113,24 +113,29 @@ modal css
 			<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
 
 			<%-- 검색창 (AG-grid) --%>
-			<div class="container-fluid"
-				style="margin-top: 30px; margin-bottom: 10px;">
-				<div class="d-flex" style="gap: 10px;">
-					<select class="form-select" id="searchOption"
-						aria-label="Default select example">
-						<option value="warehouse_moveId" selected>창고이동ID</option>
-						<option value="tracking_no">송장번호</option>
-						<option value="manage_no">사내관리번호</option>
-					</select>
-					<div style="margin-left: 15px; width: 250px;"
-						class="col-sm-2 textarea-search">
-						<textarea class="form-control form-control-md" id="inputText"
-							placeholder="검색할 내용 입력"></textarea>
-					</div>
-					<button class="btn btn-outline-dark" type="button" id="search">검색</button>
-				</div>
-				<div id=myGrid class="ag-theme-alpine"></div>
-			</div>
+			<div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
+    <div class="d-flex" style="gap: 10px;">
+        <!-- 검색창 관련 버튼들은 왼쪽에 위치 -->
+        <div class="d-flex" style="gap: 10px;">
+            <select class="form-select" id="searchOption" aria-label="Default select example">
+                <option value="warehouse_moveId">창고이동ID</option>
+                <option value="tracking_no" selected>송장번호</option>
+                <option value="manage_no">사내관리번호</option>
+            </select>
+            <div style="margin-left: 15px; width: 250px;" class="col-sm-2 textarea-search">
+                <textarea class="form-control form-control-md" id="inputText" placeholder="검색할 내용 입력"></textarea>
+            </div>
+            <button class="btn btn-outline-dark" type="button" id="search">검색</button>
+        </div>
+        
+        <!-- 체크목록 추출 버튼은 오른쪽에 위치 -->
+        <div class="ms-auto">
+            <button class="btn btn-outline-dark" type="button" id="exportSelected">체크목록 추출</button>
+        </div>
+    </div>
+
+    <div id="myGrid" class="ag-theme-alpine"></div>
+</div>
 
 			<%-- 상세정보 창 띄우기(모달) --%>
 
@@ -220,7 +225,7 @@ modal css
                             '<tr><th class="th-label">회사코드</th><td><input type="text" name="compCd" class="form-control" value="' + detail.compCd + '"></td></tr>' +
                             '<tr><th class="th-label">창고이동ID</th><td><input type="text" name="warehouseMoveid" class="form-control" value="' + detail.warehouseMoveid + '"></td></tr>' +
                             '<tr><th class="th-label">사내 관리번호</th><td><input type="text" name="manageNo" class="form-control" value="' + detail.manageNo + '"></td></tr>' +
-                            '<tr><th class="th-label">상품명</th><td><input type="text" name="goodsName" class="form-control" value="' + detail.goodsName + '"></td></tr>' +  <!-- readonly 속성 제거 -->
+                            '<tr><th class="th-label">상품명</th><td><input type="text" name="goodsName" class="form-control" value="' + detail.goodsName + '"></td></tr>' +  
                             '<tr><th class="th-label">상품개수</th><td><input type="text" name="no" class="form-control" value="' + detail.no + '"></td></tr>' +
                             '<tr><th class="th-label">상품단가</th><td><input type="text" name="unitPrice" class="form-control" value="' + detail.unitPrice + '"></td></tr>' +
                             '<tr><th class="th-label">상품무게</th><td><input type="text" name="unitWeight" class="form-control" value="' + detail.unitWeight + '"></td></tr>' +
@@ -360,10 +365,87 @@ modal css
                         swal("실패", "수정에 실패했습니다.", "error");
                     }
                 },
-                error: function() {
+                error: function() {  // <- Closing bracket added here.
                     swal("오류", "서버 요청 중 오류가 발생했습니다.", "error");
                 }
             });
+        });
+        
+        $('#deleteModalBtn').on('click', function () {
+            const trackingNo = $('#detailModalLabel').text().split(': ')[1].trim(); // 또는 data-attribute 추천
+
+            swal({
+                title: "정말 삭제하시겠습니까?",
+                text: "이 작업은 되돌릴 수 없습니다.",
+                icon: "warning",
+                buttons: ["취소", "삭제"],
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    $.ajax({
+                        url: "/cargo/deleteCargo", // 서버 컨트롤러 경로에 맞게 수정
+                        type: "POST", // 또는 DELETE
+                        data: { trackingNo: trackingNo },
+                        success: function (res) {
+                            if (res.success) {
+                                swal("삭제 완료", "화물 정보가 삭제되었습니다.", "success");
+                                bootstrap.Modal.getInstance(document.getElementById('detailModal')).hide();
+                                $('#search').click(); // 그리드 재조회
+                            } else {
+                                swal("실패", "삭제에 실패했습니다.", "error");
+                            }
+                        },
+                        error: function () {
+                            swal("오류", "서버와의 통신 중 문제가 발생했습니다.", "error");
+                        }
+                    });
+                }
+            });
+        });
+        
+        $(function() {
+            // 체크목록 추출 버튼 클릭 시 동작
+            $('#exportSelected').on('click', function() {
+                // 선택된 행들 가져오기
+                const selectedNodes = gridApi.getSelectedNodes();
+                if (selectedNodes.length === 0) {
+                    swal("알림", "선택된 항목이 없습니다.", "warning");
+                    return;
+                }
+
+                // 선택된 데이터 추출
+                const selectedData = selectedNodes.map(node => node.data);
+
+                // 데이터 출력 (콘솔에 출력하거나 다른 방식으로 처리할 수 있음)
+                console.log("선택된 데이터:", selectedData);
+
+                // 예시: 데이터를 CSV 형식으로 변환하여 다운로드
+                const csvContent = convertToCSV(selectedData);
+                downloadCSV(csvContent, "checked_data.csv");
+            });
+
+            // 데이터를 CSV 형식으로 변환하는 함수
+            function convertToCSV(data) {
+                const header = Object.keys(data[0]);
+                const rows = data.map(row => 
+                    header.map(field => `"${row[field] || ''}"`).join(',')
+                );
+                return [header.join(','), ...rows].join('\n');
+            }
+
+            // CSV 파일 다운로드 함수
+            function downloadCSV(content, filename) {
+                const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                if (link.download !== undefined) {  // for compatibility with browsers
+                    const url = URL.createObjectURL(blob);
+                    link.setAttribute('href', url);
+                    link.setAttribute('download', filename);
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+            }
         });
         });
 </script>

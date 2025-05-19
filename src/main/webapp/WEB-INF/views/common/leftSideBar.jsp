@@ -21,7 +21,7 @@
 				</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondAir">
 					<li><a class="sidebar-link" href="/cargo/search">화물 조회</a></li>
-					<li><a class="sidebar-link" href="/cargo/cargoRegister">화물 단건 등록</a></li>
+					<li><a class="sidebar-link" href="/cargo/cargoRegisterForm">화물 단건 등록</a></li>
 					<li><a class="sidebar-link" href="/cargo/cargoBatchRegFrm">화물 일괄 등록</a></li>
 					<li><a class="sidebar-link" href="#">화물 상태 수정</a></li>
 					<li><a class="sidebar-link" href="/bonded/searchFrm">입출고 관리</a></li>

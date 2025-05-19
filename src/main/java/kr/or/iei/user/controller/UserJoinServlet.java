@@ -57,7 +57,8 @@ public class UserJoinServlet extends HttpServlet {
 		}
 
 		// 회원가입 처리
-		User user = new User(userId, compCd, userPw, userName, deptName, telNo, null, null);
+		 User user = new User(userId, compCd, userPw, userName, deptName, telNo); // 이제 기본 생성자를 사용
+	        user.setUserLevel("2"); // 기본값: 일반 사용자
 		int result = service.insertUser(user);
 
 		// 4. 결과 처리
