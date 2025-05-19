@@ -14,19 +14,7 @@ public class UserService {
 		dao = new UserDao();
 	}
 
-	public int insertUser(User user) {
-		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.insertUser(conn, user);
-
-		if (result > 0) {
-			JDBCTemplate.commit(conn);
-		} else {
-			JDBCTemplate.rollback(conn);
-		}
-		JDBCTemplate.close(conn);
-
-		return result;
-	}
+	
 
 	public User loginUser(String userId, String userPw) {
 		Connection conn = JDBCTemplate.getConnection();
@@ -36,9 +24,10 @@ public class UserService {
 		return loginUser;
 	}
 
-	public int insertCompany(Company company) {
+
+	public int updateUser(User updUser) {
 		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.insertCompany(conn, company);
+		int result = dao.updateUser(conn, updUser);
 
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
@@ -46,42 +35,37 @@ public class UserService {
 			JDBCTemplate.rollback(conn);
 		}
 		JDBCTemplate.close(conn);
-		
 		return result;
-	}
 
-	public boolean isValidCompanyCode(String compCd) {
-		Connection conn = JDBCTemplate.getConnection();
-		boolean isValid = dao.isValidCompanyCode(conn, compCd);
-		JDBCTemplate.close(conn);
-		return isValid;
-	}
-
-	public int updateUser(User updUser) {
-		Connection conn = JDBCTemplate.getConnection();
-		int result = dao.updateUser(conn, updUser);
-		
-		if(result > 0) {
-			JDBCTemplate.commit(conn);
-		}else {
-			JDBCTemplate.rollback(conn);
-		}
-		JDBCTemplate.close(conn);
-		return result;
-		
 	}
 
 	public int updateUserPw(String userId, String newUserPw) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.updateUserPw(conn, userId, newUserPw);
-		if(result > 0) {
+		if (result > 0) {
 			JDBCTemplate.commit(conn);
-		}else {
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		return result;
+
+	}
+
+
+
+	public int insertUser(User user) {
+		Connection conn = JDBCTemplate.getConnection();
+		int result = dao.insertUser(conn, user);
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
 			JDBCTemplate.rollback(conn);
 		}
 		JDBCTemplate.close(conn);
 		return result;
 		
-	}					
-}
+	}
 
+
+}

@@ -27,9 +27,18 @@ public class UserJoinFrmServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		// 1. 인코딩 - 필터
+		request.setCharacterEncoding("UTF-8");
+		
+		// 2. 뷰 페이지 포워딩
+		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/user/userJoin.jsp");
-        view.forward(request, response);
+
+		
+		view.forward(request, response);
+
+		
+		
 	}
 
 	/**
