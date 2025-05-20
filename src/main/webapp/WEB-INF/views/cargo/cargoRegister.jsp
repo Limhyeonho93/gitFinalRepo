@@ -424,7 +424,10 @@
 
         // 유효성 검사 통과 시 폼을 제출
         $('#cargoRegisterForm').submit();
+        
+
     });
+    console.log(`${user}`);
     </script>
 </body>
 </html>

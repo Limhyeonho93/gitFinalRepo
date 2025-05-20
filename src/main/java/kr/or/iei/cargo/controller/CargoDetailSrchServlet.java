@@ -3,29 +3,28 @@ package kr.or.iei.cargo.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import kr.or.iei.invoice.model.service.InvoiceService;
-import kr.or.iei.invoice.model.vo.CompInfo;
-import kr.or.iei.user.model.vo.User;
+import com.google.gson.Gson;
+
+import kr.or.iei.cargo.model.service.CargoService;
+import kr.or.iei.cargo.model.vo.CargoGoods;
 
 /**
- * Servlet implementation class CargoRegisterFrmServlet
+ * Servlet implementation class CargoDetailSrchServlet
  */
-@WebServlet("/cargo/cargoRegisterForm")
-public class CargoRegisterFrmServlet extends HttpServlet {
+@WebServlet("/srchCargoDetail")
+public class CargoDetailSrchServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CargoRegisterFrmServlet() {
+    public CargoDetailSrchServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,13 +33,19 @@ public class CargoRegisterFrmServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 회사 리스트를 얻어오기 위한 로직
-		InvoiceService service = new InvoiceService();
-		ArrayList<CompInfo> compInfoArr = service.getAllSeellerComp();
-		request.setAttribute("compInfoArr", compInfoArr);
-		//compInfoArr Request
-		RequestDispatcher view=request.getRequestDispatcher("/WEB-INF/views/cargo/cargoRegister.jsp");
-		view.forward(request, response);
+		String trackingNo=request.getParameter("trackingNo");
+		
+		CargoService service=new CargoService();
+		ArrayList<CargoGoods> goods=service.srchCargoDetail(trackingNo);
+		
+		System.out.println(goods);
+		
+		//응답 데이터 JSON 변환. 백->프론트로 넘길때 객체로 넘길 수 없기 때문에 변환 필수
+		response.setContentType("application/json; charset=UTF-8");
+		Gson gson = new Gson();
+		response.getWriter().print(gson.toJson(goods));  // 클라이언트에 JSON 응답
+		
+		
 	}
 
 	/**

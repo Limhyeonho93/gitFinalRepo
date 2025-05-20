@@ -29,9 +29,9 @@ public class CargoService {
 	}
 	
 	//화물 상세 조회
-	public CargoGoods srchCargoDetail(String trackingNo) {
+	public ArrayList<CargoGoods> srchCargoDetail(String trackingNo) {
 		Connection conn =JDBCTemplate.getConnection();
-		CargoGoods goods=dao.srchCargoDetail(conn,trackingNo);
+		ArrayList<CargoGoods>goods = dao.srchCargoDetail(conn,trackingNo);
 		JDBCTemplate.close(conn);
 
 		return goods;
@@ -115,29 +115,28 @@ public class CargoService {
 	
 
 	//수정
-	public boolean updateCargoDetails(CargoMain cargo) {
+	public int updateCargoDetails(CargoMain cargo, CargoGoods goods) {
 		Connection conn = JDBCTemplate.getConnection();
-	    try {
-	        // DAO 메서드를 호출하여 예외는 DAO에서 처리하게 합니다.
-	        int result = dao.updateCargoDetails(conn, cargo);
+        int result = dao.updateCargoDetails(conn, cargo);
 
-	        if (result > 0) {
-	            JDBCTemplate.commit(conn);
-	            return true;
-	        } else {
-	            JDBCTemplate.rollback(conn);
-	            return false;
-	        }
-	    } catch (Exception e) { 
-	        e.printStackTrace();
-	        JDBCTemplate.rollback(conn);
-	        return false;
-	    } finally {
-	        JDBCTemplate.close(conn);
-	    }
+        if (result > 0) {
+        	//if(cargo.getDeliveryStop()=="Y")//배송중지FIG를 바꿔줬을 때 
+        		//result=dao.updateDeliStop(conn ,goods);
+            if(result>0) {
+            	JDBCTemplate.commit(conn);
+            }else {
+            	JDBCTemplate.rollback(conn);
+            }
+        } else {
+            JDBCTemplate.rollback(conn);
+        }
+
+        JDBCTemplate.close(conn);
+        return result;
+
 	}
 
-
+	//삭제
 	public boolean deleteCargo(String trackingNo) {
 		Connection conn = JDBCTemplate.getConnection();
 	    boolean resultFlag = false;
