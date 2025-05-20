@@ -40,7 +40,10 @@ public class UserDao {
 				loginUser.setTelNo(rset.getString("tel_no"));
 				loginUser.setRegDate(rset.getDate("reg_date"));
 				loginUser.setUpdDate(rset.getDate("upd_date"));
-				loginUser.setUserLevel(rset.getString("user_level"));
+				loginUser.setGrade(rset.getString("grade"));
+	            // 이거 반드시 살려주세요 ㅠㅠㅠㅠㅠㅠ
+	            // 제발
+	            loginUser.setUserLevel(rset.getString("user_level"));
 
 			}
 

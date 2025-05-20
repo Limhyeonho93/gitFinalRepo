@@ -1,4 +1,4 @@
-package kr.or.iei.cargo.controller;
+package kr.or.iei.tracking.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -7,19 +7,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.or.iei.cargo.model.service.CargoService;
+import kr.or.iei.tracking.model.service.TrackingService;
 
 /**
- * Servlet implementation class DeleteCargoServlet
+ * Servlet implementation class UpdateBondedServlets
  */
-@WebServlet("/cargo/deleteCargo")
-public class DeleteCargoServlet extends HttpServlet {
+@WebServlet("/bonded/updateBonded")
+public class UpdateBondedServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public DeleteCargoServlet() {
+    public UpdateBondedServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,15 +28,19 @@ public class DeleteCargoServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-	    response.setContentType("application/json; charset=UTF-8");
+		String searchDate = request.getParameter("searchDate");
+		String wareCd = request.getParameter("wareCd");
+		String updateColumn = request.getParameter("updateColumn");
+		
+		TrackingService service = new TrackingService();
+		int res = service.updateBondedData(searchDate, wareCd, updateColumn);
+		
+		if(res > 0) {
+			response.getWriter().print("success");
+		}else {
+			response.getWriter().print("fail");
+		}
 
-	    String trackingNo = request.getParameter("trackingNo");
-
-	    // 실제 삭제 로직 수행 (예: 서비스 호출)
-	    boolean result = new CargoService().deleteCargo(trackingNo);
-
-	    response.getWriter().write("{\"success\": " + result + "}");
 	}
 
 	/**
