@@ -1,29 +1,26 @@
-package kr.or.iei.invoice.controller;
+package kr.or.iei.user.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.or.iei.invoice.model.service.InvoiceService;
-import kr.or.iei.invoice.model.vo.CompInfo;
+import kr.or.iei.user.model.service.CustomerInfoService;
+import kr.or.iei.user.model.vo.Company;
 
 /**
- * Servlet implementation class InvoiceDetailFrmServlets
+ * Servlet implementation class CheckCompCdServlet
  */
-@WebServlet("/invoice/detailFrm")
-public class InvoiceDetailFrmServlet extends HttpServlet {
+@WebServlet("/user/checkCompCd")
+public class CheckCompCdServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InvoiceDetailFrmServlet() {
+    public CheckCompCdServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,24 +29,19 @@ public class InvoiceDetailFrmServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		
 		String compCd = request.getParameter("compCd");
-		String from = request.getParameter("from");
-		String to = request.getParameter("to");
-
-		InvoiceService service = new InvoiceService();
 		
-		ArrayList<CompInfo> compInfoArr = service.getAllSeellerComp();
+		CustomerInfoService service = new CustomerInfoService();
 		
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/invoice/detailSearch.jsp");
+		Company comp = service.checkCompcd(compCd);
 		
-		request.setAttribute("compCd", compCd);
-		request.setAttribute("from", from);
-		request.setAttribute("to", to);
-		request.setAttribute("compInfoArr", compInfoArr);
-		
-		view.forward(request, response);
+		if (comp != null) {
+			// 이미 존재하는 회사코드
+			response.getWriter().write("duplicate");
+		} else {
+			// 사용 가능한 회사코드
+			response.getWriter().write("available");
+		}
 	}
 
 	/**

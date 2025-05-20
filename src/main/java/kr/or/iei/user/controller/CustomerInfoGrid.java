@@ -1,28 +1,33 @@
 package kr.or.iei.user.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import kr.or.iei.user.model.service.UserService;
+import com.google.gson.Gson;
+
+import kr.or.iei.tracking.model.vo.TrackingJoin;
+import kr.or.iei.user.model.service.CustomerInfoService;
+import kr.or.iei.user.model.vo.Company;
 import kr.or.iei.user.model.vo.User;
 
 /**
- * Servlet implementation class UpdateServlet
+ * Servlet implementation class CustomerInfoGrid
  */
-@WebServlet("/user/userUpdate")
-public class UserUpdateServlet extends HttpServlet {
+@WebServlet("/user/getCustomerGrid")
+public class CustomerInfoGrid extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserUpdateServlet() {
+    public CustomerInfoGrid() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,32 +36,22 @@ public class UserUpdateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		CustomerInfoService service = new CustomerInfoService();
 		
-		String userName = request.getParameter("userName");
-		String telNo = request.getParameter("telNo");
-		String userId = request.getParameter("userId");
+		HttpSession session = request.getSession(false); // 기존 세션만 가져옴
+		User loginUser = (User) session.getAttribute("user");
 		
-		User updUser = new User();
-		updUser.setUserName(userName);
-		updUser.setTelNo(telNo);
-		updUser.setUserId(userId);
-		
-		UserService service = new UserService();
-		int result = service.updateUser(updUser);
-		
-		
-		//이동할 페이지
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
-		
-		if(result > 0) {
-			
-			request.setAttribute("title", "알림");
-			request.setAttribute("msg", "수정되었습니다.");
-			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/user/userUpdate");
+		ArrayList<Company> arr = new ArrayList<Company>();
+		if(loginUser.getUserLevel().equals("1")) {
+			arr = service.getCustomerInfo();
+		}else {
+			arr = service.getSelerCustomerInfo(loginUser);
 		}
-			
-			view.forward(request, response);
+
+		response.setContentType("application/json; charset=UTF-8");
+		Gson gson = new Gson();
+		response.getWriter().print(gson.toJson(arr)); // 클라이언트에 JSON 응답
+
 	}
 
 	/**

@@ -28,18 +28,127 @@
 	  align-items: flex-start; 
 	  gap: 1rem;               
 	}
+    /* 전체 컨테이너 */
+    .content-container {
+        display: flex;
+        gap: 20px;
+        padding: 0px 40px 0px 0;
+        background-color: #f8f9fc;
+    }
+
+
+    /* 본문 */
+    .main-content {
+        flex: 1;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .main-content h1 {
+        font-size: 24px;
+        color: #007acc;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    /* 테이블 */
+    .customer {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .customer th {
+        background-color: #f0f8ff;
+        text-align: left;
+        padding: 12px;
+        width: 30%;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .customer td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .input-wrap {
+        width: 100%;
+    }
+
+    .input-item input[type="text"],
+    .input-item input[type="email"],
+    .input-item input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        background-color: #fdfdfd;
+    }
+
+    input[readonly] {
+        background-color: #f5f5f5;
+        color: #555;
+    }
+
+    /* 버튼 모양 */
+    .userUpdate-btn {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        gap: 10px;
+    }
+
+    .btn-first,
+    .btn-second,
+    .btn-cp {
+        flex: 1;
+        padding: 12px;
+        font-size: 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-first {
+        background-color: #007acc;
+        color: #fff;
+    }
+
+    .btn-first:hover {
+        background-color: #005f99;
+    }
+
+    .btn-second {
+        background-color: #ccc;
+        color: #333;
+    }
+
+    .btn-second:hover {
+        background-color: #999;
+    }
+
+    .btn-cp {
+        background-color: #00bcd4;
+        color: #fff;
+    }
+
+    .btn-cp:hover {
+        background-color: #0097a7;
+    } 
 
 </style>
 </head>
 <body>
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
-		
 		<main class="content-container">
 		<aside class="sidebar">
 		<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
 		</aside>
-		
 		<div class="main-content">
 			<h1>개인정보 수정 페이지</h1>
 			<section class="section update-wrap">
@@ -47,8 +156,6 @@
 					<form id="updateForm" 
 					      action="/user/update" 
 					      method="post">
-					    <%-- 사용자에게 보이지는 않지만 SQL 수행 시 필요한 유저아이디 hidden --%>
-					    <input type="hidden" name="userId" value="${loginUser.userId}">
 						<table class="customer">
 							<tr>
 								<th>아이디</th>
@@ -56,6 +163,7 @@
 									<input type="text" name="userId" value="${loginUser.userId}" readonly>
 								</td>
 							</tr>
+							
 							<tr> 
 								<th>비밀번호</th>
 								<td class="User">
@@ -64,6 +172,12 @@
 											<button type="button" class="btn-cp" onclick="chgPw()">비밀번호 변경</button>
 										</div>
 									</div>
+								</td>
+							</tr>
+							<tr>
+								<th>회사코드</th>
+								<td class="User">
+									<input type="text" name="compCd" value="${loginUser.compCd}" readonly>
 								</td>
 							</tr>
 							<tr>
@@ -81,12 +195,6 @@
 											  	   placeholder="이름을 입력하세요">
 										</div>
 									</div>
-								</td>
-							</tr>
-							<tr>
-								<th>회사코드</th>
-								<td class="User">
-									<input type="text" name="compCd" value="${loginUser.compCd}" readonly>
 								</td>
 							</tr>
 							<tr>
@@ -115,7 +223,6 @@
 						</table>
 						<div class="userUpdate-btn">
 							<button type="button" onclick="updateUserInfo()" class="btn-first">정보수정</button>
-							<button type="button" onclick="#" class="btn-second">회원탈퇴</button>
 						</div>
 					</form>
 				</div>
