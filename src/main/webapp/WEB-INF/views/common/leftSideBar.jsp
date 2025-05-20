@@ -69,7 +69,7 @@
 					<%-- 조정필요 --%>
 					<c:if test="${not empty sessionScope.user}">
 						<%-- 로그인을 하면 마이페이지는 보이게 하지만 3은 안보이게 설정 --%>
-						<li><a class="sidebar-link" href="/user/update">개인정보 수정</a></li>
+						<li><a class="sidebar-link" href="/user/userUpdateFrm">개인정보 수정</a></li>
 
 					</c:if>
 					<li><a class="sidebar-link" href="/user/customerInfoList">회사

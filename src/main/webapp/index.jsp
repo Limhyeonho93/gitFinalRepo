@@ -36,7 +36,7 @@
 				if (user != null) {
 				%>
 				<div class="alert alert-success" role="alert">
-					환영은 해드릴게.. 환영한다 환영해 <p> ${sessionScope.user.userName} 님아</p>
+				
 				</div>
 				<%
 				} else {

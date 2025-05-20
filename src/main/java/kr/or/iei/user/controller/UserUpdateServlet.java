@@ -15,7 +15,7 @@ import kr.or.iei.user.model.vo.User;
 /**
  * Servlet implementation class UpdateServlet
  */
-@WebServlet("/user/update")
+@WebServlet("/user/userUpdate")
 public class UserUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -44,7 +44,6 @@ public class UserUpdateServlet extends HttpServlet {
 		UserService service = new UserService();
 		int result = service.updateUser(updUser);
 		
-		//System.out.println(result); DB에 있는 아이디 4개 가져옴 미쳤네
 		
 		//이동할 페이지
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
