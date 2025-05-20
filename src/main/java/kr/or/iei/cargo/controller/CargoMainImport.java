@@ -129,7 +129,6 @@ public class CargoMainImport {
                 goods.setUnitPrice(unitPrice != null && !unitPrice.isEmpty() ? Integer.parseInt(unitPrice) : 0); // 상품단가 
                 goods.setQty(qty != null && !qty.isEmpty() ? Integer.parseInt(qty) : 0); // 상품개수
                 goods.setUnitWeight(unitWeight != null && !unitWeight.isEmpty() ? Float.parseFloat(unitWeight) : 0f); // 중량
-                goods.setNo(no != null && !no.isEmpty() ? Integer.parseInt(no) : 0); // 화물갯수
                 goods.setUserId(loginUser.getUserId()); // 갱신자
                 
                 CargoMain main=new CargoMain();
@@ -143,7 +142,7 @@ public class CargoMainImport {
                 main.setSellerName(sellerName); // 판매자 이름
                 main.setSellerAdd(sellerAdd); // 판매자 주소
                 main.setSellerTel(sellerTel); // 판매자 전화번호
-                main.setGw(gw != null && !gw.isEmpty() ? Integer.parseInt(gw) : 0); // 총 중량 
+                main.setGw(gw != null && !gw.isEmpty() ? Float.parseFloat(gw) : 0); // 총 중량 
                 main.setGwt(gwt); // 총 중량 단위
                 main.setNo(no != null && !no.isEmpty() ? Integer.parseInt(no) : 0); // 화물갯수
                 main.setDeliveryStop("N"); // 배송중지flg

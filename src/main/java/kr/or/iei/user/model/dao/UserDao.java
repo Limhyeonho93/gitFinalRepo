@@ -41,6 +41,7 @@ public class UserDao {
 				loginUser.setRegDate(rset.getDate("reg_date"));
 				loginUser.setUpdDate(rset.getDate("upd_date"));
 				loginUser.setGrade(rset.getString("grade"));
+				loginUser.setUserLevel(rset.getString("user_level"));
 
 			}
 
