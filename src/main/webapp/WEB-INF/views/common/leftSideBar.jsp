@@ -10,8 +10,6 @@
 <title>Insert title here</title>
 
 <style>
-
-
 </style>
 
 </head>
@@ -23,34 +21,38 @@
 		</div>
 
 		<ul class="list-unstyled">
-			<li class="sidebar-item">
-				<a class="sidebar-link d-flex align-items-center"data-bs-toggle="collapse" href="#bondAir" role="button" aria-expanded="false"> 
-					<span class="material-icons me-2">fire_truck</span>
+			<li class="sidebar-item"><a
+				class="sidebar-link d-flex align-items-center"
+				data-bs-toggle="collapse" href="#bondAir" role="button"
+				aria-expanded="false"> <span class="material-icons me-2">fire_truck</span>
 
 					화물관리
 			</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondAir">
 					<li><a class="sidebar-link" href="/cargo/search">화물 조회</a></li>
-					<li><a class="sidebar-link" href="/cargo/cargoRegisterForm">화물 등록</a></li>
+					<li><a class="sidebar-link" href="/cargo/cargoRegisterForm">화물
+							등록</a></li>
 					<li><a class="sidebar-link" href="#">화물 상태 수정</a></li>
-					<li><a class="sidebar-link" href="/bonded/searchFrm">입출고 관리</a></li>
+					<li><a class="sidebar-link" href="/bonded/searchFrm">입출고
+							관리</a></li>
 				</ul></li>
-			<li class="sidebar-item">
-				<a class="sidebar-link d-flex align-items-center" data-bs-toggle="collapse" href="#bondSea" role="button" aria-expanded="false"> 
-					<span class="material-icons me-2">receipt_long</span>
+			<li class="sidebar-item"><a
+				class="sidebar-link d-flex align-items-center"
+				data-bs-toggle="collapse" href="#bondSea" role="button"
+				aria-expanded="false"> <span class="material-icons me-2">receipt_long</span>
 					청구서 관리
 			</a>
 				<ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondSea">
+					<li><a class="sidebar-link" href="${pageContext.request.contextPath}/invoice/insertShoppingFrm">청구서 추가</a></li>
 					<li><a class="sidebar-link" href="/invoice/dateSearchFrm">청구서
 							조회</a></li>
-					<li><a class="sidebar-link" href="#">청구서 생성</a></li>
 					<li><a class="sidebar-link" href="#">청구서 수정</a></li>
 					<li><a class="sidebar-link" href="#">청구서 삭제</a></li>
-				</ul>
-			</li>
-			<li class="sidebar-item">
-				<a class="sidebar-link d-flex align-items-center" data-bs-toggle="collapse" href="#userControll" role="button" aria-expanded="false"> 
-					<span class="material-icons me-2">group</span>
+				</ul></li>
+			<li class="sidebar-item"><a
+				class="sidebar-link d-flex align-items-center"
+				data-bs-toggle="collapse" href="#userControll" role="button"
+				aria-expanded="false"> <span class="material-icons me-2">group</span>
 
 					마이페이지
 			</a>
@@ -61,7 +63,7 @@
 						<%-- 로그인을 하면 마이페이지는 보이게 하지만 3은 안보이게 설정 --%>
 						<li><a class="sidebar-link" href="/user/update">개인정보 수정</a></li>
 
-						
+
 					</c:if>
 				</ul></li>
 		</ul>

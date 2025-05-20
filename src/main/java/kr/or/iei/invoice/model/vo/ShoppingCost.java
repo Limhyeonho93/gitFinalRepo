@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ShoppingCost {
+	
 	private String disGrade;
 	private int weight;
 	private String wareCd;
