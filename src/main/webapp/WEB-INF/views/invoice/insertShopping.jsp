@@ -45,28 +45,22 @@
 				<option value="2000">2000</option>
 				<option value="4000">4000</option>
 			</select> <br> <br>
-
-			<button type="submit">요금 계산</button>
-
-
-			<br> <br>
-
-			<h3>총 요금 결과</h3>
 			<p>선택한 지역: ${regionName}</p>
-			<br>
+			<p>기본 요금: ${total}</p>
 
-			<p>
-				기본 요금: <span id="baseTotal">${total}</span>
-			</p>
 
-			<label>추가 금액:</label> <input type="number" name="adPrice" min="0"
-				max="1000000" step="1000" > <br> <br>
 
-			<button type="submit">요금 계산 및 저장</button>
+			<h3>추가 요금 입력</h3>
+			<br> <label>추가 금액:</label> <input type="number" id="adPrice" name="adPrice"
+				min="0" max="1000000" step="1000"> <br> <br>
+				
+<br>
+				<p>${total} + ${adPrice}  </p>
+			<button>요금 계산</button>
 		</form>
 
 	</main>
 
-	
+
 </body>
 </html>

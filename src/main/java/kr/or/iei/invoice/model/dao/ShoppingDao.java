@@ -18,6 +18,11 @@ public class ShoppingDao {
 
 		pstmt = conn.prepareStatement(query);
 
+		// 삭제 프린트
+		System.out.println("disGrade : " + disGrade);
+		System.out.println("weight : " + weight);
+		System.out.println("query : " + query);
+		
 		pstmt.setString(1, disGrade);
 		pstmt.setInt(2, weight);
 

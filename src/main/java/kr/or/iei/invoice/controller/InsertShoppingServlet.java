@@ -36,18 +36,18 @@ public class InsertShoppingServlet extends HttpServlet {
 
 		// grade값을 지역명으로 변환
 		String regionName = "";
-		String dbDisGrade = "";
+		
 
 		switch (disGrade) {
         case "A": regionName = "수도권"; break;
         case "B": regionName = "충청/강원"; break;
         case "C": regionName = "경상/전라"; break;
         case "D": regionName = "제주/도서산간"; break;
-    }
+         }
 
 		// 기본 요금 계산
 		ShoppingService service = new ShoppingService();
-		int total = service.calculateCost(dbDisGrade, weight);
+		int total = service.calculateCost(disGrade, weight);
 
 		// 결과를 request에 담아 JSP로 전달
 		request.setAttribute("regionName", regionName);
