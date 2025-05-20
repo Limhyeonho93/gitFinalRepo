@@ -34,10 +34,11 @@ public class UserJoinServlet extends HttpServlet {
 		 // 1. 파라미터 추출
         String userId = request.getParameter("userId");
         String compCd = request.getParameter("compCd");
-        String userPw = request.getParameter("password");
+        String userPw = request.getParameter("userPw");
         String userName = request.getParameter("userName");
         String deptName = request.getParameter("deptName");
         String telNo = request.getParameter("telNo");
+        String userLevel = request.getParameter("userLevel");
 
         // 2. User 객체 생성 및 값 설정
         User user = new User();
@@ -47,7 +48,8 @@ public class UserJoinServlet extends HttpServlet {
         user.setUserName(userName);
         user.setDeptName(deptName);
         user.setTelNo(telNo);
-        user.setUserLevel("2"); // 기본값: 일반 사용자
+        user.setUserLevel(userLevel); // 기본값: 일반 사용자
+        
 
         // 3. 서비스 호출하여 회원가입 처리
         UserService service = new UserService();

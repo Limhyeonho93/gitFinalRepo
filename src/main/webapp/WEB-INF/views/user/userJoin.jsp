@@ -50,8 +50,8 @@
 						placeholder="비밀번호를 입력하세요" required>
 				</div>
 				<div class="mb-3">
-					<label for="compName" class="form-label">회사 이름</label> <input
-						type="text" id="compName" name="compName" class="form-control"
+					<label for="deptName" class="form-label">부서 이름</label> <input
+						type="text" id="deptName" name="deptName" class="form-control"
 						placeholder="회사 이름 입력" required>
 				</div>
 
@@ -66,8 +66,8 @@
 						placeholder="회사 주소 입력" required>
 				</div>
 				<div class="mb-3">
-					<label for="compTel" class="form-label">회사 전화번호</label> <input
-						type="text" id="compTel" name="compTel" class="form-control"
+					<label for="telNo" class="form-label">회사 전화번호</label> <input
+						type="text" id="telNo" name="telNo" class="form-control"
 						placeholder="예: 02-123-4567">
 				</div>
 				<%-- 거래상황 --%>
@@ -78,13 +78,12 @@
 
 				<%-- 체크박스 추가 --%>
 				<div>
-					<label for="gradeCheckbox">등급 선택:</label> <input type="checkbox" id="gradeCheckbox" name="gradeCheckbox"
-						value="2" onchange="handleCheckboxChange(this)"> 회사 <input id="gradeCheckbox"
-						type="checkbox" name="gradeCheckbox" value="3"
+					<label for="userLevel">등급 선택:</label> <input type="radio" id="userLevel" name="userLevel"
+						value="2" onchange="handleCheckboxChange(this)"> 회사 <input id="userLevel"
+						type="radio" name="userLevel" value="3"
 						onchange="handleCheckboxChange(this)"> 직원
 				</div>
-				<%-- hidden 필드 --%>
-				<input type="hidden" id="grade" name="grade" value="">
+			
 				<div class="text-center">
 					<button type="submit" class="btn btn-primary">가입하기</button>
 				</div>

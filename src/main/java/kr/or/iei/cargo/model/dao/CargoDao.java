@@ -18,6 +18,7 @@ public class CargoDao {
 		System.out.println("searchCargo dao");
 		
 		PreparedStatement pstmt = null;
+		
 		ResultSet rset = null;
 
 		ArrayList<CargoMain> list = new ArrayList<CargoMain>();

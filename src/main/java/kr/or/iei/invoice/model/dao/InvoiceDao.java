@@ -13,13 +13,14 @@ import kr.or.iei.invoice.model.vo.CompInfo;
 import kr.or.iei.invoice.model.vo.DailyInsertInvoice;
 import kr.or.iei.invoice.model.vo.Invoice;
 import kr.or.iei.invoice.model.vo.ShoppingCost;
+import kr.or.iei.user.model.vo.User;
 
 public class InvoiceDao {
 
 	public ArrayList<Invoice> allInvoice(Connection conn, Date from, Date to) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		
+		System.out.println("allInvoice");
 		String query = "SELECT ti.comp_cd,max(comp_name) comp_name, sum(day_amount) as total_payment,sum(ti.total_weight) as total_weight  FROM t_invoice ti LEFT JOIN t_customerinfo tc ON ti.comp_cd = tc.comp_cd  WHERE deliveryed_date BETWEEN ? AND ? GROUP BY ti.comp_cd";
 		ArrayList<Invoice> arr = new ArrayList<Invoice>();
 		try {
@@ -27,6 +28,44 @@ public class InvoiceDao {
 			
 			pstmt.setDate(1, from);
 			pstmt.setDate(2, to);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				Invoice iv = new Invoice();
+				
+				iv.setCompCd(rset.getString("comp_cd"));
+				iv.setCompName(rset.getString("comp_name"));
+				iv.setTotalPayment(rset.getInt("total_payment"));
+				iv.setTotalWeight(rset.getInt("total_weight"));
+
+				arr.add(iv);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return arr;
+	}
+	
+
+	public ArrayList<Invoice> allSelerInvoice(Connection conn, Date from, Date to, User loginUser) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		System.out.println("allSelerInvoice");
+
+		String query = "SELECT ti.comp_cd,max(comp_name) comp_name, sum(day_amount) as total_payment,sum(ti.total_weight) as total_weight  FROM t_invoice ti LEFT JOIN t_customerinfo tc ON ti.comp_cd = tc.comp_cd  WHERE deliveryed_date BETWEEN ? AND ? AND ti.comp_cd = ? GROUP BY ti.comp_cd";
+		ArrayList<Invoice> arr = new ArrayList<Invoice>();
+		try {
+			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setDate(1, from);
+			pstmt.setDate(2, to);
+			pstmt.setString(3, loginUser.getCompCd());
+
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {
@@ -232,5 +271,6 @@ public class InvoiceDao {
         }
         return result;
 	}
+
 
 }
