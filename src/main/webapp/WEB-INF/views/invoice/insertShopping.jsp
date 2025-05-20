@@ -37,6 +37,7 @@
 				<option value="B">충청/강원</option>
 				<option value="C">경상/전라</option>
 				<option value="D">제주/도서산간</option>
+
 			</select> <br> <br> <label>무게 선택:</label> <select name="weight">
 				<option value="100">100</option>
 				<option value="500">500</option>
@@ -48,37 +49,24 @@
 			<button type="submit">요금 계산</button>
 
 
-			<br>
-			<br>
+			<br> <br>
 
 			<h3>총 요금 결과</h3>
 			<p>선택한 지역: ${regionName}</p>
 			<br>
 
 			<p>
-				기본 요금: <span id="baseTotal">${total}</span> 원 + 추가 금액 : <input
-					type="number" id="price" name="price" min="0" max="1000000"
-					step="100" required> 총 전체 금액 : <span id="sumTotal">${total}</span>
-				원
+				기본 요금: <span id="baseTotal">${total}</span>
 			</p>
 
+			<label>추가 금액:</label> <input type="number" name="adPrice" min="0"
+				max="1000000" step="1000" > <br> <br>
 
-
-
+			<button type="submit">요금 계산 및 저장</button>
 		</form>
-
 
 	</main>
 
-	<script>
-		const base = parseInt(document.getElementById("baseTotal").innerText);
-		const input = document.getElementById("price");
-		const output = document.getElementById("sumTotal");
-
-		input.addEventListener("input", function() {
-			const add = parseInt(input.value) || 0;
-			output.innerText = base + add;
-		});
-	</script>
+	
 </body>
 </html>

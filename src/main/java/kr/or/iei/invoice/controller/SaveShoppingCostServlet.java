@@ -1,7 +1,6 @@
 package kr.or.iei.invoice.controller;
 
 import java.io.IOException;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,16 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import kr.or.iei.invoice.model.service.ShoppingService;
 
 /**
- * Servlet implementation class InsertInvoice
+ * Servlet implementation class UpdateShoppingCostServlet
  */
-@WebServlet("/invoice/insertShopping")
-public class InsertShoppingServlet extends HttpServlet {
+@WebServlet("/invoice/saveShoppingCost")
+public class SaveShoppingCostServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#HttpServlet()
 	 */
-	public InsertShoppingServlet() {
+	public SaveShoppingCostServlet() {
 		super();
 	}
 
@@ -31,31 +30,28 @@ public class InsertShoppingServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		request.setCharacterEncoding("UTF-8");
+
 		String disGrade = request.getParameter("disGrade");
 		int weight = Integer.parseInt(request.getParameter("weight"));
+		int adPrice = Integer.parseInt(request.getParameter("adPrice"));
 
-		// grade값을 지역명으로 변환
-		String regionName = "";
-		String dbDisGrade = "";
-
-		switch (disGrade) {
-        case "A": regionName = "수도권"; break;
-        case "B": regionName = "충청/강원"; break;
-        case "C": regionName = "경상/전라"; break;
-        case "D": regionName = "제주/도서산간"; break;
-    }
-
-		// 기본 요금 계산
 		ShoppingService service = new ShoppingService();
-		int total = service.calculateCost(dbDisGrade, weight);
+		int basePrice = service.calculateCost(disGrade, weight);
+		int totalPrice = basePrice + adPrice;
 
-		// 결과를 request에 담아 JSP로 전달
-		request.setAttribute("regionName", regionName);
-		request.setAttribute("total", total);
-		
-		request.getRequestDispatcher("/WEB-INF/views/invoice/insertShopping.jsp").forward(request, response);
+		boolean result = service.saveShoppingCost(disGrade, weight, totalPrice);
 
-
+		if (result) {
+			request.setAttribute("regionName", disGrade);
+			request.setAttribute("weight", weight);
+			request.setAttribute("basePrice", basePrice);
+			request.setAttribute("adPrice", adPrice);
+			request.setAttribute("totalPrice", totalPrice);
+			request.getRequestDispatcher("/WEB-INF/views/invoice/success.jsp").forward(request, response);
+		} else {
+			response.sendRedirect("/invoice/failure");
+		}
 	}
 
 	/**
