@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Invoice {
+	
 	private String compCd;
 	private String compName;
 	private Date deliverDate;

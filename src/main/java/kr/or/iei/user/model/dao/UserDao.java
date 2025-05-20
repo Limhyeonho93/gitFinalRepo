@@ -41,6 +41,7 @@ public class UserDao {
 				loginUser.setRegDate(rset.getDate("reg_date"));
 				loginUser.setUpdDate(rset.getDate("upd_date"));
 				loginUser.setGrade(rset.getString("grade"));
+
 	            // 이거 반드시 살려주세요 ㅠㅠㅠㅠㅠㅠ
 	            // 제발
 	            loginUser.setUserLevel(rset.getString("user_level"));
@@ -60,7 +61,7 @@ public class UserDao {
 	public int updateUser(Connection conn, User updUser) {
 		PreparedStatement pstmt = null;
 
-		int result = 0; // 실패는 0, 성공은 1
+		int result = 0;
 
 		String query = "UPDATE T_USERS " + "SET USER_NAME = ?, TEL_NO = ? " + "WHERE USER_ID = ?";
 
@@ -88,7 +89,7 @@ public class UserDao {
 		PreparedStatement pstmt = null;
 
 		int result = 0;
-		String query = "UPDATE T_Users " + "SET user_pw  = ?, " + "    upd_date = SYSDATE " + // 갱신일도 함께 업데이트 해줌
+		String query = "UPDATE T_Users " + "SET user_pw  = ?, " + "upd_date = SYSDATE " + // 갱신일도 함께 업데이트 해줌
 				"WHERE user_id = ? ";
 
 		try {
@@ -125,14 +126,16 @@ public class UserDao {
 			pstmt.setString(6, user.getTelNo());
 			pstmt.setString(7, user.getUserLevel());
 
-			result = pstmt.executeUpdate();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}	
-		return result;
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return result;
 	}
 
 	public boolean isValidCompanyCode(Connection conn, String compCd) {

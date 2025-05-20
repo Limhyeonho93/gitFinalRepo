@@ -100,7 +100,7 @@
         </div>
 
         <div>
-            <button type="button" onclick="requestTempPw()">비밀번호 발급</button>
+            <button type="button" onclick="requestTempPw()">임시 비밀번호 발급</button>
         </div>
 
         <hr>

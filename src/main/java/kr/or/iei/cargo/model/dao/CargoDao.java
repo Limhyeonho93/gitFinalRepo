@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import kr.or.iei.cargo.model.vo.CargoGoods;
 import kr.or.iei.cargo.model.vo.CargoMain;
@@ -18,6 +19,7 @@ public class CargoDao {
 		System.out.println("searchCargo dao");
 		
 		PreparedStatement pstmt = null;
+		
 		ResultSet rset = null;
 
 		ArrayList<CargoMain> list = new ArrayList<CargoMain>();
@@ -111,7 +113,7 @@ public class CargoDao {
 			pstmt.setString(9, cargo.getSellerName());
 			pstmt.setString(10, cargo.getSellerAdd());
 			pstmt.setString(11, cargo.getSellerTel());
-			pstmt.setInt(12, cargo.getGw());
+			pstmt.setFloat(12, cargo.getGw());
 			pstmt.setString(13, cargo.getGwt());
 			pstmt.setInt(14, cargo.getNo());
 			pstmt.setString(15, cargo.getDeliveryStop());
@@ -155,7 +157,6 @@ public class CargoDao {
 				goods.setUnitPrice(rset.getInt("unit_price"));
 				goods.setQty(rset.getInt("qty"));
 				goods.setUnitWeight(rset.getFloat("unit_weight"));
-				goods.setNo(rset.getInt("no"));
 				goods.setDeliveryStop(rset.getString("delivery_stop"));
 				goods.setUserId(rset.getString("user_id"));
 				goods.setRegDate(rset.getString("reg_date"));
@@ -208,7 +209,7 @@ public class CargoDao {
 	        pstmt.setString(5, cargoMain.getSellerName()); 
 	        pstmt.setString(6, cargoMain.getSellerAdd());
 	        pstmt.setString(7, cargoMain.getSellerTel());
-	        pstmt.setInt(8, cargoMain.getGw());          
+	        pstmt.setFloat(8, cargoMain.getGw());          
 	        pstmt.setString(9, cargoMain.getGwt());          
 	        pstmt.setInt(10, cargoMain.getNo()); 
 	        pstmt.setString(11, cargoMain.getDeliveryStop());
@@ -288,7 +289,7 @@ public class CargoDao {
 	        pstmt.setString(8, cargo.getSellerName());
 	        pstmt.setString(9, cargo.getSellerAdd());
 	        pstmt.setString(10, cargo.getSellerTel());
-	        pstmt.setInt(11, cargo.getGw());
+	        pstmt.setFloat(11, cargo.getGw());
 	        pstmt.setString(12, cargo.getGwt());
 	        pstmt.setInt(13, cargo.getNo());
 	        pstmt.setString(14, cargo.getTrackingNo());
@@ -313,7 +314,7 @@ public class CargoDao {
 		int result = 0;
 	  
 	    String query = "INSERT INTO T_cargoGoods (comp_Cd, warehouse_Moveid, tracking_No, seq, goods_Name, " +
-	            "unit_Price, qty, unit_Weight, no, delivery_Stop, user_Id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	            "unit_Price, qty, unit_Weight, delivery_Stop, user_Id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	    try {
             pstmt = conn.prepareStatement(query);
@@ -326,9 +327,8 @@ public class CargoDao {
             pstmt.setInt(6, cargoGoods.getUnitPrice());
             pstmt.setInt(7, cargoGoods.getQty());
             pstmt.setFloat(8, cargoGoods.getUnitWeight());
-            pstmt.setInt(9, cargoGoods.getNo());
-            pstmt.setString(10, cargoGoods.getDeliveryStop());
-            pstmt.setString(11, cargoGoods.getUserId());
+            pstmt.setString(9, cargoGoods.getDeliveryStop());
+            pstmt.setString(10, cargoGoods.getUserId());
 
             result = pstmt.executeUpdate();
 	    } catch (SQLException e) {
@@ -340,20 +340,15 @@ public class CargoDao {
 	    return result;
 	}
 
-
+	// cargoMain 삭제
 	public int deleteCargoMainsByTrackingNo(Connection conn, String trackingNo) {
 	    PreparedStatement pstmt = null;
 	    int result = 0;
 	    try {
-	        // Delete from cargoGoods first due to foreign key constraint (if exists)
-	        pstmt = conn.prepareStatement("DELETE FROM T_cargoGoods WHERE tracking_no = ?");
-	        pstmt.setString(1, trackingNo);
-	        result += pstmt.executeUpdate();
-	        pstmt.close();
-
+	     
 	        pstmt = conn.prepareStatement("DELETE FROM T_cargoMain WHERE tracking_no = ?");
 	        pstmt.setString(1, trackingNo);
-	        result += pstmt.executeUpdate();
+	        result = pstmt.executeUpdate();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
@@ -361,5 +356,84 @@ public class CargoDao {
 	    }
 	    return result;
 	}
+
+	// 체크항목중 goods 삭제
+	public int deleteCargoGoodsByMultiTrackingNos(Connection conn, List<String> trackingNos) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		// 유효성 검사: 리스트가 비었으면 삭제할 것이 없음
+	    if (trackingNos == null || trackingNos.isEmpty()) {
+	        return 0;
+	    }
+
+	    // SQL 쿼리 생성: DELETE FROM ... WHERE tracking_no IN (?, ?, ...)
+	    StringBuilder query = new StringBuilder("DELETE FROM T_cargoGoods WHERE tracking_no IN (");
+	    for (int i = 0; i < trackingNos.size(); i++) {
+	        query.append("?");
+	        if (i < trackingNos.size() - 1) {
+	            query.append(", ");
+	        }
+	    }
+	    query.append(")");
+		
+		try {
+			pstmt = conn.prepareStatement(query.toString());
+			// 바인딩 변수 설정
+	        for (int i = 0; i < trackingNos.size(); i++) {
+	            pstmt.setString(i + 1, trackingNos.get(i));
+	        }
+	        
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt); 
+	    }
+			
+			
+		return result;
+	}
+
+
+	public int deleteCargoMainsByMultiTrackingNos(Connection conn, List<String> trackingNos) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		if (trackingNos == null || trackingNos.isEmpty()) {
+	        return 0;
+	    }
+
+	    // SQL 쿼리 생성
+	    StringBuilder query = new StringBuilder("DELETE FROM T_cargoMain WHERE tracking_no IN (");
+	    for (int i = 0; i < trackingNos.size(); i++) {
+	        query.append("?");
+	        if (i < trackingNos.size() - 1) {
+	            query.append(", ");
+	        }
+	    }
+	    query.append(")");
+
+	    try {
+	        pstmt = conn.prepareStatement(query.toString());
+
+	        // 바인딩 변수 설정
+	        for (int i = 0; i < trackingNos.size(); i++) {
+	            pstmt.setString(i + 1, trackingNos.get(i));
+	        }
+
+	        // 삭제 실행
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return result;
+	}
+		
 }
 

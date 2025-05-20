@@ -16,7 +16,7 @@
 
 		<div class="d-flex align-items-center">
 			<button id="toggleSidebar" class="btn btn-outline-light btn-sm me-3">&#8801;</button>
-			<h5 class="mb-0">물류 화물관리 시스템</h5>
+			<h5 class="mb-0"><a href="${pageContext.request.contextPath}/">물류 화물관리 시스템</a></h5>
 		</div>
 		<div>
 

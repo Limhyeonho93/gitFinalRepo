@@ -27,6 +27,7 @@
 </style>
 </head>
 <body>	
+	<h2>비밀번호 변경</h2>
 	<div class="wrap">
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content-pw-container">
@@ -38,7 +39,7 @@
 					<form id="pwChgForm" action="/user/pwChg" method="post" onsubmit="return validateForm()">
 						<div class="input-wrap">
 							<div class="input-title">
-								<label for="memberPw">현재 비밀번호</label>
+								<label for="userPw">현재 비밀번호</label>
 							</div>
 							<div class="input-item">
 							
