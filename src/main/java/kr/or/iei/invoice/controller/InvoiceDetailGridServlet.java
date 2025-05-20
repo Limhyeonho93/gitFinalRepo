@@ -15,7 +15,7 @@ import kr.or.iei.invoice.model.service.InvoiceService;
 import kr.or.iei.invoice.model.vo.CargoUnitInvoice;
 
 /**
- * Servlet implementation class InvoiceDetailGridServlet
+ * Servlet implementation class InvoiceDetailGridServletss
  */
 @WebServlet("/invoice/dataDetailGrid")
 public class InvoiceDetailGridServlet extends HttpServlet {

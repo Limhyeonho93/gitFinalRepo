@@ -14,7 +14,7 @@ import kr.or.iei.invoice.model.service.InvoiceService;
 import kr.or.iei.invoice.model.vo.CompInfo;
 
 /**
- * Servlet implementation class InvoiceDetailFrmServlet
+ * Servlet implementation class InvoiceDetailFrmServlets
  */
 @WebServlet("/invoice/detailFrm")
 public class InvoiceDetailFrmServlet extends HttpServlet {

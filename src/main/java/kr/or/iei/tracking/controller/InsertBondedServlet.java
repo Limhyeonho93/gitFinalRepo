@@ -15,7 +15,7 @@ import kr.or.iei.tracking.model.service.TrackingService;
 import kr.or.iei.tracking.model.vo.DailyWarehouseSummary;
 
 /**
- * Servlet implementation class InsertBondedServlet
+ * Servlet implementation class InsertBondedServlets
  */
 @WebServlet("/bonded/insertBond")
 public class InsertBondedServlet extends HttpServlet {

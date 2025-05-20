@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class TrackingSearchFrmServlet
+ * Servlet implementation class TrackingSearchFrmServlets
  */
 @WebServlet("/tracking/searchList")
 public class TrackingSearchFrmServlet extends HttpServlet {

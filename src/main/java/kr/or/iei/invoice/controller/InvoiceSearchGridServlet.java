@@ -18,7 +18,7 @@ import kr.or.iei.invoice.model.vo.Invoice;
 import kr.or.iei.user.model.vo.User;
 
 /**
- * Servlet implementation class InvoiceSearchGrid
+ * Servlet implementation class InvoiceSearchGrids
  */
 @WebServlet("/invoice/dataGrid")
 public class InvoiceSearchGridServlet extends HttpServlet {

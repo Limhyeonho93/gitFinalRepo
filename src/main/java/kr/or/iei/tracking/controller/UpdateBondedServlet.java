@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import kr.or.iei.tracking.model.service.TrackingService;
 
 /**
- * Servlet implementation class UpdateBondedServlet
+ * Servlet implementation class UpdateBondedServlets
  */
 @WebServlet("/bonded/updateBonded")
 public class UpdateBondedServlet extends HttpServlet {

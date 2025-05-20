@@ -20,7 +20,7 @@ import kr.or.iei.tracking.model.vo.TrackingJoin;
 import kr.or.iei.user.model.vo.User;
 
 /**
- * Servlet implementation class TrackingSearchGridServlet
+ * Servlet implementation class TrackingSearchGridServletss
  */
 @WebServlet("/tracking/trackingGrid")
 public class TrackingSearchGridServlet extends HttpServlet {

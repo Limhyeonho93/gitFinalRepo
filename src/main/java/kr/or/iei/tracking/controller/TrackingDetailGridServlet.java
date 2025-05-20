@@ -17,7 +17,7 @@ import kr.or.iei.tracking.model.service.TrackingService;
 import kr.or.iei.tracking.model.vo.TrackingJoin;
 
 /**
- * Servlet implementation class TrackingDetailGridServlet
+ * Servlet implementation class TrackingDetailGridServlets
  */
 @WebServlet("/tracking/trackingDetail")
 public class TrackingDetailGridServlet extends HttpServlet {

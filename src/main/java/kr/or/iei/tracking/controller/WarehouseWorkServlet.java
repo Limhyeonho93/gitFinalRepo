@@ -16,7 +16,7 @@ import kr.or.iei.tracking.model.vo.DailyWarehouseSummary;
 import kr.or.iei.tracking.model.vo.TrackingJoin;
 
 /**
- * Servlet implementation class WarehouseWorkServlet
+ * Servlet implementation class WarehouseWorkServlets
  */
 @WebServlet("/bonded/searchGrid")
 public class WarehouseWorkServlet extends HttpServlet {
