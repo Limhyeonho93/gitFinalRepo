@@ -61,10 +61,7 @@
 						<%-- 로그인을 하면 마이페이지는 보이게 하지만 3은 안보이게 설정 --%>
 						<li><a class="sidebar-link" href="/user/update">개인정보 수정</a></li>
 
-						<%-- 직원은 3이기 떄문에 회원 생성 못 하게 설정 --%>
-						<c:if test="${sessionScope.user.grade != 3}">
-							<li><a class="sidebar-link" href="/user/userJoin">직원 생성</a></li>
-						</c:if>
+						
 					</c:if>
 				</ul></li>
 		</ul>
