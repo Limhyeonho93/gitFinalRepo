@@ -57,7 +57,7 @@ public class UserDao {
 	public int updateUser(Connection conn, User updUser) {
 		PreparedStatement pstmt = null;
 
-		int result = 0; // 실패는 0, 성공은 1
+		int result = 0;
 
 		String query = "UPDATE T_USERS " + "SET USER_NAME = ?, TEL_NO = ? " + "WHERE USER_ID = ?";
 
@@ -85,7 +85,7 @@ public class UserDao {
 		PreparedStatement pstmt = null;
 
 		int result = 0;
-		String query = "UPDATE T_Users " + "SET user_pw  = ?, " + "    upd_date = SYSDATE " + // 갱신일도 함께 업데이트 해줌
+		String query = "UPDATE T_Users " + "SET user_pw  = ?, " + "upd_date = SYSDATE " + // 갱신일도 함께 업데이트 해줌
 				"WHERE user_id = ? ";
 
 		try {
