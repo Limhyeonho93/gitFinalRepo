@@ -16,6 +16,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  /*background-color: #2C3E50 !important;*/
+    background-color: #689caf;
+  
 }
 .header h5 {
   font-size: 1rem;
@@ -25,7 +28,7 @@ body {
 .side-navbar {
   min-width: 250px;
   max-width: 250px;
-  background-color: #30323e;
+  background-color: rgb(87, 162, 228);
   height: 100vh;
   transition: all 0.3s;
 }

@@ -1,56 +1,53 @@
 package kr.or.iei.user.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.or.iei.invoice.model.service.InvoiceService;
-import kr.or.iei.invoice.model.vo.CompInfo;
+import kr.or.iei.user.model.service.CustomerInfoService;
 
 /**
- * Servlet implementation class UserJoinFrmServlet
+ * Servlet implementation class CustomerInfoDeleteServlet
  */
-@WebServlet("/user/userJoinFrm")
-public class UserJoinFrmServlet extends HttpServlet {
+@WebServlet("/user/deleteCustomerInfo")
+public class CustomerInfoDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserJoinFrmServlet() {
+    public CustomerInfoDeleteServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 인코딩 - 필터
-		request.setCharacterEncoding("UTF-8");
+		// TODO Auto-generated method stub
+		String[] compCdArr = request.getParameterValues("compCdArr");
+	
+		CustomerInfoService service = new CustomerInfoService();
 		
-		// 2. 뷰 페이지 포워딩
-		InvoiceService service = new InvoiceService();
+		int res = service.deleteCustomerInfo(compCdArr);
 		
-		ArrayList<CompInfo> compInfoArr = service.getAllComp();
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/user/userJoin.jsp");
-
-		request.setAttribute("compInfoArr", compInfoArr);
-		view.forward(request, response);
-
-		
-		
+		if(res > 0) {
+			response.getWriter().write("success");
+		}else{
+			response.getWriter().write("fail");
+		}
+	
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

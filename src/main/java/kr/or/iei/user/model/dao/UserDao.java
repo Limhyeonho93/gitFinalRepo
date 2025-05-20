@@ -112,7 +112,8 @@ public class UserDao {
 	public int insertUser(Connection conn, User user) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = "INSERT INTO T_USERS VALUES(?, ?, ?, ?, ?, ?, SYSDATE, SYSDATE, '2')";
+		String query = "INSERT INTO T_USERS (USER_ID, COMP_CD, USER_PW, USER_NAME, DEPT_NAME, TEL_NO, REG_DATE, UPD_DATE, USER_LEVEL, GRADE)  "
+				+ "VALUES(?, ?, ?, ?, ?, ?, SYSDATE, SYSDATE, ? , '2')";
 		try {
 			pstmt = conn.prepareStatement(query);
 
@@ -122,6 +123,7 @@ public class UserDao {
 			pstmt.setString(4, user.getUserName());
 			pstmt.setString(5, user.getDeptName());
 			pstmt.setString(6, user.getTelNo());
+			pstmt.setString(7, user.getUserLevel());
 
 			result = pstmt.executeUpdate();
 

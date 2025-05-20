@@ -324,7 +324,6 @@ modal css
                     gridDiv.style.height = "800px";
                 },
                 error: function(err) {
-                    console.log("에러 발생:", err);
                     swal({ title: "알림", text: "데이터 불러오기 실패", icon: "warning" });
                 }
             });
@@ -423,7 +422,6 @@ modal css
                 const selectedData = selectedNodes.map(node => node.data);
 
                 // 데이터 출력 (콘솔에 출력하거나 다른 방식으로 처리할 수 있음)
-                console.log("선택된 데이터:", selectedData);
 
                 // 예시: 데이터를 CSV 형식으로 변환하여 다운로드
                 const csvContent = convertToCSV(selectedData);
