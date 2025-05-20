@@ -7,8 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>개인정보 수정 페이지</title>
-<script src="/resources/js/sweetalert.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="/resources/js/sweetalert.min.js"></script>
 
 <!-- Bootstrap & Icons -->
 <link
@@ -28,6 +28,132 @@
 	  align-items: flex-start; 
 	  gap: 1rem;               
 	}
+    /* 전체 컨테이너 */
+    .content-container {
+        display: flex;
+        gap: 20px;
+        padding: 40px;
+        background-color: #f8f9fc;
+    }
+
+
+    /* 본문 */
+    .main-content {
+        flex: 1;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .main-content h1 {
+        font-size: 24px;
+        color: #007acc;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    /* 테이블 */
+    .customer {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .customer th {
+        background-color: #f0f8ff;
+        text-align: left;
+        padding: 12px;
+        width: 30%;
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .customer td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .input-wrap {
+        width: 100%;
+    }
+
+    .input-item input[type="text"],
+    .input-item input[type="email"],
+    .input-item input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        background-color: #fdfdfd;
+    }
+
+    input[readonly] {
+        background-color: #f5f5f5;
+        color: #555;
+    }
+
+    /* 버튼 모ㅗ양 */
+    .userUpdate-btn {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+        gap: 10px;
+    }
+
+    .btn-first,
+    .btn-second,
+    .btn-cp {
+        flex: 1;
+        padding: 12px;
+        font-size: 15px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-first {
+        background-color: #007acc;
+        color: #fff;
+    }
+
+    .btn-first:hover {
+        background-color: #005f99;
+    }
+
+    .btn-second {
+        background-color: #ccc;
+        color: #333;
+    }
+
+    .btn-second:hover {
+        background-color: #999;
+    }
+
+    .btn-cp {
+        background-color: #00bcd4;
+        color: #fff;
+    }
+
+    .btn-cp:hover {
+        background-color: #0097a7;
+    }
+
+    /* 반응형??? */
+    @media (max-width: 768px) {
+        .content-container {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+        }
+
+        .userUpdate-btn {
+            flex-direction: column;
+        }
+    }
 
 </style>
 </head>
@@ -53,7 +179,7 @@
 							<tr>
 								<th>아이디</th>
 								<td class="User">
-								${loginUser.userId}
+									<input type="text" name="userId" value="${loginUser.userId}" readonly>
 								</td>
 							</tr>
 							<tr> 
@@ -68,7 +194,7 @@
 							</tr>
 							<tr>
 								<th>
-									<label for="UName">이름</label>
+									<label for="UserName">이름</label>
 								</th>
 								<td class="User">
 									<div class="input-wrap">
@@ -86,7 +212,7 @@
 							<tr>
 								<th>회사코드</th>
 								<td class="User">
-								${loginUser.compCd}
+									<input type="text" name="compCd" value="${loginUser.compCd}" readonly>
 								</td>
 							</tr>
 							<tr>
@@ -108,7 +234,9 @@
 							</tr>
 							<tr>
 								<th>등록일</th>
-								<td>${loginUser.regDate}</td>
+								<td>
+									<input type="text" name="regDate" value="${loginUser.regDate}" readonly>
+								</td>
 							</tr>
 						</table>
 						<div class="userUpdate-btn">

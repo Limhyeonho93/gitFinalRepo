@@ -1,4 +1,4 @@
-package kr.or.iei.tracking.controller;
+package kr.or.iei.user.controller;
 
 import java.io.IOException;
 
@@ -10,16 +10,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class WarehouseWorkFrmServlet
+ * Servlet implementation class ForgotPwFrmServlet
  */
-@WebServlet("/bonded/searchFrm")
-public class WarehouseWorkFrmServlet extends HttpServlet {
+@WebServlet("/user/forgotPwFrm")
+public class ForgotPwFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public WarehouseWorkFrmServlet() {
+    public ForgotPwFrmServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,10 +28,10 @@ public class WarehouseWorkFrmServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/tracking/warehoseWork.jsp");
+		
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/user/forgotPw.jsp");
+		
 		view.forward(request, response);
-	
 	}
 
 	/**

@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 
 import kr.or.iei.tracking.model.service.TrackingService;
 import kr.or.iei.tracking.model.vo.DailyWarehouseSummary;
+import kr.or.iei.tracking.model.vo.TrackingJoin;
 
 /**
  * Servlet implementation class WarehouseWorkServlet
@@ -34,11 +35,11 @@ public class WarehouseWorkServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String searchDate = request.getParameter("searchDate");
-		
+		// 어레이로 받기위해서 getParameterValues
 		TrackingService service = new TrackingService();
-		
-		ArrayList<DailyWarehouseSummary> arr = service.getDailyWareData(searchDate); 
-		
+
+		ArrayList<DailyWarehouseSummary> arr = service.getDailyWareData(searchDate);
+
 		response.setContentType("application/json; charset=UTF-8");
 		Gson gson = new Gson();
 		response.getWriter().print(gson.toJson(arr)); // 클라이언트에 JSON 응답

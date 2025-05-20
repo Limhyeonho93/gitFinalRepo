@@ -17,14 +17,12 @@ public class EncodingFilter extends HttpFilter implements Filter {
      */
     public EncodingFilter() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see Filter#destroy()
 	 */
 	public void destroy() {
-		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -32,7 +30,7 @@ public class EncodingFilter extends HttpFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		// 클라이언트 요청하며 데이터 인코딩 처리
-		request.setCharacterEncoding("utf-8");
+		request.setCharacterEncoding("UTF-8");
 		
 		chain.doFilter(request, response);
 	}
@@ -41,7 +39,6 @@ public class EncodingFilter extends HttpFilter implements Filter {
 	 * @see Filter#init(FilterConfig)
 	 */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
 	}
 
 }

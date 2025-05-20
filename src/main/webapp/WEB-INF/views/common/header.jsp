@@ -29,7 +29,7 @@
 			 
 			 <a	href="${pageContext.request.contextPath}/user/loginFrm"	class="btn btn-outline-light btn-sm">로그인</a>
 			 <%} %>
-			 <a	href="${pageContext.request.contextPath}/user/companyJoinFrm"	class="btn btn-outline-light btn-sm">회원가입</a>
+			 <a	href="${pageContext.request.contextPath}/user/userJoinFrm"	class="btn btn-outline-light btn-sm">회원가입</a>
 		</div>
 	</header>
 </body>

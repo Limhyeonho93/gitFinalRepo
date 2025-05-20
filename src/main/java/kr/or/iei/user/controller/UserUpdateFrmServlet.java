@@ -9,17 +9,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+
 /**
- * Servlet implementation class JoinFrmServlet
+ * Servlet implementation class UserUpdateServlet
  */
-@WebServlet("/user/companyJoinFrm")
-public class CompanyJoinFrmServlet extends HttpServlet {
+@WebServlet("/user/userUpdateFrm")
+public class UserUpdateFrmServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CompanyJoinFrmServlet() {
+    public UserUpdateFrmServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,15 +29,10 @@ public class CompanyJoinFrmServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// 1. 인코딩 - 필터 
-		// 2. 갑 추출
-		// 3. 로직
-		// 4. 결과 처리
-		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/user/companyJoin.jsp");
 		
-		// 4- 페이지로 이동.
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/user/userUpdate.jsp");
+		
 		view.forward(request, response);
-		
 	}
 
 	/**

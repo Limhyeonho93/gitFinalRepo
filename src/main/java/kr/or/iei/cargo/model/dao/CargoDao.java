@@ -9,19 +9,21 @@ import java.util.ArrayList;
 import kr.or.iei.cargo.model.vo.CargoGoods;
 import kr.or.iei.cargo.model.vo.CargoMain;
 import kr.or.iei.common.JDBCTemplate;
+import kr.or.iei.user.model.vo.User;
 
 public class CargoDao {
 	
 	//화물 조회
-	public ArrayList<CargoMain> searchCargo(Connection conn, String[] searchValue, String searchOption) {
+	public ArrayList<CargoMain> searchCargo(Connection conn, String[] searchValue, String searchOption, User loginUser) {
 		System.out.println("searchCargo dao");
 		
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
 		ArrayList<CargoMain> list = new ArrayList<CargoMain>();
-
+		
 		StringBuilder query = new StringBuilder("SELECT * FROM T_cargoMain WHERE ");
+		
 		query.append(searchOption).append(" IN (");
 
 		for (int i = 0; i < searchValue.length; i++) {
@@ -31,6 +33,11 @@ public class CargoDao {
 			}
 		}
 		query.append(")");
+		
+		// 유저 권한에 따라서 쿼리문 변경하기 위해서
+		if (!loginUser.getUserLevel().equals("1")) {
+		    query.append(" AND comp_cd = '" + loginUser.getCompCd() + "'");
+		}
 
 		try {
 			// pstmt=conn.prepareStatement(query);
@@ -79,19 +86,19 @@ public class CargoDao {
 	}
 	
 	
-	//화물 한 건 등록(T_cargoMain)
-	public int insertCargo(Connection conn, CargoMain cargo) {
-		System.out.println("insertCargo");
-		PreparedStatement pstmt = null;
-		int result = 0;
+	   //화물 한 건 등록(T_cargoMain)
+	   public int insertCargo(Connection conn, CargoMain cargo) {
+	      System.out.println("insertCargo");
+	      PreparedStatement pstmt = null;
+	      int result = 0;
 
 		String query = "INSERT INTO T_cargoMain (" + "comp_cd, warehouse_moveId, tracking_no, manage_no, "
 				+ "receiver_name, receiver_add, receiver_zip, receiver_tel, "
-				+ "seller_name, seller_add, seller_tel, gw, gwt, no) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "seller_name, seller_add, seller_tel, gw, gwt, no, delivery_Stop, User_Id, reg_Date, upd_Date) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, sysdate)";
 
-		try {
-			pstmt = conn.prepareStatement(query);
+	      try {
+	         pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, cargo.getCompCd());
 			pstmt.setString(2, cargo.getWarehouseMoveid());
@@ -107,18 +114,21 @@ public class CargoDao {
 			pstmt.setInt(12, cargo.getGw());
 			pstmt.setString(13, cargo.getGwt());
 			pstmt.setInt(14, cargo.getNo());
+			pstmt.setString(15, cargo.getDeliveryStop());
+			pstmt.setString(16, cargo.getUserId());
 
-			result = pstmt.executeUpdate();
+	         result = pstmt.executeUpdate();
 
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	      } catch (SQLException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
 
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}
-		return result;
-	}
+	      } finally {
+	         JDBCTemplate.close(pstmt);
+	      }
+	      return result;
+	   }
+
 	
 	
 	//화물 상세 조회
@@ -174,9 +184,6 @@ public class CargoDao {
 	    PreparedStatement pstmt = null;
 	    
 	    String query = "UPDATE T_CARGOMAIN SET "
-	            + "COMP_CD = ?, "
-	            + "WAREHOUSE_MOVEID = ?, "
-	            + "Tracking_No = ? , "
 	            + "RECEIVER_NAME = ?, "
 	            + "RECEIVER_ADD = ?, "
 	            + "RECEIVER_ZIP = ?, "
@@ -194,22 +201,19 @@ public class CargoDao {
 	    try {
 	    	pstmt=conn.prepareStatement(query);
 	    	
-	    	pstmt.setString(1, cargoMain.getCompCd());
-	        pstmt.setString(2, cargoMain.getWarehouseMoveid());
-	        pstmt.setString(3, cargoMain.getTrackingNo());
-	        pstmt.setString(4, cargoMain.getReceiverName());      
-	        pstmt.setString(5, cargoMain.getReceiverAdd());         
-	        pstmt.setString(6, cargoMain.getReceiverZip());      
-	        pstmt.setString(7, cargoMain.getReceiverTel());
-	        pstmt.setString(8, cargoMain.getSellerName()); 
-	        pstmt.setString(9, cargoMain.getSellerAdd());
-	        pstmt.setString(10, cargoMain.getSellerTel());
-	        pstmt.setInt(11, cargoMain.getGw());          
-	        pstmt.setString(12, cargoMain.getGwt());          
-	        pstmt.setInt(13, cargoMain.getNo()); 
-	        pstmt.setString(14, cargoMain.getDeliveryStop());
-	        pstmt.setString(15, cargoMain.getUserId()); 
-	        pstmt.setString(16, cargoMain.getTrackingNo());
+	        pstmt.setString(1, cargoMain.getReceiverName());      
+	        pstmt.setString(2, cargoMain.getReceiverAdd());         
+	        pstmt.setString(3, cargoMain.getReceiverZip());      
+	        pstmt.setString(4, cargoMain.getReceiverTel());
+	        pstmt.setString(5, cargoMain.getSellerName()); 
+	        pstmt.setString(6, cargoMain.getSellerAdd());
+	        pstmt.setString(7, cargoMain.getSellerTel());
+	        pstmt.setInt(8, cargoMain.getGw());          
+	        pstmt.setString(9, cargoMain.getGwt());          
+	        pstmt.setInt(10, cargoMain.getNo()); 
+	        pstmt.setString(11, cargoMain.getDeliveryStop());
+	        pstmt.setString(12, cargoMain.getUserId()); 
+	        pstmt.setString(13, cargoMain.getTrackingNo());
 
 	        result = pstmt.executeUpdate();
 	    } catch (SQLException e) {
@@ -305,8 +309,9 @@ public class CargoDao {
 	//T_CargoGoods 등록
 	public int insertCargoGoods(Connection conn, CargoGoods cargoGoods) {
 		System.out.println("insertCargoGoods");
-	    int result = 0;
-	    PreparedStatement pstmt = null;
+		PreparedStatement pstmt = null;
+		int result = 0;
+	  
 	    String query = "INSERT INTO T_cargoGoods (comp_Cd, warehouse_Moveid, tracking_No, seq, goods_Name, " +
 	            "unit_Price, qty, unit_Weight, no, delivery_Stop, user_Id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -332,6 +337,28 @@ public class CargoDao {
 	        JDBCTemplate.close(pstmt);
 	    }
 
+	    return result;
+	}
+
+
+	public int deleteCargoMainsByTrackingNo(Connection conn, String trackingNo) {
+	    PreparedStatement pstmt = null;
+	    int result = 0;
+	    try {
+	        // Delete from cargoGoods first due to foreign key constraint (if exists)
+	        pstmt = conn.prepareStatement("DELETE FROM T_cargoGoods WHERE tracking_no = ?");
+	        pstmt.setString(1, trackingNo);
+	        result += pstmt.executeUpdate();
+	        pstmt.close();
+
+	        pstmt = conn.prepareStatement("DELETE FROM T_cargoMain WHERE tracking_no = ?");
+	        pstmt.setString(1, trackingNo);
+	        result += pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
 	    return result;
 	}
 }
