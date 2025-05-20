@@ -9,59 +9,56 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.google.gson.Gson;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import kr.or.iei.invoice.model.service.InvoiceService;
+import kr.or.iei.invoice.model.vo.CargoUnitInvoice;
 import kr.or.iei.invoice.model.vo.Invoice;
 import kr.or.iei.user.model.vo.User;
 
 /**
- * Servlet implementation class InvoiceSearchGrids
+ * Servlet implementation class InvoiceExcelDownServlet
  */
-@WebServlet("/invoice/dataGrid")
-public class InvoiceSearchGridServlet extends HttpServlet {
+@WebServlet("/InvoiceExcelDownServlet")
+public class InvoiceExcelDownServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InvoiceSearchGridServlet() {
+    public InvoiceExcelDownServlet() {
         super();
+        // TODO Auto-generated constructor stub
     }
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		String compCd = request.getParameter("compCd");
 		Date from = Date.valueOf(request.getParameter("from"));
 		Date to = Date.valueOf(request.getParameter("to"));
 		
 		InvoiceService service = new InvoiceService();
-		
-		HttpSession session = request.getSession(false); // 기존 세션만 가져옴
-		User loginUser = (User) session.getAttribute("user");
-		
-		ArrayList<Invoice> arr = new ArrayList<Invoice>();
-		if(loginUser.getUserLevel().equals("1")) {
-			arr = service.allInvoice(from,to);
-		}else {
-			arr = service.allSelerInvoice(from,to,loginUser);
-		}
-		
-		// 3. 응답 데이터 JSON 변환
-	    response.setContentType("application/json; charset=UTF-8");
-	    Gson gson = new Gson();
-	    response.getWriter().print(gson.toJson(arr));  // 클라이언트에 JSON 응답
+		ArrayList<Invoice> sheet1Arr = new ArrayList<Invoice>();
 
+		User loginUser = new User();
+		loginUser.setCompCd(compCd);
+		sheet1Arr = service.allSelerInvoice(from,to,loginUser);
+		
+		ArrayList<CargoUnitInvoice> sheet2Arr = service.trackingNoInvoice(request.getParameter("from"), request.getParameter("to"), compCd);
+
+		 Workbook wb = new XSSFWorkbook();
+		
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

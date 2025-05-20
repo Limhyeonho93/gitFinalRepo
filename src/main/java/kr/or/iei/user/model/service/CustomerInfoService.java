@@ -16,6 +16,7 @@ public class CustomerInfoService {
 		dao = new CustomerInfoDao();
 	}
 
+	// grid에 표시할 물류회사용 전체 쿼리
 	public ArrayList<Company> getCustomerInfo() {
 		Connection conn = JDBCTemplate.getConnection();
 
@@ -25,6 +26,7 @@ public class CustomerInfoService {
 		return arr;
 	}
 
+	// grid에 표시할 셀러자신만 보이는 쿼리문
 	public ArrayList<Company> getSelerCustomerInfo(User loginUser) {
 		Connection conn = JDBCTemplate.getConnection();
 
@@ -34,6 +36,7 @@ public class CustomerInfoService {
 		return arr;
 	}
 
+	// 중복 체크
 	public Company checkCompcd(String compCd) {
 		Connection conn = JDBCTemplate.getConnection();
 
@@ -43,10 +46,10 @@ public class CustomerInfoService {
 		return comp;
 	}
 
+	// custmoerInfo정보 insert
 	public int insertCustomerInfo(Company c) {
 		Connection conn = JDBCTemplate.getConnection();
 
-		// impBonded에 데이터 등록
 		int res = dao.insertCustomerInfo(conn, c);
 
 		if (res > 0) {
@@ -60,12 +63,37 @@ public class CustomerInfoService {
 		return res;
 	}
 
+	//customerInfo 정보 udpate
 	public int updateCustomerInfo(Company c) {
 		Connection conn = JDBCTemplate.getConnection();
 
-		// impBonded에 데이터 등록
 		int res = dao.updateCustomerInfo(conn, c);
 
+		if (res > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+
+		JDBCTemplate.close(conn);
+
+		return res;
+	}
+
+	// customerInfo삭제
+	public int deleteCustomerInfo(String[] compCdArr) {
+		Connection conn = JDBCTemplate.getConnection();
+
+		int res = 0;
+		for (String compCd : compCdArr) {
+			res = dao.deleteCustomerInfo(conn, compCd);
+			
+			// 삭제도중 에러 발생시 break이후 롤백
+			if(res < 1) {
+				break;
+			}
+		}
+		
 		if (res > 0) {
 			JDBCTemplate.commit(conn);
 		} else {

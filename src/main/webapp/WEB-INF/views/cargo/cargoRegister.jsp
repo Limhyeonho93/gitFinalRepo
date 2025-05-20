@@ -310,111 +310,111 @@
         
         // 송장 번호 (숫자만 허용)
        let trackingNo = $('#trackingNo').val();
-   	    if (!trackingNo || trackingNo.length < 6 || trackingNo.length > 10) {
-		        $('#trackingNo').addClass('input-error');
-		        $('#trackingNo').after('<div class="error-message">송장 번호는 6~10자 이내여야 합니다.</div>');
-		        isValid = false;
+          if (!trackingNo || trackingNo.length < 6 || trackingNo.length > 10) {
+              $('#trackingNo').addClass('input-error');
+              $('#trackingNo').after('<div class="error-message">송장 번호는 6~10자 이내여야 합니다.</div>');
+              isValid = false;
         }
 
         // 수취인 이름 
         let receiverName = $('#receiverName').val();
         if (!receiverName || /[0-9]/.test(receiverName) || /[ㄱ-ㅎ]/.test(receiverName) || /[^\wㄱ-ㅎ가-힣\s]/.test(receiverName)) {
-	            $('#receiverName').addClass('input-error');
-	            $('#receiverName').after('<div class="error-message">수취인 이름을 제대로 입력해 주세요.</div>');
-	            isValid = false;
+               $('#receiverName').addClass('input-error');
+               $('#receiverName').after('<div class="error-message">수취인 이름을 제대로 입력해 주세요.</div>');
+               isValid = false;
         }
 
         // 수취인 주소
        let receiverAdd = $('#receiverAdd').val();
- 	   if (!receiverAdd || receiverAdd.length < 15 || receiverAdd.length > 30 || /[^a-zA-Z0-9가-힣\s]/.test(receiverAdd)) {
-   	 		    $('#receiverAdd').addClass('input-error');
-   	 		    $('#receiverAdd').after('<div class="error-message">주소는 15~30자, 특수문자 없이 입력해야 합니다.</div>');
-  	  	 	    isValid = false;
+       if (!receiverAdd || receiverAdd.length < 15 || receiverAdd.length > 30 || /[^a-zA-Z0-9가-힣\s]/.test(receiverAdd)) {
+                 $('#receiverAdd').addClass('input-error');
+                 $('#receiverAdd').after('<div class="error-message">주소는 15~30자, 특수문자 없이 입력해야 합니다.</div>');
+                  isValid = false;
         }
 
         // 수취인 우편번호
         let receiverZip = $('#receiverZip').val();
         if (!receiverZip || !/^\d{5}$/.test(receiverZip)) {
-	            $('#receiverZip').addClass('input-error');
-	            $('#receiverZip').after('<div class="error-message">우편번호는 5자리 숫자만 입력 가능합니다.</div>');
-	            isValid = false;
+               $('#receiverZip').addClass('input-error');
+               $('#receiverZip').after('<div class="error-message">우편번호는 5자리 숫자만 입력 가능합니다.</div>');
+               isValid = false;
         }
 
         // 수취인 전화번호 (숫자만 허용)
         let receiverTel = $('#receiverTel').val();
         if (!receiverTel || !/^\d{3}-\d{3,4}-\d{4}$/.test(receiverTel)) {
-	            $('#receiverTel').addClass('input-error');
-	            $('#receiverTel').after('<div class="error-message">전화 번호는 010-1234-5678 형식으로 입력해주세요.</div>');
-	            isValid = false;
+               $('#receiverTel').addClass('input-error');
+               $('#receiverTel').after('<div class="error-message">전화 번호는 010-1234-5678 형식으로 입력해주세요.</div>');
+               isValid = false;
         }
 
         // 판매자 이름
         let sellerName = $('#sellerName').val();
         if (!sellerName || /[0-9]/.test(sellerName) || /[ㄱ-ㅎ]/.test(sellerName) || /[^\wㄱ-ㅎ가-힣\s]/.test(sellerName)) {
-	            $('#sellerName').addClass('input-error');
-	            $('#sellerName').after('<div class="error-message">판매자 이름을 제대로 입력해주세요.</div>');
-	            isValid = false;
+               $('#sellerName').addClass('input-error');
+               $('#sellerName').after('<div class="error-message">판매자 이름을 제대로 입력해주세요.</div>');
+               isValid = false;
         }
 
         // 판매자 주소
           let sellerAdd = $('#sellerAdd').val();
-  		  if (!sellerAdd || sellerAdd.length < 15 || sellerAdd.length > 30 || /[^a-zA-Z0-9가-힣\s]/.test(sellerAdd)) {
-     	        $('#sellerAdd').addClass('input-error');
-     		    $('#sellerAdd').after('<div class="error-message">주소는 15~30자, 특수문자 없이 입력해야 합니다.</div>');
-       	        isValid = false;
+          if (!sellerAdd || sellerAdd.length < 15 || sellerAdd.length > 30 || /[^a-zA-Z0-9가-힣\s]/.test(sellerAdd)) {
+                $('#sellerAdd').addClass('input-error');
+               $('#sellerAdd').after('<div class="error-message">주소는 15~30자, 특수문자 없이 입력해야 합니다.</div>');
+                  isValid = false;
         }
 
         // 판매자 전화번호 
         let sellerTel = $('#sellerTel').val();
         if (!sellerTel || !/^\d{3}-\d{3,4}-\d{4}$/.test(sellerTel)) {
-	            $('#sellerTel').addClass('input-error');
-	            $('#sellerTel').after('<div class="error-message">전화 번호는 010-1234-5678 형식으로 입력해주세요.</div>');
-	            isValid = false;
+               $('#sellerTel').addClass('input-error');
+               $('#sellerTel').after('<div class="error-message">전화 번호는 010-1234-5678 형식으로 입력해주세요.</div>');
+               isValid = false;
         }
 
         // 상품명
         let goodsName = $('#goodsName').val();
         if (!goodsName || goodsName.length < 2 || goodsName.length > 100) {
-	            $('#goodsName').addClass('input-error');
-	            $('#goodsName').after('<div class="error-message">상품명은 2자 이상 100자 이하로 입력해 주세요.</div>');
-	            isValid = false;
+               $('#goodsName').addClass('input-error');
+               $('#goodsName').after('<div class="error-message">상품명은 2자 이상 100자 이하로 입력해 주세요.</div>');
+               isValid = false;
         }
 
         // 상품 갯수
         let qty = $('#qty').val();
         if (!qty || !/^[0-9]+$/.test(qty)) {
-	            $('#qty').addClass('input-error');
-	            $('#qty').after('<div class="error-message">상품 갯수는 숫자만 입력 가능합니다.</div>');
-	            isValid = false;
+               $('#qty').addClass('input-error');
+               $('#qty').after('<div class="error-message">상품 갯수는 숫자만 입력 가능합니다.</div>');
+               isValid = false;
         }
 
         // 상품 단가
         let unitPrice = parseFloat($('#unitPrice').val());
-	    if (isNaN(unitPrice) || unitPrice <= 0) {
-   		        $('#unitPrice').addClass('input-error');
-  		        $('#unitPrice').after('<div class="error-message">상품 단가는 0보다 커야 합니다.</div>');
-   		        isValid = false;
+       if (isNaN(unitPrice) || unitPrice <= 0) {
+                 $('#unitPrice').addClass('input-error');
+                $('#unitPrice').after('<div class="error-message">상품 단가는 0보다 커야 합니다.</div>');
+                 isValid = false;
         }
 
         // 총 중량(GW)
        let gw = parseFloat($('#gw').val());
-  	    if (isNaN(gw) || gw <= 0) {
- 		       $('#gw').addClass('input-error');
- 		       $('#gw').after('<div class="error-message">총 중량은 0보다 커야 합니다.</div>');
-  		       isValid = false;
+         if (isNaN(gw) || gw <= 0) {
+              $('#gw').addClass('input-error');
+              $('#gw').after('<div class="error-message">총 중량은 0보다 커야 합니다.</div>');
+               isValid = false;
         }
 
         // 총 중량 단위(GWT)
        let gwt = $('#gwt').val();
-		if (!gwt || !/^(?!0(\.0+)?$)\d+(\.\d+)?(kg|lbs)$/i.test(gwt)) {  // 숫자가 0보다 크고, 'kg' 또는 'lbs'만 허용
-    		   $('#gwt').addClass('input-error');
-    		   $('#gwt').after('<div class="error-message">총 중량은 0보다 큰 숫자와 "kg" 또는 "lbs"만 입력 가능합니다.</div>');
-    		   isValid = false;
+      if (!gwt || !/^(?!0(\.0+)?$)\d+(\.\d+)?(kg|lbs)$/i.test(gwt)) {  // 숫자가 0보다 크고, 'kg' 또는 'lbs'만 허용
+             $('#gwt').addClass('input-error');
+             $('#gwt').after('<div class="error-message">총 중량은 0보다 큰 숫자와 "kg" 또는 "lbs"만 입력 가능합니다.</div>');
+             isValid = false;
         }
 
         // 유효성 검사 실패 시 폼 전송 막기
         if (!isValid) {
-        	 swal({
+            swal({
                  title: "화물 등록 실패",
                  text: "모든 항목을 올바르게 입력해 주세요.",
                  icon: "warning",
@@ -424,7 +424,10 @@
 
         // 유효성 검사 통과 시 폼을 제출
         $('#cargoRegisterForm').submit();
+        
+
     });
+    console.log(`${user}`);
     </script>
 </body>
 </html>

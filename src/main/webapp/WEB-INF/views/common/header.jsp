@@ -12,7 +12,7 @@
 
 <body>
 	<header
-		class="header bg-dark text-white px-4 py-2 d-flex justify-content-between align-items-center">
+		class="header text-white px-4 py-2 d-flex justify-content-between align-items-center">
 
 		<div class="d-flex align-items-center">
 			<button id="toggleSidebar" class="btn btn-outline-light btn-sm me-3">&#8801;</button>
@@ -28,7 +28,6 @@
 			 
 			 <a	href="${pageContext.request.contextPath}/user/loginFrm"	class="btn btn-outline-light btn-sm">로그인</a>
 			 <%} %>
-			 <a	href="${pageContext.request.contextPath}/user/userJoinFrm"	class="btn btn-outline-light btn-sm">회원가입</a>
 		</div>
 	</header>
 </body>

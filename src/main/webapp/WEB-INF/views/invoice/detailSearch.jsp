@@ -62,6 +62,7 @@
                 <main class="content d-flex">
                     <jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
                     <div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
+                    	<h3>청구서 상세 조회</h3>
 
                         <div class="input-group mb-1">
                             <span class="input-group-text">검색 회사</span>

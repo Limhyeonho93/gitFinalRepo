@@ -19,7 +19,7 @@ public class CargoMain {
 	private String sellerName; // 판매자 이름
 	private String sellerAdd; // 판매자 주소
 	private String sellerTel;// 판매자 전화번호
-	private int gw;// 총 중량
+	private float gw;// 총 중량
 	private String gwt;// 총 중량 단위
 	private int no;// 화물갯수
 	private String deliveryStop;// 배송중지flg

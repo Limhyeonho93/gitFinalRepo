@@ -40,6 +40,16 @@ public class UserJoinServlet extends HttpServlet {
         String telNo = request.getParameter("telNo");
         String userLevel = request.getParameter("userLevel");
 
+        String userLevel = request.getParameter("userLevel");
+        User loginUser = (User) request.getSession().getAttribute("user");
+
+        if ("1".equals(loginUser.getUserLevel())) {
+            if (!"KHAC000000".equals(compCd)) {
+                userLevel = "2"; // 강제 셀러 관리자
+            } else {
+                userLevel = "1"; // 물류 관리자
+            }
+        }
         // 2. User 객체 생성 및 값 설정
         User user = new User();
         user.setUserId(userId);
@@ -49,8 +59,7 @@ public class UserJoinServlet extends HttpServlet {
         user.setDeptName(deptName);
         user.setTelNo(telNo);
         user.setUserLevel(userLevel); // 기본값: 일반 사용자
-        
-
+        System.out.println(userId);
         // 3. 서비스 호출하여 회원가입 처리
         UserService service = new UserService();
         int result = service.insertUser(user);
@@ -58,13 +67,13 @@ public class UserJoinServlet extends HttpServlet {
         // 4. 결과 처리
         RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
         if (result > 0) {
-            request.setAttribute("title", "회원가입 성공");
-            request.setAttribute("msg", "회원가입이 완료되었습니다.");
+            request.setAttribute("title", "회원생성 성공");
+            request.setAttribute("msg", "회원생성 완료되었습니다.");
             request.setAttribute("icon", "success");
-            request.setAttribute("loc", "/user/loginFrm");
+            request.setAttribute("loc", "/user/userJoinFrm");
         } else {
-            request.setAttribute("title", "회원가입 실패");
-            request.setAttribute("msg", "회원가입 중 오류가 발생했습니다.");
+            request.setAttribute("title", "회원생성 실패");
+            request.setAttribute("msg", "회원생성 중 오류가 발생했습니다.");
             request.setAttribute("icon", "error");
             request.setAttribute("loc", "/user/userJoinFrm");
         }

@@ -41,6 +41,7 @@ public class UserDao {
 				loginUser.setRegDate(rset.getDate("reg_date"));
 				loginUser.setUpdDate(rset.getDate("upd_date"));
 				loginUser.setGrade(rset.getString("grade"));
+
 	            // 이거 반드시 살려주세요 ㅠㅠㅠㅠㅠㅠ
 	            // 제발
 	            loginUser.setUserLevel(rset.getString("user_level"));
@@ -111,21 +112,20 @@ public class UserDao {
 
 	public int insertUser(Connection conn, User user) {
 		PreparedStatement pstmt = null;
-	    int result = 0;
+		int result = 0;
+		String query = "INSERT INTO T_USERS (USER_ID, COMP_CD, USER_PW, USER_NAME, DEPT_NAME, TEL_NO, REG_DATE, UPD_DATE, USER_LEVEL, GRADE)  "
+				+ "VALUES(?, ?, ?, ?, ?, ?, SYSDATE, SYSDATE, ? , '2')";
+		try {
+			pstmt = conn.prepareStatement(query);
 
-	    String query = "INSERT INTO T_USERS (USER_ID, COMP_CD, USER_PW, USER_NAME, DEPT_NAME, TEL_NO, REG_DATE, UPD_DATE, USER_LEVEL) " +
-	                   "VALUES (?, ?, ?, ?, ?, ?, SYSDATE, SYSDATE, ?)";
+			pstmt.setString(1, user.getUserId());
+			pstmt.setString(2, user.getCompCd());
+			pstmt.setString(3, user.getUserPw());
+			pstmt.setString(4, user.getUserName());
+			pstmt.setString(5, user.getDeptName());
+			pstmt.setString(6, user.getTelNo());
+			pstmt.setString(7, user.getUserLevel());
 
-	    try {
-	        pstmt = conn.prepareStatement(query);
-
-	        pstmt.setString(1, user.getUserId());
-	        pstmt.setString(2, user.getCompCd());
-	        pstmt.setString(3, user.getUserPw());
-	        pstmt.setString(4, user.getUserName());
-	        pstmt.setString(5, user.getDeptName());
-	        pstmt.setString(6, user.getTelNo());
-	        pstmt.setString(7, user.getUserLevel()); // 회원가입 폼에서 전달된 값 (2 또는 3)
 
 	        result = pstmt.executeUpdate();
 

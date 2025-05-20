@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
     <!DOCTYPE html>
     <html>
 
@@ -63,14 +65,16 @@
                 <jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
                 <div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
                     <h3>회사 등록</h3>
-                    <div class="d-flex justify-content-end mb-2">
-                        <button id="btnAddCompany" class="btn btn-primary me-2">
-                            <i class="fas fa-plus"></i> 추가
-                        </button>
-                        <button id="btnDeleteCompany" class="btn btn-dark">
-                            <i class="fas fa-minus"></i> 삭제
-                        </button>
-                    </div>
+                     <c:if test="${user.userLevel eq '1'}">
+                    	<div class="d-flex justify-content-end mb-2">
+                        	<button id="btnAddCompany" class="btn btn-primary me-2">
+                            	<i class="fas fa-plus"></i> 추가
+                        	</button>
+                        	<button id="btnDeleteCompany" class="btn btn-danger">
+                            	<i class="fas fa-minus"></i> 삭제
+                        	</button>
+                    	</div>
+                     </c:if>
                     <div id="myGrid" class="ag-theme-alpine"></div>
 
                 </div>
@@ -81,8 +85,6 @@
                         <div class="modal-content">
                             <div class="modal-header bg-primary text-white">
                                 <h5 class="modal-title" id="companyModalLabel">회사 정보</h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
                                 <form id="companyForm">
@@ -137,7 +139,7 @@
             let isEditMode = false;       // 등록(true)/수정(false) 모드 여부
             let isCompCdChecked = false;  // 회사코드 중복 확인 여부
 
-            // 🔵 [+] 버튼 클릭 시: 등록 모드
+            // + 버튼 클릭 시: 등록 모드
             $('#btnAddCompany').on('click', function () {
                 $('#companyModalLabel').text('회사 등록');
                 $('#companyForm')[0].reset(); // 폼 초기화
@@ -162,7 +164,8 @@
                 {
                     headerName: "회사코드",
                     field: "comp_cd",
-                    pinned: 'left',
+                    maxWidth: 200,
+
                     cellStyle: function () {
                         return {
                             color: 'blue',
@@ -189,6 +192,7 @@
                 {
                     headerName: "회사구분",
                     field: "comp_div",
+                    maxWidth: 100,
                     cellRenderer: function (params) {
 
                         if (params.data.comp_div == 'S') {
@@ -201,20 +205,22 @@
                 {
                     headerName: "회사이름",
                     field: "comp_name",
-                    pinned: 'left',
 
                 },
                 {
                     headerName: "회사주소",
                     field: "comp_addr",
-                    pinned: 'left',
-                    maxWidth: 130
+                },
+                {
+                    headerName: "회사우편번호",
+                    field: "comp_zip",
+                    maxWidth: 140,
+
                 },
                 {
                     headerName: "등록일",
                     field: "reg_date",
-                    pinned: 'left',
-                    maxWidth: 130
+                    maxWidth: 230
                 },
             ];
 
@@ -332,11 +338,15 @@
                          mode:mode
                     },
                 }).done(function (res) {
-                    alert(isEditMode ? '수정 완료' : '등록 완료');
+                	if (res === 'success') {
+                        alert(isEditMode ? '수정 완료 했습니다.' : '등록 완료 했습니다.');
+                    } else {
+                        alert(isEditMode ? '수정 실패 했습니다.' : '등록 실패 했습니다.');
+                    }
                     companyModal.hide();
                     loadGrid();
                 }).fail(function () {
-                    alert('저장 실패');
+                    alert('회사 등록에 실패했습니다.');
                 });
 
 
@@ -344,6 +354,45 @@
             $('#modalClose').on('click', function () {
                 companyModal.hide();
             });
+
+
+            $('#btnDeleteCompany').on('click', function () {
+                compCdArr = [];
+                gridApi.getSelectedRows().forEach(function(row){
+                	compCdArr.push(row.comp_cd);
+                });
+                
+                if(compCdArr.length <= 0){
+                	alert("삭제할 회사를 체크해주세요");
+                	return;
+                }
+                
+                $.ajax({
+                	  url: '/user/deleteCustomerInfo',
+                	    type: 'POST',
+                	    data: {
+                	        compCdArr: compCdArr
+                	    },
+                	    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                	    headers: {
+                	        'x-requested-with': 'XMLHttpRequest',
+                	        'x-csrf-token': 'your_csrf_token_here'
+                	    },
+                	    cache: false,
+                	    traditional: true,
+                }).done(function(res){
+                	if (res === 'success') {
+                        alert('삭제 완료 했습니다.');
+                    } else {
+                   	 	alert('삭제에 실패했습니다.');
+                    }
+                	loadGrid();
+                }).fail(function(res){
+                	 alert('삭제에 실패했습니다.');
+                });
+
+            });
+
         });
 
 

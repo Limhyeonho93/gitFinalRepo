@@ -102,7 +102,6 @@ public class CargoRegisterServlet extends HttpServlet {
         goods.setUnitPrice(unitPrice);
         goods.setQty(qty); //상품개수
         goods.setUnitWeight(gw); // 중량
-        goods.setNo(1); // 화물 단 건 등록이니 총 화물 개수는 1
         goods.setDeliveryStop("N");
         goods.setUserId(userId); 
 
