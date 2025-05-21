@@ -185,10 +185,6 @@
                     pinned: 'left'
                 },
                 {
-                    headerName: "화물 갯수",
-                    field: "totalWeight"
-                },
-                {
                     headerName: "청구서 다운로드",
                     field: "",
                     cellRenderer: function (params) {
@@ -279,34 +275,17 @@
             }
 
             function downInvExcel(from, to, compCd) {
-                $.ajax({
-                    url: "/invoice/downExcel",
-                    data: {
-                        from: from,
-                        to: to,
-                        compCd: compCd,
-                    },
-                    type: "get",
-                }).done(function (res) {
-                    setTimeout(function () {
-                        $('<a>', {
-                            href: downloadUrl,
-                            download: '',
-                            style: 'display:none'
-                        }).appendTo('body')[0].click();
-                    }, 300);
-                    loadGrid();
+                var url = "/invoice/downExcel?from=" + encodeURIComponent(from) + "&to=" + encodeURIComponent(to) + "&compCd=" + encodeURIComponent(compCd);
 
-                }).fail(function (e) {
-                    loadGrid();
-
-                    swal({
-                        title: "알림",
-                        text: "다운로드중 에러가 발생했습니다.",
-                        icon: "warning",
-                    });
+                var $a = $('<a>', {
+                    href: url,
+                    style: 'display:none',
+                    download: '' // 있어도 되고 없어도 됨 (브라우저에 따라 다름)
                 });
 
+                $('body').append($a);
+                $a[0].click();
+                $a.remove();
             }
 
             // 검색시 그리드 기동

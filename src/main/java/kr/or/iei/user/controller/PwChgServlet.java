@@ -40,7 +40,7 @@ public class PwChgServlet extends HttpServlet {
 		if(session != null) {
 			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 		
-		User loginUser = (User)session.getAttribute("loginUser");
+		User loginUser = (User)session.getAttribute("user");
 		
 		//사용자가 입력한 현재 비밀번호와 세션에 등록된 비밀번호가 다른경우
 		if(!loginUser.getUserPw().equals(userPw)) {
@@ -60,8 +60,7 @@ public class PwChgServlet extends HttpServlet {
 				request.setAttribute("title", "성공");
 				request.setAttribute("msg", "비밀번호가 변경되었습니다. 변경된 비밀번호로 다시 로그인하세요.");
 				request.setAttribute("icon", "success");
-				
-				request.setAttribute("callback", "self.close(); window.opener.location.href=\"/member/loginFrm\";");
+				request.setAttribute("loc", "/user/loginFrm");
 				
 				session.invalidate();
 				

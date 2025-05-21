@@ -34,6 +34,7 @@
 .center-div {
     margin-left: 30px;
     margin-top: 30px;
+    margin-bottom : 30px;
     width: 500px;
 }
 
@@ -41,22 +42,14 @@
     display: none;
 }
 
-.form-label {
-    white-space: nowrap;
-    width: 220px;
+
+.table-rounded {
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-/* 기본 입력 필드 스타일 */
-.form-control {
-    width: 100%; /* 기본 너비 100% */
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 0.375rem;
-    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 계산 */
-    margin-bottom: 10px; /* 항목 간 여백 */
-    border: 1px solid #ccc; /* 기본 테두리 */
-}
+
+
 
 /* 오류가 발생한 입력 필드에 빨간 테두리 */
 .input-error {
@@ -74,28 +67,10 @@
     margin-top: 5px;
 }
 
-/* .d-flex를 사용하는 필드들 간에 동일한 크기 유지 */
-.d-flex .form-control {
-    width: 100%;
-}
-
-/* 오류 필드와 동일하게 높이 맞추기 */
-.d-flex .input-error {
-    width: 100%;
-    height: 2.25rem; /* 오류 필드의 높이 동일하게 설정 */
-    border: 1px solid red; /* 빨간 테두리 */
-    box-sizing: border-box; /* 패딩과 테두리를 포함한 크기 계산 */
-}
-
-
-
-
-
 </style>
 
 </head>
 <body>
-
 
     <div class="wrap">
         <jsp:include page="/WEB-INF/views/common/header.jsp" />
@@ -113,120 +88,123 @@
             </div>
                 
                 <!-- 화물 단건 등록 폼 -->
-                <form id="cargoRegisterForm" action="/cargo/cargoRegister" method="POST">
+                <form id="cargoRegisterForm" action="/cargo/cargoRegister" method="POST" >
              
-                    <div class="d-flex flex-column gap-3">
-                       
-                       
-                        <!-- 회사명 -->
-                        <div class="d-flex gap-2">
-                            <span class="input-group-text">검색 회사</span>
-                            <%-- 
-                            <input type="text" class="form-control" id="compCd" name="compCd" required>
-                            --%>
-                            <span style="display: inline-block; width: 250px; margin-right: 10px;">
-                                <select class="form-select" id="compCd" name="compCd">
-                                    <c:choose>
-                                        <%-- 관리자일 경우: 전체 회사 표시 --%>
-                                        <c:when test="${user.userLevel eq '1'}">
-                                            <c:forEach var="compInfo" items="${compInfoArr}">
-                                                <option value="${compInfo.compCd}">${compInfo.compName}</option>
-                                            </c:forEach>
-                                        </c:when>
+                    <table class="table table-bordered align-middle ">
+                        <tbody>
+				          	<!-- 회사명 -->
+				            <tr>
+				                <th>검색 회사</th>
+				                <td>
+				                    <select class="form-select" id="compCd" name="compCd" required>
+				                        <c:choose>
+				                            <c:when test="${user.userLevel eq '1'}">
+				                                <c:forEach var="compInfo" items="${compInfoArr}">
+				                                    <option value="${compInfo.compCd}">${compInfo.compName}</option>
+				                                </c:forEach>
+				                            </c:when>
+				                            <c:otherwise>
+				                                <option value="${user.compCd}">
+				                                    <c:forEach var="compInfo" items="${compInfoArr}">
+				                                        <c:if test="${compInfo.compCd eq user.compCd}">
+				                                            ${compInfo.compName}
+				                                        </c:if>
+				                                    </c:forEach>
+				                                </option>
+				                            </c:otherwise>
+				                        </c:choose>
+				                    </select>
+				                </td>
+				            </tr>
 
-                                        <%-- 일반 유저일 경우: 본인 회사만 출력 --%>
-                                        <c:otherwise>
-                                            <option value="${user.compCd}">
-                                                <c:forEach var="compInfo" items="${compInfoArr}">
-                                                    <c:if test="${compInfo.compCd eq user.compCd}">
-                                                        ${compInfo.compName}
-                                                    </c:if>
-                                                </c:forEach>
-                                            </option>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </select>
-                            </span>
-                        </div>
-
-                        <!-- 송장 번호 -->
-                        <div class="d-flex gap-2">
-                            <label for="trackingNo" class="form-label">송장 번호</label>
-                            <input type="text" class="form-control" id="trackingNo" name="trackingNo" required>
-                        </div>
-
-                        <!-- 수취인 이름 -->
-                        <div class="d-flex gap-2">
-                            <label for="receiverName" class="form-label">수취인 이름</label>
-                            <input type="text" class="form-control w-100" id="receiverName" name="receiverName" required>
-                        </div>
-
-                        <!-- 수취인 주소 -->
-                        <div class="d-flex gap-2">
-                            <label for="receiverAdd" class="form-label">수취인 주소</label>
-                            <input type="text" class="form-control w-100" id="receiverAdd" name="receiverAdd" required>
-                        </div>
-
-                        <!-- 수취인 우편번호 -->
-                        <div class="d-flex gap-2">
-                            <label for="receiverZip" class="form-label">수취인 우편번호</label>
-                            <input type="text" class="form-control w-100" id="receiverZip" name="receiverZip" required>
-                        </div>
-
-                        <!-- 수취인 전화번호 -->
-                        <div class="d-flex gap-2">
-                            <label for="receiverTel" class="form-label">수취인 전화번호</label>
-                            <input type="text" class="form-control w-100" id="receiverTel" name="receiverTel" required pattern="\d{3}-\d{3,4}-\d{4}">
-                        </div>
-
-                        <!-- 판매자 이름 -->
-                        <div class="d-flex gap-2">
-                            <label for="sellerName" class="form-label">판매자 이름</label>
-                            <input type="text" class="form-control w-100" id="sellerName" name="sellerName" required>
-                        </div>
-
-                        <!-- 판매자 주소 -->
-                        <div class="d-flex gap-2">
-                            <label for="sellerAdd" class="form-label">판매자 주소</label>
-                            <input type="text" class="form-control w-100" id="sellerAdd" name="sellerAdd" required>
-                        </div>
-
-                        <!-- 판매자 전화번호 -->
-                        <div class="d-flex gap-2">
-                            <label for="sellerTel" class="form-label">판매자 전화번호</label>
-                            <input type="text" class="form-control w-100" id="sellerTel" name="sellerTel" required pattern="\d{3}-\d{3,4}-\d{4}">
-                        </div>
-                        
-                        <!-- 상품명 -->
-                        <div class="d-flex gap-2">
-                            <label for="no" class="form-label">상품명</label>
-                            <input type="text" class="form-control w-100" id="goodsName" name="goodsName" required>
-                        </div>
-                        
-                        <!-- 상품 개수 -->
-                        <div class="d-flex gap-2">
-                            <label for="qty" class="form-label">상품 개수</label>
-                            <input type="text" class="form-control w-100" id="qty" name="qty" required>
-                        </div>
-                        
-                        <!-- 상품 단가 -->
-                        <div class="d-flex gap-2">
-                            <label for="unitPrice" class="form-label">상품 단가</label>
-                            <input type="text" class="form-control w-100" id="unitPrice" name="unitPrice" required>
-                        </div>
-                  
-                        <!-- 총중량 -->
-                        <div class="d-flex gap-2">
-                            <label for="gw" class="form-label">총 중량 (GW)</label>
-                            <input type="text" class="form-control w-100" id="gw" name="gw" required>
-                        </div>
-
-                        <!-- 총중량 단위 -->
-                        <div class="d-flex gap-2">
-                            <label for="gwt" class="form-label">총 중량 단위 (GWT)</label>
-                            <input type="text" class="form-control w-100" id="gwt" name="gwt" required>
-                        </div>
-                    </div>
+	                        <!-- 송장 번호 -->
+							<tr>
+							    <th>송장 번호</th>
+							    <td>
+							        <input type="text" class="form-control" id="trackingNo" name="trackingNo" required>
+							    </td>
+							</tr>
+	
+	                        <!-- 수취인 이름 -->
+							<tr>
+							    <th>수취인 이름</th>
+							    <td>
+							        <input type="text" class="form-control" id="receiverName" name="receiverName" required>
+							    </td>
+							</tr>
+	
+	                        <!-- 수취인 주소 -->
+							<tr>
+							    <th>수취인 주소</th>
+							    <td>
+							        <input type="text" class="form-control" id="receiverAdd" name="receiverAdd" required>
+							    </td>
+							</tr>
+	
+	                        <tr>
+							    <th>수취인 우편번호</th>
+							    <td>
+							        <input type="text" class="form-control" id="receiverZip" name="receiverZip" required>
+							    </td>
+							</tr>
+							<tr>
+							    <th>수취인 전화번호</th>
+							    <td>
+							        <input type="text" class="form-control" id="receiverTel" name="receiverTel" required pattern="\d{3}-\d{3,4}-\d{4}">
+							    </td>
+							</tr>
+							<tr>
+							    <th>판매자 이름</th>
+							    <td>
+							        <input type="text" class="form-control" id="sellerName" name="sellerName" required>
+							    </td>
+							</tr>
+							<tr>
+							    <th>판매자 주소</th>
+							    <td>
+							        <input type="text" class="form-control" id="sellerAdd" name="sellerAdd" required>
+							    </td>
+							</tr>
+							<tr>
+							    <th>판매자 전화번호</th>
+							    <td>
+							        <input type="text" class="form-control" id="sellerTel" name="sellerTel" required pattern="\d{3}-\d{3,4}-\d{4}">
+							    </td>
+							</tr>
+							<tr>
+							    <th>상품명</th>
+							    <td>
+							        <input type="text" class="form-control" id="goodsName" name="goodsName" required>
+							    </td>
+							</tr>
+							<tr>
+							    <th>상품 개수</th>
+							    <td>
+							        <input type="text" class="form-control" id="qty" name="qty" required>
+							    </td>
+							</tr>
+							<tr>
+							    <th>상품 단가</th>
+							    <td>
+							        <input type="text" class="form-control" id="unitPrice" name="unitPrice" required>
+							    </td>
+							</tr>
+							<tr>
+							    <th>총 중량</th>
+							    <td>
+							        <input type="text" class="form-control" id="gw" name="gw" required>
+							    </td>
+							</tr>
+							<tr>
+							    <th>총 중량 단위</th>
+							    <td>
+							        <input type="text" class="form-control" id="gwt" name="gwt" required>
+							    </td>
+							</tr>
+                    
+                    	</tbody>
+                    </table>
+                    
                     
                     <!-- 제출 버튼 -->
                     <div class="mt-4 d-flex justify-content-end">

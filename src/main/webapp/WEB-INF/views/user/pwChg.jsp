@@ -61,7 +61,7 @@
 								<label for="newUserPwRe">새 비밀번호 확인</label>
 							</div>
 							<div class="input-item">
-								<input type="password" id="newUserPwRe" placeholder="새 비밀번호 확인">
+								<input type="password" id="newUserPwRe" name="newUserPwRe" placeholder="새 비밀번호 확인">
 							</div>
 							<p id="pwMessage" class="input-msg"></p>
 						</div>

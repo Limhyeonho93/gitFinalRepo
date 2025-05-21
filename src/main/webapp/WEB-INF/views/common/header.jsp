@@ -16,7 +16,7 @@
 
 		<div class="d-flex align-items-center">
 			<button id="toggleSidebar" class="btn btn-outline-light btn-sm me-3">&#8801;</button>
-			<a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/car_nuggi2.png" alt="홈으로" style="height:100px;"/></a>
+			<a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/car_nuggi2.png" alt="홈으로" style="height:50px;"/></a>
 		</div>
 		<div>
 			<span class="me-3 text-white fw-bold">관리자</span>
