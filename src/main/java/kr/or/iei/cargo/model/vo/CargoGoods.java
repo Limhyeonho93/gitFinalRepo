@@ -15,7 +15,7 @@ public class CargoGoods {
 	private int seq;				//시퀀스
 	private String goodsName;		//상품명
 	private int unitPrice;			//상품단가
-	private int qty;				//상품갯수
+	private int qty;				//상품개수
 	private float unitWeight;		//중량
 	private String deliveryStop;	//배송중지flg
 	private String userId;			//갱신자

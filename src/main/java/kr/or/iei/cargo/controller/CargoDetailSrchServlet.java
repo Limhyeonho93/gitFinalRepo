@@ -1,6 +1,8 @@
 package kr.or.iei.cargo.controller;
 
 import java.io.IOException;
+
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,7 +36,7 @@ public class CargoDetailSrchServlet extends HttpServlet {
 		String trackingNo=request.getParameter("trackingNo");
 		
 		CargoService service=new CargoService();
-		CargoGoods goods=service.srchCargoDetail(trackingNo);
+		ArrayList<CargoGoods> goods=service.srchCargoDetail(trackingNo);
 		
 		System.out.println(goods);
 		

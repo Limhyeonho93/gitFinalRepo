@@ -38,7 +38,6 @@ public class CargoRegisterFrmServlet extends HttpServlet {
 		InvoiceService service = new InvoiceService();
 		ArrayList<CompInfo> compInfoArr = service.getAllSeellerComp();
 		request.setAttribute("compInfoArr", compInfoArr);
-
 		//compInfoArr Request
 		RequestDispatcher view=request.getRequestDispatcher("/WEB-INF/views/cargo/cargoRegister.jsp");
 		view.forward(request, response);

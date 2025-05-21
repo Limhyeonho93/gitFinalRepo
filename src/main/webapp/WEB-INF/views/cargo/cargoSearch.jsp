@@ -38,8 +38,8 @@
 
         <style type="text/css">
             /*
-   grid css
-   */
+	grid css
+	*/
             #myGrid {
                 width: 100%;
                 flex-grow: 1;
@@ -52,8 +52,8 @@
             }
 
             /*
-   text area css(검색 텍스트 창)
-   */
+	text area css(검색 텍스트 창)
+	*/
             .textarea-search {
                 position: relative;
                 display: block;
@@ -79,15 +79,15 @@
             }
 
             /*
-   select css
-   */
+	select css
+	*/
             .form-select {
                 width: 200px;
             }
 
             /*
-   modal css
-   */
+	modal css
+	*/
             .th-label {
                 width: 30%;
                 vertical-align: middle;

@@ -16,10 +16,9 @@
 
 		<div class="d-flex align-items-center">
 			<button id="toggleSidebar" class="btn btn-outline-light btn-sm me-3">&#8801;</button>
-			<h5 class="mb-0"><a href="${pageContext.request.contextPath}/">물류 화물관리 시스템</a></h5>
+			<a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/car_nuggi2.png" alt="홈으로" style="height:50px;"/></a>
 		</div>
 		<div>
-
 			<span class="me-3 text-white fw-bold">관리자</span>
 			<%Object user = session.getAttribute("user");
 			 if (user != null) {
