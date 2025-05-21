@@ -196,7 +196,9 @@
                                             <%-- 상세 수정(const contentHtml) 내용이 여기에 들어감 --%>
                                         </div>
                                         <div class="modal-footer d-flex justify-content-end">
-                                            <button type="button" class="btn btn-primary" id="saveUpdateBtn">저장</button>
+                                            <button type="button" class="btn btn-primary"
+                                                id="goodsUpdateBtn">수정</button>
+                                            <button type="button" class="btn btn-danger" id="goodsdeleteBtn">삭제</button>
                                             <button type="button" class="btn btn-secondary"
                                                 data-bs-dismiss="modal">닫기</button>
                                         </div>
@@ -468,11 +470,14 @@
 
                                 // 탭 버튼
                                 tabs += '<li class="nav-item" role="presentation">' +
-                                    '<button class="nav-link ' + activeClass + '" type="button" onclick="showTab(\'' + tabId + '\', this)">' +
+                                    '<button class="nav-link ' + activeClass + '" type="button" data-tab-id="' + tabId + '">' +
                                     (item.goodsName ? item.goodsName : '상품' + (i + 1)) +
                                     '</button>' +
                                     '</li>';
-
+                                $('#tabList').on('click', 'button.nav-link', function () {
+                                    var tabId = $(this).data('tab-id');
+                                    showTab(tabId, this);
+                                });
                                 // 탭 내용
                                 tabContents += '<div class="tab-pane fade ' + ((i === 0) ? 'show active' : '') + '" id="' + tabId + '">' + // ✅ 수정됨
                                     '<table class="table table-bordered">' +
@@ -511,6 +516,7 @@
 
                 //화물 상세 수정의 탭 기능 
                 function showTab(tabId, clickedBtn) {
+                    console.log(tabId);
                     // 탭 버튼 활성화 처리
                     var tabButtons = document.querySelectorAll('.nav-link');
                     tabButtons.forEach(function (btn) {
