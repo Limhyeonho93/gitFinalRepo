@@ -53,12 +53,14 @@ public class CustomerSaveServlet extends HttpServlet {
 				
 				CustomerInfoService service = new CustomerInfoService();
 				int result = 0;
-				System.out.println(mode);
 				if ("insert".equals(mode)) {
 					result = service.insertCustomerInfo(c);
 				} else if ("update".equals(mode)) {
 					result = service.updateCustomerInfo(c);
 				}
+				
+				response.setContentType("text/plain; charset=UTF-8");
+				response.getWriter().write(result > 0 ? "success" : "fail");
 	}
 
 	/**

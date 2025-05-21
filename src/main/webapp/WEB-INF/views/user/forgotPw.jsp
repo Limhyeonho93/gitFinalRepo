@@ -13,7 +13,11 @@
 <head>
     <title>비밀번호 찾기</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
+<!-- Custom CSS & JS -->
+<link rel="stylesheet" href="/resources/css/layout.css">
+<script src="/resources/js/layout.js" defer></script>
+
 <style>
         body {
             background: #f0f8ff;
@@ -24,6 +28,7 @@
             text-align: center;
             color: #007acc;
             margin-bottom: 30px;
+            margin-top : 130px;
         }
 
         form {
@@ -76,12 +81,6 @@
             border-top: 1px solid #ddd;
         }
         
-    	.footer-container {
-        text-align: center;
-        margin-top: 250px;
-        font-size: 14px;
-        color: #777;
-    }
 </style>
 </head>
 
@@ -114,9 +113,7 @@
             <button type="submit">임시 비밀번호 확인</button>
         </div>
     </form>
-<div class="footer-container">
-	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
-</div>
+
 <script>
     function requestTempPw() {
         const userId = document.getElementById("userId").value.trim();

@@ -157,7 +157,6 @@ public class CustomerInfoDao {
                 + "WHERE comp_cd = ?";
 
         try {
-        	System.out.println(c.getComp_zip());
             pstmt = conn.prepareStatement(query);
             pstmt.setString(1, c.getComp_name());
             pstmt.setString(2, c.getComp_div());
@@ -167,6 +166,28 @@ public class CustomerInfoDao {
             pstmt.setString(6, String.valueOf(c.getDeal_flg()));
             pstmt.setString(7, String.valueOf(c.getGrade()));
             pstmt.setString(8, c.getComp_cd());
+
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(pstmt);
+        }
+        return result;
+	}
+
+	public int deleteCustomerInfo(Connection conn, String compCd) {
+		PreparedStatement pstmt = null;
+
+        int result = 0;
+
+        String query = "DELETE FROM t_customerinfo WHERE comp_cd = ? ";
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, compCd);
 
             result = pstmt.executeUpdate();
 

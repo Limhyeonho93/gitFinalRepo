@@ -12,14 +12,13 @@
 
 <body>
 	<header
-		class="header bg-dark text-white px-4 py-2 d-flex justify-content-between align-items-center">
+		class="header text-white px-4 py-2 d-flex justify-content-between align-items-center">
 
 		<div class="d-flex align-items-center">
 			<button id="toggleSidebar" class="btn btn-outline-light btn-sm me-3">&#8801;</button>
-			<h5 class="mb-0"><a href="${pageContext.request.contextPath}/">물류 화물관리 시스템</a></h5>
+			<a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/car_nuggi2.png" alt="홈으로" style="height:100px;"/></a>
 		</div>
 		<div>
-
 			<span class="me-3 text-white fw-bold">관리자</span>
 			<%Object user = session.getAttribute("user");
 			 if (user != null) {
@@ -29,7 +28,6 @@
 			 
 			 <a	href="${pageContext.request.contextPath}/user/loginFrm"	class="btn btn-outline-light btn-sm">로그인</a>
 			 <%} %>
-			 <a	href="${pageContext.request.contextPath}/user/userJoinFrm"	class="btn btn-outline-light btn-sm">회원가입</a>
 		</div>
 	</header>
 </body>

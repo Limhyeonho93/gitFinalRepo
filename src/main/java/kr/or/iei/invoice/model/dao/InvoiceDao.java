@@ -273,4 +273,39 @@ public class InvoiceDao {
 	}
 
 
+	public ArrayList<CompInfo> getAllComp(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = "SELECT * FROM T_CUSTOMERINFO WHERE DEAL_FLG = 1";
+		ArrayList<CompInfo> arr = new ArrayList<CompInfo>();
+		try {
+			pstmt = conn.prepareStatement(query);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				CompInfo ci = new CompInfo();
+				
+				ci.setCompCd(rset.getString("comp_cd"));
+				ci.setCompName(rset.getString("comp_name"));
+				ci.setCompDiv(rset.getString("comp_div"));
+				ci.setCompAddr(rset.getString("comp_addr"));
+				ci.setCompZip(rset.getString("comp_zip"));
+				ci.setCompTel(rset.getString("comp_tel"));
+				ci.setDealFlg(rset.getInt("deal_flg"));
+
+				arr.add(ci);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rset);
+			JDBCTemplate.close(pstmt);
+		}
+		return arr;
+	}
+
+
 }

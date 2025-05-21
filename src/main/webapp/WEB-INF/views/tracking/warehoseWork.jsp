@@ -86,6 +86,7 @@
             <main class="content d-flex">
                 <jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
                 <div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
+                    <h3>창고 작업</h3>
 
                     <div class="input-group mb-1">
                         <span class="input-group-text">작업날짜</span>
@@ -252,10 +253,6 @@
                     headerName: "반출 작업",
                     field: "",
                     cellRenderer: function (params) {
-                    	console.log(params.data.wareName);
-                    	console.log(params.data.tbCount);
-                    	console.log(params.data.outCount);
-                    	console.log(params.data.inCount);
 
                         var yymmdd = $('#searchDate').val().replace(/-/g, '').slice(2);
 
@@ -388,7 +385,6 @@
             };
             // 반입 반출 시작
             function updateBondedTask(yymmdd, wareCd, updateColumn) {
-                console.log(updateColumn);
                 $.ajax({
                     url: "/bonded/updateBonded",
                     data: {

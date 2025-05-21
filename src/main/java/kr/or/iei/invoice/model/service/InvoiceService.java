@@ -91,6 +91,15 @@ public class InvoiceService {
 
         return res;
 	}
+
+	public ArrayList<CompInfo> getAllComp() {
+		Connection conn = JDBCTemplate.getConnection();
+
+		ArrayList<CompInfo> arr = dao.getAllComp(conn);
+
+		JDBCTemplate.close(conn);
+		return arr;
+	}
 	
 	
 }
