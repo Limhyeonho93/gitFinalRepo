@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import kr.or.iei.cargo.model.vo.CargoGoods;
 import kr.or.iei.cargo.model.vo.CargoMain;
@@ -18,6 +19,7 @@ public class CargoDao {
 		System.out.println("searchCargo dao");
 		
 		PreparedStatement pstmt = null;
+		
 		ResultSet rset = null;
 
 		ArrayList<CargoMain> list = new ArrayList<CargoMain>();
@@ -164,6 +166,7 @@ public class CargoDao {
 				g.setUpdDate(rset.getString("upd_date"));
 				
 				goods.add(g);
+
 			}
 
 		} catch (SQLException e) {
@@ -325,20 +328,16 @@ public class CargoDao {
 	    return result;
 	}
 
-	//화물 1건 삭제
+
+	// cargoMain 삭제
 	public int deleteCargoMainsByTrackingNo(Connection conn, String trackingNo) {
 	    PreparedStatement pstmt = null;
 	    int result = 0;
 	    try {
-	        // Delete from cargoGoods first due to foreign key constraint (if exists)
-	        pstmt = conn.prepareStatement("DELETE FROM T_cargoGoods WHERE tracking_no = ?");
-	        pstmt.setString(1, trackingNo);
-	        result += pstmt.executeUpdate();
-	        pstmt.close();
-
+	     
 	        pstmt = conn.prepareStatement("DELETE FROM T_cargoMain WHERE tracking_no = ?");
 	        pstmt.setString(1, trackingNo);
-	        result += pstmt.executeUpdate();
+	        result = pstmt.executeUpdate();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    } finally {
@@ -346,5 +345,84 @@ public class CargoDao {
 	    }
 	    return result;
 	}
+
+	// 체크항목중 goods 삭제
+	public int deleteCargoGoodsByMultiTrackingNos(Connection conn, List<String> trackingNos) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		// 유효성 검사: 리스트가 비었으면 삭제할 것이 없음
+	    if (trackingNos == null || trackingNos.isEmpty()) {
+	        return 0;
+	    }
+
+	    // SQL 쿼리 생성: DELETE FROM ... WHERE tracking_no IN (?, ?, ...)
+	    StringBuilder query = new StringBuilder("DELETE FROM T_cargoGoods WHERE tracking_no IN (");
+	    for (int i = 0; i < trackingNos.size(); i++) {
+	        query.append("?");
+	        if (i < trackingNos.size() - 1) {
+	            query.append(", ");
+	        }
+	    }
+	    query.append(")");
+		
+		try {
+			pstmt = conn.prepareStatement(query.toString());
+			// 바인딩 변수 설정
+	        for (int i = 0; i < trackingNos.size(); i++) {
+	            pstmt.setString(i + 1, trackingNos.get(i));
+	        }
+	        
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt); 
+	    }
+			
+			
+		return result;
+	}
+
+
+	public int deleteCargoMainsByMultiTrackingNos(Connection conn, List<String> trackingNos) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		if (trackingNos == null || trackingNos.isEmpty()) {
+	        return 0;
+	    }
+
+	    // SQL 쿼리 생성
+	    StringBuilder query = new StringBuilder("DELETE FROM T_cargoMain WHERE tracking_no IN (");
+	    for (int i = 0; i < trackingNos.size(); i++) {
+	        query.append("?");
+	        if (i < trackingNos.size() - 1) {
+	            query.append(", ");
+	        }
+	    }
+	    query.append(")");
+
+	    try {
+	        pstmt = conn.prepareStatement(query.toString());
+
+	        // 바인딩 변수 설정
+	        for (int i = 0; i < trackingNos.size(); i++) {
+	            pstmt.setString(i + 1, trackingNos.get(i));
+	        }
+
+	        // 삭제 실행
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return result;
+	}
+		
 }
 

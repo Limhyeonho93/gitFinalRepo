@@ -11,6 +11,7 @@ import kr.or.iei.invoice.model.vo.CompInfo;
 import kr.or.iei.invoice.model.vo.DailyInsertInvoice;
 import kr.or.iei.invoice.model.vo.Invoice;
 import kr.or.iei.invoice.model.vo.ShoppingCost;
+import kr.or.iei.user.model.vo.User;
 
 public class InvoiceService {
 	private InvoiceDao dao;
@@ -23,6 +24,15 @@ public class InvoiceService {
 		Connection conn = JDBCTemplate.getConnection();
 
 		ArrayList<Invoice> arr = dao.allInvoice(conn, from, to);
+
+		JDBCTemplate.close(conn);
+		return arr;
+	}
+	
+	public ArrayList<Invoice> allSelerInvoice(Date from, Date to, User loginUser) {
+		Connection conn = JDBCTemplate.getConnection();
+
+		ArrayList<Invoice> arr = dao.allSelerInvoice(conn, from, to,loginUser);
 
 		JDBCTemplate.close(conn);
 		return arr;

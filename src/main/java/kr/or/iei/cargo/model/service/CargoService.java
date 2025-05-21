@@ -3,6 +3,7 @@ package kr.or.iei.cargo.model.service;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import kr.or.iei.cargo.model.dao.CargoDao;
 import kr.or.iei.cargo.model.vo.CargoGoods;
@@ -136,7 +137,7 @@ public class CargoService {
 
 	}
 
-	//삭제
+	//단일 삭제
 	public boolean deleteCargo(String trackingNo) {
 		Connection conn = JDBCTemplate.getConnection();
 	    boolean resultFlag = false;
@@ -165,7 +166,29 @@ public class CargoService {
 		return resultFlag;
 	}
 
+	// 체크한 항목 전부 삭제
+	public boolean deleteMultipleTrackingNos(List<String> trackingNos) {
+	    Connection conn = JDBCTemplate.getConnection();
+	    boolean resultFlag = true;
 
-	
+	    try {
+            // DAO 메서드 호출 (다중 삭제)
+            int goodsResult = dao.deleteCargoGoodsByMultiTrackingNos(conn, trackingNos);
+            int mainResult = dao.deleteCargoMainsByMultiTrackingNos(conn, trackingNos);
+
+            if (goodsResult > 0 && mainResult > 0) {
+                JDBCTemplate.commit(conn);
+                resultFlag = true;
+            } else {
+                JDBCTemplate.rollback(conn);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JDBCTemplate.rollback(conn);
+        } finally {
+            JDBCTemplate.close(conn);
+        }
+
+        return resultFlag;
+    }
 }
-	       

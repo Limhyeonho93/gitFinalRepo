@@ -45,6 +45,10 @@ public class UserDao {
 				// 제발
 				loginUser.setUserLevel(rset.getString("user_level"));
 
+	            // 이거 반드시 살려주세요 ㅠㅠㅠㅠㅠㅠ
+	            // 제발
+	            loginUser.setUserLevel(rset.getString("user_level"));
+
 			}
 
 		} catch (SQLException e) {
@@ -60,7 +64,7 @@ public class UserDao {
 	public int updateUser(Connection conn, User updUser) {
 		PreparedStatement pstmt = null;
 
-		int result = 0; // 실패는 0, 성공은 1
+		int result = 0;
 
 		String query = "UPDATE T_USERS " + "SET USER_NAME = ?, TEL_NO = ? " + "WHERE USER_ID = ?";
 
@@ -88,7 +92,7 @@ public class UserDao {
 		PreparedStatement pstmt = null;
 
 		int result = 0;
-		String query = "UPDATE T_Users " + "SET user_pw  = ?, " + "    upd_date = SYSDATE " + // 갱신일도 함께 업데이트 해줌
+		String query = "UPDATE T_Users " + "SET user_pw  = ?, " + "upd_date = SYSDATE " + // 갱신일도 함께 업데이트 해줌
 				"WHERE user_id = ? ";
 
 		try {
@@ -111,26 +115,31 @@ public class UserDao {
 
 	public int insertUser(Connection conn, User user) {
 		PreparedStatement pstmt = null;
-		int result = 0;
-		String query = "INSERT INTO T_USERS VALUES(?, ?, ?, ?, ?, ?, SYSDATE, SYSDATE, '2')";
-		try {
-			pstmt = conn.prepareStatement(query);
+	    int result = 0;
 
-			pstmt.setString(1, user.getUserId());
-			pstmt.setString(2, user.getCompCd());
-			pstmt.setString(3, user.getUserPw());
-			pstmt.setString(4, user.getUserName());
-			pstmt.setString(5, user.getDeptName());
-			pstmt.setString(6, user.getTelNo());
+	    String query = "INSERT INTO T_USERS (USER_ID, COMP_CD, USER_PW, USER_NAME, DEPT_NAME, TEL_NO, REG_DATE, UPD_DATE, USER_LEVEL) " +
+	                   "VALUES (?, ?, ?, ?, ?, ?, SYSDATE, SYSDATE, ?)";
 
-			result = pstmt.executeUpdate();
+	    try {
+	        pstmt = conn.prepareStatement(query);
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}	
-		return result;
+	        pstmt.setString(1, user.getUserId());
+	        pstmt.setString(2, user.getCompCd());
+	        pstmt.setString(3, user.getUserPw());
+	        pstmt.setString(4, user.getUserName());
+	        pstmt.setString(5, user.getDeptName());
+	        pstmt.setString(6, user.getTelNo());
+	        pstmt.setString(7, user.getUserLevel()); // 회원가입 폼에서 전달된 값 (2 또는 3)
+
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return result;
 	}
 
 	public boolean isValidCompanyCode(Connection conn, String compCd) {

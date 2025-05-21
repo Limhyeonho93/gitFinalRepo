@@ -52,6 +52,7 @@ public class UserService {
 	public int insertUser(User user) {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = dao.insertUser(conn, user);
+		
 		if (result > 0) {
 			JDBCTemplate.commit(conn);
 		} else {
