@@ -86,6 +86,7 @@ public class CargoMainImport {
 				            break;
 				        case 9: // J열 (unitWeight)  //중량 //여기도 문제. 중량
 				        	unitWeight = cellValue; 
+				        	gw = cellValue; 
 				            break;
 				        case 10: // K열 (gwt)   //여기가 문제. 중량단위 
 				            gwt = cellValue;
