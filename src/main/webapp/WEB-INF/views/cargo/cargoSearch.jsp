@@ -38,8 +38,8 @@
 
         <style type="text/css">
             /*
-	grid css
-	*/
+   grid css
+   */
             #myGrid {
                 width: 100%;
                 flex-grow: 1;
@@ -52,8 +52,8 @@
             }
 
             /*
-	text area css(검색 텍스트 창)
-	*/
+   text area css(검색 텍스트 창)
+   */
             .textarea-search {
                 position: relative;
                 display: block;
@@ -79,15 +79,15 @@
             }
 
             /*
-	select css
-	*/
+   select css
+   */
             .form-select {
                 width: 200px;
             }
 
             /*
-	modal css
-	*/
+   modal css
+   */
             .th-label {
                 width: 30%;
                 vertical-align: middle;
@@ -212,9 +212,9 @@
         </div>
 
         <script type="text/javascript">
-        	
+           
             $(function () {
-            	let goodsUpdList=[];
+               let goodsUpdList=[];
 
                 // 검색창 클릭 시 동작
                 $('#search').on('click', function () {
@@ -491,7 +491,7 @@
                         const activeClass = (i === 0) ? 'active' : '';
                         const tabId = 'tab' + i;
                         
-                     	// 탭 버튼
+                        // 탭 버튼
                         tabs += '<li class="nav-item" role="presentation">' +
                             '<button class="nav-link ' + activeClass + '" type="button" data-tab-id="' + tabId + '">' +
                             (item.goodsName ? item.goodsName : '상품' + (i + 1)) +
@@ -513,14 +513,14 @@
                     }
                     
                     var contentHtml = '<ul class="nav nav-tabs" role="tablist">' + tabs + '</ul>' +
-	                    			  '<div class="tab-content">' + tabContents + '</div>';
-	
-	                //모달에 탭 버튼과 탭 내용 넣기   
-	                $('#updateModalContent').html(contentHtml);
+                                  '<div class="tab-content">' + tabContents + '</div>';
+   
+                   //모달에 탭 버튼과 탭 내용 넣기   
+                   $('#updateModalContent').html(contentHtml);
 
                 }
                 
-             	// 탭 클릭 이벤트
+                // 탭 클릭 이벤트
                 $(document).on('click', '#tabList button.nav-link', function () {
                     const tabId = $(this).data('tab-id');
                     showTab(tabId, this);
@@ -596,7 +596,7 @@
                     });
                     document.getElementById(tabId).classList.add('active', 'show');
                 }
-				*/
+            */
 
 
 
@@ -706,7 +706,7 @@
                                 data: { trackingNos: trackingNoArr },
                                 success: function (res) {
                                     if (res.success) {
-                                    	swal("삭제 완료", `${trackingNoArr.length}건이 삭제되었습니다.`, "success");
+                                       swal("삭제 완료", `${trackingNoArr.length}건이 삭제되었습니다.`, "success");
                                         $('#search').click();  // 그리드 재조회
                                     } else {
                                         swal("실패", "삭제에 실패하였습니다.", "error");
