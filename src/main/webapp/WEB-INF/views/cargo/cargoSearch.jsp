@@ -43,7 +43,7 @@
             #myGrid {
                 width: 100%;
                 flex-grow: 1;
-                height: 800px;
+                height: 600px;
                 margin-top: 25px;
             }
 
@@ -282,12 +282,12 @@
                                 '<th class="th-label">총 중량</th>' +
                                 '<td colspan="2">' +
                                 '<div class="d-flex">' +
-                                '<input type="text" name="gw" class="form-control me-2" value="' + params.data.gw + '" style="flex: 2;">' +
-                                '<input type="text" name="gwt" class="form-control" value="' + params.data.gwt + '" style="flex: 1;">' +
+                                '<input type="number" step="0.01" name="gw" class="form-control me-2" value="' + params.data.gw + '" style="flex: 2;">' +
+                                '<input type="text" name="gwt" class="form-control" maxlength="3" value="' + params.data.gwt + '" style="flex: 1;">' +
                                 '</div>' +
                                 '</td>' +
                                 '</tr>' +
-                                '<tr><th class="th-label">화물 개수</th><td><input type="text" name="no" class="form-control" value="' + params.data.no + '"></td></tr>' +
+                                '<tr><th class="th-label">화물 개수</th><td><input type="number" maxlength="5" name="no" class="form-control" value="' + params.data.no + '"></td></tr>' +
                                 '<tr><th class="th-label">배송 중지 여부</th><td><input type="text" name="deliveryStop" class="form-control" value="' + params.data.deliveryStop + '"></td></tr>' +
                                 '</table>';
 
@@ -372,7 +372,7 @@
                             gridApi.forEachNode(node => allData.push(node.data));
                             gridApi.applyTransaction({ remove: allData });
                             gridApi.applyTransaction({ add: res });
-                            gridDiv.style.height = "800px";
+                            gridDiv.style.height = "600px";
                         },
                         error: function (err) {
                             console.log("에러 발생:", err);

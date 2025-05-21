@@ -87,7 +87,7 @@
 <body>
     <h2>비밀번호 찾기</h2>
 
-    <form action="<c:url value='/user/forgotPw'/>" method="post">
+    <form action="<c:url value='/user/loginFrm'/>" method="post">
         <div>
             <label for="userId">이메일 (아이디)</label><br>
             <input type="email" name="userId" id="userId" required placeholder="example@email.com">

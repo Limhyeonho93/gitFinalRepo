@@ -47,7 +47,7 @@ public class PwChgServlet extends HttpServlet {
 			request.setAttribute("title", "알림");
 			request.setAttribute("msg", "현재 비밀번호가 일치하지 않습니다.");
 			request.setAttribute("icon", "warning");
-			request.setAttribute("callback", "self.close();");
+			request.setAttribute("loc", "/user/pwChgFrm");
 			
 			view.forward(request, response);
 			return;
@@ -69,7 +69,7 @@ public class PwChgServlet extends HttpServlet {
 				request.setAttribute("title", "실패");
 				request.setAttribute("msg", "비밀번호 변경 처리 중, 오류가 발생하였습니다.");
 				request.setAttribute("icon", "error");
-				request.setAttribute("callback", "self.close();");
+				request.setAttribute("loc", "/user/pwChgFrm");
 			}
 			
 				view.forward(request, response);
