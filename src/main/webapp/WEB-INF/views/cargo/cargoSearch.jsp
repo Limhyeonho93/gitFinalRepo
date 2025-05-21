@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
     <!DOCTYPE html>
     <html>
 
@@ -37,8 +38,8 @@
 
         <style type="text/css">
             /*
-grid css
-*/
+   grid css
+   */
             #myGrid {
                 width: 100%;
                 flex-grow: 1;
@@ -51,8 +52,8 @@ grid css
             }
 
             /*
-text area css
-*/
+   text area css(검색 텍스트 창)
+   */
             .textarea-search {
                 position: relative;
                 display: block;
@@ -78,19 +79,37 @@ text area css
             }
 
             /*
-select css
-*/
+   select css
+   */
             .form-select {
                 width: 200px;
             }
 
             /*
-modal css
-*/
+   modal css
+   */
             .th-label {
                 width: 30%;
                 vertical-align: middle;
                 white-space: nowrap;
+            }
+
+            input[readonly] {
+                background-color: #f0f0f0;
+                color: #555;
+                cursor: not-allowed;
+            }
+
+            input[readonly]:focus {
+                background-color: #f0f0f0 !important;
+                outline: none;
+                box-shadow: none;
+                cursor: not-allowed;
+            }
+
+            #updateGoodsModal {
+                z-index: 1060;
+                /* Bootstrap 기본 modal z-index는 1055 */
             }
         </style>
 
@@ -105,9 +124,9 @@ modal css
 
                 <%-- 검색창 (AG-grid) --%>
                     <div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
-                       
-                          <div class="center-div">
-              			  <h2 class="mb-4">화물 조회</h2></div>
+                        <div>
+                            <h2 class="mb-4">화물 조회</h2>
+                        </div>
                         <div class="d-flex" style="gap: 10px;">
                             <!-- 검색창 관련 버튼들은 왼쪽에 위치 -->
                             <div class="d-flex" style="gap: 10px;">
@@ -124,7 +143,7 @@ modal css
                             </div>
 
                             <!-- 체크목록 추출 버튼은 오른쪽에 위치 -->
-                            <div class="ms-auto d-flex" style="gap: 10px;">
+                            <div class="ms-auto">
                                 <button class="btn btn-outline-dark" type="button" id="exportSelected">체크목록 추출</button>
                                 <button class="btn btn-danger" type="button" id="deleteSelected">체크목록 삭제</button>
                             </div>
@@ -133,7 +152,7 @@ modal css
                         <div id="myGrid" class="ag-theme-alpine"></div>
                     </div>
 
-                    <%-- 상세정보 창 띄우기(모달) --%>
+                    <%-- 상세'정보' 창 띄우기(모달) --%>
 
                         <div class="modal fade" id="detailModal" tabindex="-1" aria-labelledby="detailModalLabel"
                             aria-hidden="true">
@@ -147,23 +166,52 @@ modal css
                                     <div class="modal-body" id="modalContent">
                                         <%-- 상세 내용(const contentHtml)이 여기에 들어감 --%>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" id="deleteModalBtn">삭제</button>
-                                        <button type="button" class="btn btn-primary" id="updateBtn">수정</button>
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">닫기</button>
+                                    <div class="modal-footer d-flex justify-content-between">
+                                        <div>
+                                            <button type="button" class="btn btn-outline-secondary" id="goodsUpdPopBtn"
+                                                data-tracking-no="">화물 상세정보 변경</button>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-primary" id="updateBtn">수정</button>
+                                            <button type="button" class="btn btn-danger" id="deleteModalBtn">삭제</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">닫기</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <%-- 상세'수정' 창 띄우기(모달) --%>
+                            <div class="modal fade" id="updateGoodsModal" tabindex="-1"
+                                aria-labelledby="updateGoodsModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="updateGoodsModalLabel">화물 정보 수정</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="닫기"></button>
+                                        </div>
+                                        <div class="modal-body" id="updateModalContent">
+                                            <%-- 상세 수정(const contentHtml) 내용이 여기에 들어감 --%>
+                                        </div>
+                                        <div class="modal-footer d-flex justify-content-end">
+                                            <button type="button" class="btn btn-primary"
+                                                id="goodsUpdateBtn">수정</button>
+                                            <button type="button" class="btn btn-danger" id="goodsdeleteBtn">삭제</button>
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">닫기</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
 
             </main>
             <jsp:include page="/WEB-INF/views/common/footer.jsp" />
         </div>
 
         <script type="text/javascript">
-
-
             $(function () {
 
                 // 검색창 클릭 시 동작
@@ -184,7 +232,6 @@ modal css
                         minWidth: 50,
                         width: 50,
                         maxWidth: 50,
-                        pinned: 'left',
                         headerCheckboxSelection: true,
                         headerCheckboxSelectionFilteredOnly: true,
                         checkboxSelection: true,
@@ -216,42 +263,48 @@ modal css
                         pinned: 'left',
                         onCellClicked: function (params) {
                             const trackingNo = params.data.trackingNo;
-                            console.log("선택한 trackingNo:", trackingNo);
+                            //console.log("선택한 trackingNo:", trackingNo);
 
-                            // AJAX로 상세 데이터 가져오기
-                            $.ajax({
-                                url: "/srchCargoDetail",
-                                type: 'get',
-                                data: { trackingNo: trackingNo },
-                                success: function (detail) {
-                                    console.log("상세 데이터:", detail);
+                            const contentHtml =
+                                '<table class="table table-bordered">' +
+                                '<tr><th class="th-label">회사코드</th><td><input type="text" name="compCd" class="form-control" value="' + params.data.compCd + '" readonly></td></tr>' +
+                                '<tr><th class="th-label">창고이동ID</th><td><input type="text" name="warehouseMoveid" class="form-control" value="' + params.data.warehouseMoveid + '" readonly></td></tr>' +
+                                '<tr><th class="th-label">사내 관리번호</th><td><input type="text" name="manageNo" class="form-control" value="' + params.data.manageNo + '" readonly></td></tr>' +
 
-                                    // 모달 HTML에 데이터 넣기
-                                    const contentHtml =
-                                        '<table class="table table-bordered">' +
-                                        '<tr><th class="th-label">회사코드</th><td><input type="text" name="compCd" class="form-control" value="' + detail.compCd + '"></td></tr>' +
-                                        '<tr><th class="th-label">창고이동ID</th><td><input type="text" name="warehouseMoveid" class="form-control" value="' + detail.warehouseMoveid + '"></td></tr>' +
-                                        '<tr><th class="th-label">사내 관리번호</th><td><input type="text" name="manageNo" class="form-control" value="' + detail.manageNo + '"></td></tr>' +
-                                        '<tr><th class="th-label">상품명</th><td><input type="text" name="goodsName" class="form-control" value="' + detail.goodsName + '"></td></tr>' +
-                                        '<tr><th class="th-label">상품개수</th><td><input type="text" name="no" class="form-control" value="' + detail.no + '"></td></tr>' +
-                                        '<tr><th class="th-label">상품단가</th><td><input type="text" name="unitPrice" class="form-control" value="' + detail.unitPrice + '"></td></tr>' +
-                                        '<tr><th class="th-label">상품무게</th><td><input type="text" name="unitWeight" class="form-control" value="' + detail.unitWeight + '"></td></tr>' +
-                                        '<tr><th class="th-label">배송지 주소</th><td><input type="text" name="receiverAdd" class="form-control" value="' + params.data.receiverAdd + '"></td></tr>' +
-                                        '</table>';
+                                '<tr><th class="th-label">수취인 이름</th><td><input type="text" name="receiverName" class="form-control" value="' + params.data.receiverName + '"></td></tr>' +
+                                '<tr><th class="th-label">수취인 주소</th><td><input type="text" name="receiverAdd" class="form-control" value="' + params.data.receiverAdd + '"></td></tr>' +
+                                '<tr><th class="th-label">수취인 우편번호</th><td><input type="text" name="receiverZip" class="form-control" value="' + params.data.receiverZip + '"></td></tr>' +
+                                '<tr><th class="th-label">수취인 전화번호</th><td><input type="text" name="receiverTel" class="form-control" value="' + params.data.receiverTel + '"></td></tr>' +
+                                '<tr><th class="th-label">판매자 이름</th><td><input type="text" name="sellerName" class="form-control" value="' + params.data.sellerName + '"></td></tr>' +
+                                '<tr><th class="th-label">판매자 주소</th><td><input type="text" name="sellerAdd" class="form-control" value="' + params.data.sellerAdd + '"></td></tr>' +
+                                '<tr><th class="th-label">판매자 전화번호</th><td><input type="text" name="sellerTel" class="form-control" value="' + params.data.sellerTel + '"></td></tr>' +
+                                '<tr>' +
+                                '<th class="th-label">총 중량</th>' +
+                                '<td colspan="2">' +
+                                '<div class="d-flex">' +
+                                '<input type="text" name="gw" class="form-control me-2" value="' + params.data.gw + '" style="flex: 2;">' +
+                                '<input type="text" name="gwt" class="form-control" value="' + params.data.gwt + '" style="flex: 1;">' +
+                                '</div>' +
+                                '</td>' +
+                                '</tr>' +
+                                '<tr><th class="th-label">화물 개수</th><td><input type="text" name="no" class="form-control" value="' + params.data.no + '"></td></tr>' +
+                                '<tr><th class="th-label">배송 중지 여부</th><td><input type="text" name="deliveryStop" class="form-control" value="' + params.data.deliveryStop + '"></td></tr>' +
+                                '</table>';
 
-                                    $('#modalContent').html(contentHtml);
+                            $('#modalContent').html(contentHtml);
 
-                                    // 모달 제목 업데이트
-                                    $('#detailModalLabel').html('<b>[화물 상세 정보] 송장번호 : ' + trackingNo + '</b>');
+                            // 모달 제목 업데이트
+                            $('#detailModalLabel').html('<b>[화물 상세 정보] 송장번호 : ' + trackingNo + '</b>');
 
-                                    // 모달 열기
-                                    const modal = new bootstrap.Modal(document.getElementById('detailModal'));
-                                    modal.show();
-                                },
-                                error: function () {
-                                    $('#modalContent').html('<p class="text-danger">상세 정보를 불러오지 못했습니다.</p>');
-                                }
-                            });
+                            // 화물상세수정 버튼에 trackingNo 값을 넣어줌
+                            $('#goodsUpdPopBtn').attr('data-tracking-no', trackingNo);
+
+                            // 모달 열기
+                            const modal = new bootstrap.Modal(document.getElementById('detailModal'));
+                            modal.show();
+
+
+
                         }
                     },
                     {
@@ -328,54 +381,161 @@ modal css
                     });
                 }
 
-                // 수정 버튼 클릭 시
+                // '화물 메인' 수정 버튼 클릭 시
                 $('#updateBtn').on('click', function () {
-                    const updatedData = {
-                        trackingNo: $('#detailModalLabel').text().split(': ')[1].trim(),
-                        compCd: $('#modalContent input[name="compCd"]').val(),
-                        warehouseMoveid: $('#modalContent input[name="warehouseMoveid"]').val(),
-                        manageNo: $('#modalContent input[name="manageNo"]').val(),
-                        receiverAdd: $('#modalContent input[name="receiverAdd"]').val(),
-                        no: parseInt($('#modalContent input[name="no"]').val()) || 0,
-                        unitPrice: parseInt($('#modalContent input[name="unitPrice"]').val()) || 0,
-                        unitWeight: parseFloat($('#modalContent input[name="unitWeight"]').val()) || 0
-                    };
 
-                    if (isNaN(updatedData.no) || isNaN(updatedData.unitPrice)) {
-                        swal("경고", "상품 개수 또는 단가는 숫자여야 합니다.", "warning");
+                    const trackingNo = $('#detailModalLabel').text().split(': ')[1].trim();
+                    const compCd = $('#modalContent input[name="compCd"]').val();
+                    const warehouseMoveid = $('#modalContent input[name="warehouseMoveid"]').val();
+                    const manageNo = $('#modalContent input[name="manageNo"]').val();
+                    const receiverName = $('#modalContent input[name="receiverName"]').val();
+                    const receiverAdd = $('#modalContent input[name="receiverAdd"]').val();
+                    const receiverZip = $('#modalContent input[name="receiverZip"]').val();
+                    const receiverTel = $('#modalContent input[name="receiverTel"]').val();
+                    const sellerName = $('#modalContent input[name="sellerName"]').val();
+                    const sellerAdd = $('#modalContent input[name="sellerAdd"]').val();
+                    const sellerTel = $('#modalContent input[name="sellerTel"]').val();
+                    const gw = parseFloat($('#modalContent input[name="gw"]').val()) || 0;
+                    const gwt = $('#modalContent input[name="gwt"]').val();
+                    const no = parseInt($('#modalContent input[name="no"]').val()) || 0;
+                    const deliveryStop = $('#modalContent input[name="deliveryStop"]').val();
+
+                    if (isNaN(no) || isNaN(gw)) {
+                        swal("경고", "중량과 화물 개수는 숫자여야 합니다.", "warning");
                         return;
                     }
 
                     $.ajax({
-                        url: '/cargo/updateCargoDetails',  // 경로 수정
-                        type: 'GET',  // GET 요청으로 변경
+                        url: '/cargo/updateCargoDetails',
+                        type: 'POST',
                         data: {
-                            trackingNo: updatedData.trackingNo,
-                            compCd: updatedData.compCd,
-                            warehouseMoveid: updatedData.warehouseMoveid,
-                            manageNo: updatedData.manageNo,
-                            receiverAdd: updatedData.receiverAdd,
-                            no: updatedData.no,
-                            unitPrice: updatedData.unitPrice,
-                            unitWeight: updatedData.unitWeight
+                            trackingNo: trackingNo,
+                            compCd: compCd,
+                            warehouseMoveid: warehouseMoveid,
+                            manageNo: manageNo,
+                            receiverName: receiverName,
+                            receiverAdd: receiverAdd,
+                            receiverZip: receiverZip,
+                            receiverTel: receiverTel,
+                            sellerName: sellerName,
+                            sellerAdd: sellerAdd,
+                            sellerTel: sellerTel,
+                            gw: gw,
+                            gwt: gwt,
+                            no: no,
+                            deliveryStop: deliveryStop
+
                         },
                         success: function (result) {
-                            if (result.success) {
+                            if (result > 0) {
                                 swal("성공", "화물 정보가 수정되었습니다.", "success");
-                                const modalInstance = bootstrap.Modal.getInstance(document.getElementById('detailModal'));
-                                modalInstance.hide();
+                                /*
+                                const modalInstance = bootstrap.Modal.getInstance(document.getElementById('detailModal'));//현재 열려 있는 모달 인스턴스를 가져옴
+                                modalInstance.hide();// 모달 닫기
                                 $('#search').click(); // 재조회
+                                
+                                */
                             } else {
                                 swal("실패", "수정에 실패했습니다.", "error");
                             }
                         },
-                        error: function () {  // <- Closing bracket added here.
+                        error: function () {
                             swal("오류", "서버 요청 중 오류가 발생했습니다.", "error");
                         }
                     });
                 });
 
-                //삭제 버튼 클릭
+
+
+                //화물 상세 수정 버튼 누를 시 동작 (cargoGoods 수정)
+                $('#goodsUpdPopBtn').on('click', function () {
+                    const trackingNo = $(this).data('tracking-no');
+                    console.log("선택한 trackingNo:", trackingNo);
+
+                    let tabs = '';
+                    let tabContents = '';
+
+                    // AJAX로 상세 데이터 가져오기
+                    $.ajax({
+                        url: "/srchCargoDetail",
+                        type: 'get',
+                        data: { trackingNo: trackingNo },
+                        success: function (goodsList) {
+                            console.log("상세 데이터:", goodsList);
+
+                            for (var i = 0; i < goodsList.length; i++) {
+                                var item = goodsList[i];
+                                var activeClass = (i === 0) ? 'active' : '';
+                                var tabId = 'tab' + i;
+
+                                // 탭 버튼
+                                tabs += '<li class="nav-item" role="presentation">' +
+                                    '<button class="nav-link ' + activeClass + '" type="button" data-tab-id="' + tabId + '">' +
+                                    (item.goodsName ? item.goodsName : '상품' + (i + 1)) +
+                                    '</button>' +
+                                    '</li>';
+                                $('#tabList').on('click', 'button.nav-link', function () {
+                                    var tabId = $(this).data('tab-id');
+                                    showTab(tabId, this);
+                                });
+                                // 탭 내용
+                                tabContents += '<div class="tab-pane fade ' + ((i === 0) ? 'show active' : '') + '" id="' + tabId + '">' + // ✅ 수정됨
+                                    '<table class="table table-bordered">' +
+                                    '<tr><th class="th-label">회사코드</th><td><input type="text" name="compCd" class="form-control" value="' + item.compCd + '" readonly></td></tr>' +
+                                    '<tr><th class="th-label">창고이동ID</th><td><input type="text" name="warehouseMoveid" class="form-control" value="' + item.warehouseMoveid + '" readonly></td></tr>' +
+                                    '<tr><th class="th-label">사내 관리번호</th><td><input type="text" name="manageNo" class="form-control" value="' + item.manageNo + '" readonly></td></tr>' +
+                                    '<tr><th class="th-label">상품명</th><td><input type="text" name="goodsName" class="form-control" value="' + item.goodsName + '"></td></tr>' +
+                                    '<tr><th class="th-label">상품단가</th><td><input type="text" name="unitPrice" class="form-control" value="' + item.unitPrice + '"></td></tr>' +
+                                    '<tr><th class="th-label">상품개수</th><td><input type="text" name="qty" class="form-control" value="' + item.qty + '"></td></tr>' +
+                                    '<tr><th class="th-label">중량</th><td><input type="text" name="unitWeight" class="form-control" value="' + item.unitWeight + '"></td></tr>' +
+                                    '<tr><th class="th-label">배송중지flg</th><td><input type="text" name="deliveryStop" class="form-control" value="' + item.deliveryStop + '"></td></tr>' +
+                                    '</table></div>';
+
+                            }
+
+                            // 탭 버튼과 탭 내용 합치기
+                            var contentHtml = '<ul class="nav nav-tabs" role="tablist">' + tabs + '</ul>' +
+                                '<div class="tab-content">' + tabContents + '</div>';
+
+                            //모달에 탭 버튼과 탭 내용 넣기   
+                            $('#updateModalContent').html(contentHtml);
+
+                            // 모달 제목 업데이트
+                            $('#updateGoodsModalLabel').html('<b>[화물 상세 수정] 송장번호 : ' + trackingNo + '</b>');
+
+
+                            // 모달 열기
+                            const modal = new bootstrap.Modal(document.getElementById('updateGoodsModal'));
+                            modal.show();
+                        },
+                        error: function () {
+                            $('#updateModalContent').html('<p class="text-danger">상세 정보를 불러오지 못했습니다.</p>');
+                        }
+                    });
+                });
+
+                //화물 상세 수정의 탭 기능 
+                function showTab(tabId, clickedBtn) {
+                    console.log(tabId);
+                    // 탭 버튼 활성화 처리
+                    var tabButtons = document.querySelectorAll('.nav-link');
+                    tabButtons.forEach(function (btn) {
+                        btn.classList.remove('active');
+                    });
+                    clickedBtn.classList.add('active');
+
+                    // 탭 콘텐츠 전환
+                    var tabContents = document.querySelectorAll('.tab-pane');
+                    tabContents.forEach(function (pane) {
+                        pane.classList.remove('active', 'show');
+                    });
+                    document.getElementById(tabId).classList.add('active', 'show');
+                }
+
+
+
+
+                //화물 메인 삭제
                 $('#deleteModalBtn').on('click', function () {
                     const trackingNo = $('#detailModalLabel').text().split(': ')[1].trim(); // 또는 data-attribute 추천
 
@@ -388,7 +548,7 @@ modal css
                     }).then((willDelete) => {
                         if (willDelete) {
                             $.ajax({
-                                url: "/cargo/deleteCargo", // 서버 컨트롤러 경로에 맞게 수정
+                                url: "/cargo/deleteCargo",
                                 type: "POST", // 또는 DELETE
                                 data: { trackingNo: trackingNo },
                                 success: function (res) {
@@ -493,9 +653,13 @@ modal css
                                 }
                             });
                         }
-                    });
-                })
+                    })
+                });
+
             });
+
+
         </script>
     </body>
+
     </html>
