@@ -14,19 +14,19 @@ import javax.servlet.annotation.WebListener;
 public class SchedulerInitializer implements ServletContextListener {
     private ScheduledExecutorService scheduler;
 
-//    @Override
-//    public void contextInitialized(ServletContextEvent sce) {
-//        System.out.println("[✅ SchedulerListener 시작됨]");
-//        //System.out.println("[✅ SchedulerListener 시작됨]");
-//        scheduler = Executors.newScheduledThreadPool(2);
-//
-//        // 1시에 시작하는 딜레이 계산 후 하루 주기로 실행
-//        long initialDelay = computeInitialDelayFor1AM();
-//        scheduler.scheduleAtFixedRate(new InsertInvoiceData(), initialDelay, 24 * 60, TimeUnit.MINUTES);
-//
-//        // 5분마다 실행
-//        scheduler.scheduleAtFixedRate(new UpdateManageNo(), 0, 5, TimeUnit.MINUTES);
-//    }
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        System.out.println("[✅ SchedulerListener 시작됨]");
+        //System.out.println("[✅ SchedulerListener 시작됨]");
+        scheduler = Executors.newScheduledThreadPool(2);
+
+        // 1시에 시작하는 딜레이 계산 후 하루 주기로 실행
+        long initialDelay = computeInitialDelayFor1AM();
+        scheduler.scheduleAtFixedRate(new InsertInvoiceData(), initialDelay, 24 * 60, TimeUnit.MINUTES);
+
+        // 5분마다 실행
+        scheduler.scheduleAtFixedRate(new UpdateManageNo(), 0, 5, TimeUnit.MINUTES);
+    }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
