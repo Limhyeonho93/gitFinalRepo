@@ -212,9 +212,11 @@
         </div>
 
         <script type="text/javascript">
-           
+
             $(function () {
-               let goodsUpdList=[];
+                // 팝업창 트래킹넘버
+                let selectedTrackingNo = '';
+                let goodsUpdList = [];
 
                 // 검색창 클릭 시 동작
                 $('#search').on('click', function () {
@@ -300,7 +302,7 @@
 
                             // 화물상세수정 버튼에 trackingNo 값을 넣어줌
                             $('#goodsUpdPopBtn').attr('data-tracking-no', trackingNo);
-
+                            selectedTrackingNo = trackingNo;
                             // 모달 열기
                             const modal = new bootstrap.Modal(document.getElementById('detailModal'));
                             modal.show();
@@ -451,19 +453,18 @@
 
                 //화물 상세 수정 버튼 누를 시 동작 (cargoGoods 수정)
                 $(document).on('click', '#goodsUpdPopBtn', function () { // 이렇게 해야 두번 세번 클릭해도 정상적으로 데이터 가져옴
-                    const trackingNo = $(this).data('tracking-no');
+                    const trackingNo = selectedTrackingNo;
 
                     let tabs = '';
                     let tabContents = '';
-
                     // AJAX로 상세 데이터 가져오기
                     $.ajax({
                         url: "/srchCargoDetail",
                         type: 'get',
                         data: { trackingNo: trackingNo },
                         success: function (goodsList) {
-                            goodsUpdList=goodsList;
-                            
+                            goodsUpdList = goodsList;
+
                             // 모달 제목 업데이트
                             $('#updateGoodsModalLabel').html('<b>[화물 상세 수정] 송장번호 : ' + trackingNo + '</b>');
 
@@ -471,8 +472,9 @@
                             // 모달 열기
                             const modal = new bootstrap.Modal(document.getElementById('updateGoodsModal'));
                             modal.show();
-                            
+
                             // 모달 내용 불러오기
+                            $('#updateModalContent').html('');
                             renderTabs(goodsUpdList);
                         },
                         error: function () {
@@ -480,17 +482,18 @@
                         }
                     });
                 });
-                
-                //탭 데이터 넣기
-                function renderTabs(goodsUpdList){
-                    let tabs = '';
-                    let tabContents = '';
 
-                    for (let i = 0; i < goodsUpdList.length; i++) {
-                        const item = goodsUpdList[i];
-                        const activeClass = (i === 0) ? 'active' : '';
-                        const tabId = 'tab' + i;
-                        
+                //탭 데이터 넣기
+                function renderTabs(goodsUpdList) {
+                    var tabs = '';
+                    var tabContents = '';
+
+                    for (var i = 0; i < goodsUpdList.length; i++) {
+                        var item = goodsUpdList[i];
+                        var activeClass = (i == 0) ? 'active' : '';
+                        var showClass = (i == 0) ? 'show' : '';
+                        var tabId = 'tab' + i;
+
                         // 탭 버튼
                         tabs += '<li class="nav-item" role="presentation">' +
                             '<button class="nav-link ' + activeClass + '" type="button" data-tab-id="' + tabId + '">' +
@@ -499,7 +502,7 @@
                             '</li>';
 
                         // 탭 내용
-                        tabContents += '<div class="tab-pane fade ' + ((i === 0) ? 'show active' : '') + '" id="' + tabId + '">' + 
+                        tabContents += '<div class="tab-pane fade ' + showClass + ' ' + activeClass + '" id="' + tabId + '">' +
                             '<table class="table table-bordered">' +
                             '<tr><th class="th-label">회사코드</th><td><input type="text" name="compCd" class="form-control" value="' + item.compCd + '" readonly></td></tr>' +
                             '<tr><th class="th-label">창고이동ID</th><td><input type="text" name="warehouseMoveid" class="form-control" value="' + item.warehouseMoveid + '" readonly></td></tr>' +
@@ -509,17 +512,16 @@
                             '<tr><th class="th-label">상품개수</th><td><input type="text" name="qty" class="form-control" value="' + item.qty + '"></td></tr>' +
                             '<tr><th class="th-label">중량</th><td><input type="text" name="unitWeight" class="form-control" value="' + item.unitWeight + '"></td></tr>' +
                             '<tr><th class="th-label">배송중지flg</th><td><input type="text" name="deliveryStop" class="form-control" value="' + item.deliveryStop + '"></td></tr>' +
-                            '</table></div>';
+                            '</table>' +
+                            '</div>';
                     }
-                    
-                    var contentHtml = '<ul class="nav nav-tabs" role="tablist">' + tabs + '</ul>' +
-                                  '<div class="tab-content">' + tabContents + '</div>';
-   
-                   //모달에 탭 버튼과 탭 내용 넣기   
-                   $('#updateModalContent').html(contentHtml);
 
+                    var contentHtml = '<ul class="nav nav-tabs" role="tablist" id="tabList">' + tabs + '</ul>' +
+                        '<div class="tab-content">' + tabContents + '</div>';
+
+                    $('#updateModalContent').html(contentHtml);
                 }
-                
+
                 // 탭 클릭 이벤트
                 $(document).on('click', '#tabList button.nav-link', function () {
                     const tabId = $(this).data('tab-id');
@@ -706,7 +708,7 @@
                                 data: { trackingNos: trackingNoArr },
                                 success: function (res) {
                                     if (res.success) {
-                                       swal("삭제 완료", `${trackingNoArr.length}건이 삭제되었습니다.`, "success");
+                                        swal("삭제 완료", `${trackingNoArr.length}건이 삭제되었습니다.`, "success");
                                         $('#search').click();  // 그리드 재조회
                                     } else {
                                         swal("실패", "삭제에 실패하였습니다.", "error");
