@@ -39,8 +39,6 @@ public class UserJoinServlet extends HttpServlet {
         String deptName = request.getParameter("deptName");
         String telNo = request.getParameter("telNo");
         String userLevel = request.getParameter("userLevel");
-
-        String userLevel = request.getParameter("userLevel");
         User loginUser = (User) request.getSession().getAttribute("user");
 
         if ("1".equals(loginUser.getUserLevel())) {
