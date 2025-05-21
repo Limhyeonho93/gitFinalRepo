@@ -641,7 +641,7 @@
                                 data: { trackingNos: trackingNoArr },
                                 success: function (res) {
                                     if (res.success) {
-                                        swal("삭제 완료", `${selectedTracking.length}건이 삭제되었습니다.`, "success");
+                                    	swal("삭제 완료", `${trackingNoArr.length}건이 삭제되었습니다.`, "success");
                                         $('#search').click();  // 그리드 재조회
                                     } else {
                                         swal("실패", "삭제에 실패하였습니다.", "error");
