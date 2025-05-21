@@ -69,3 +69,12 @@ body {
   color: white;
   text-align: center;
 }
+
+main {
+  margin-top: 0;
+  padding-top: 0;
+  display: flex;
+  flex: 1;
+  max-height: calc(100vh - 150px);
+  overflow-y: auto;
+}

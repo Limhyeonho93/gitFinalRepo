@@ -91,7 +91,7 @@
                                     <div class="mb-3">
                                         <label for="comp_cd" class="form-label">회사코드</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="comp_cd" name="comp_cd">
+                                            <input type="text" class="form-control" id="comp_cd" name="comp_cd" maxlength="10">
                                             <button class="btn btn-outline-secondary" type="button"
                                                 id="btnCheckCompCd">중복 확인</button>
                                         </div>
@@ -116,7 +116,6 @@
                                         <label for="comp_div" class="form-label">회사구분</label> <select
                                             class="form-select" id="comp_div" name="comp_div">
                                             <option value="S">셀러</option>
-                                            <option value="L">물류회사</option>
                                         </select>
                                     </div>
                                 </form>
