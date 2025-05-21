@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kr.or.iei.user.model.service.UserService;
 import kr.or.iei.user.model.vo.User;
@@ -15,7 +16,7 @@ import kr.or.iei.user.model.vo.User;
 /**
  * Servlet implementation class UpdateServlet
  */
-@WebServlet("/user/userUpdate")
+@WebServlet("/user/update")
 public class UserUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
@@ -53,9 +54,25 @@ public class UserUpdateServlet extends HttpServlet {
 			request.setAttribute("title", "알림");
 			request.setAttribute("msg", "수정되었습니다.");
 			request.setAttribute("icon", "success");
-			request.setAttribute("loc", "/user/userUpdate");
-		}
+			request.setAttribute("loc", "/user/userUpdateFrm");
 			
+			HttpSession session = request.getSession(false); //세션 있으면 존재하는 세션. 없으면 null 반환
+			if(session != null) {
+				User loginUser = (User) session.getAttribute("user"); //로그인 했을 때, 등록한 회원 정보
+				
+				//세션 정보 업데이트
+				loginUser.setUserName(userName);
+				loginUser.setTelNo(telNo);
+				loginUser.setUserId(userId);
+				
+				
+			}
+		}else {
+			request.setAttribute("title", "알림");
+			request.setAttribute("msg", "회원 정보 수정 중, 오류가 발생하였습니다.");
+			request.setAttribute("icon", "error");
+			request.setAttribute("loc", "/user/myPage");
+		}
 			view.forward(request, response);
 	}
 

@@ -160,7 +160,7 @@
 							<tr>
 								<th>아이디</th>
 								<td class="User">
-									<input type="text" name="userId" value="${loginUser.userId}" readonly>
+									<input type="text" name="userId" value="${user.userId}" readonly>
 								</td>
 							</tr>
 							
@@ -177,7 +177,7 @@
 							<tr>
 								<th>회사코드</th>
 								<td class="User">
-									<input type="text" name="compCd" value="${loginUser.compCd}" readonly>
+									<input type="text" name="compCd" value="${user.compCd}" readonly>
 								</td>
 							</tr>
 							<tr>
@@ -190,7 +190,7 @@
 											<input type="text"
 												   id="userName"
 												   name="userName"
-												   value="${loginUser.userName}"
+												   value="${user.userName}"
 											  	   maxlength="12"
 											  	   placeholder="이름을 입력하세요">
 										</div>
@@ -207,7 +207,7 @@
 											<input type="text"
 												   id="telNo"
 												   name="telNo"
-												   value="${loginUser.telNo}"
+												   value="${user.telNo}"
 												   maxlength="13"
 												   placeholder="010-0000-0000">
 										</div>
@@ -217,7 +217,7 @@
 							<tr>
 								<th>등록일</th>
 								<td>
-									<input type="text" name="regDate" value="${loginUser.regDate}" readonly>
+									<input type="text" name="regDate" value="${user.regDate}" readonly>
 								</td>
 							</tr>
 						</table>
