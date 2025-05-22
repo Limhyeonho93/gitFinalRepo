@@ -125,7 +125,7 @@
                 <%-- 검색창 (AG-grid) --%>
                     <div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
                         <div>
-                            <h2 class="mb-4">화물 조회</h2>
+                            <h3 class="mb-4" style="font-family: Arial, sans-serif;">화물 조회</h3>
                         </div>
                         <div class="d-flex" style="gap: 10px;">
                             <!-- 검색창 관련 버튼들은 왼쪽에 위치 -->

@@ -31,6 +31,7 @@
                             <c:if test="${user.userLevel eq '1'}">
                                 <li><a class="sidebar-link" href="/bonded/searchFrm">입출고 관리</a></li>
                             </c:if>
+                            <li><a class="sidebar-link" href="/tracking/searchList">화물 추적</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-item">
@@ -39,10 +40,9 @@
                             청구서 관리
                         </a>
                         <ul class="collapse list-unstyled ps-4 sidebar-submenu" id="bondSea">
-                            <li><a class="sidebar-link" href="${pageContext.request.contextPath}/invoice/insertShoppingFrm">청구서 추가</a></li>
                             <li><a class="sidebar-link" href="/invoice/dateSearchFrm">청구서 조회</a></li>
                             <li><a class="sidebar-link" href="/invoice/detailFrm">청구서 상세</a></li>
-                            <li><a class="sidebar-link" href="/tracking/searchList">화물 추적</a></li>
+                            <li><a class="sidebar-link" href="${pageContext.request.contextPath}/invoice/insertShoppingFrm">청구 요금 기준표</a></li>
                         </ul>
                     </li>
                     <li class="sidebar-item">

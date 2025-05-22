@@ -102,7 +102,6 @@
                         <button class="btn btn-outline-dark" type="button" id="search">검색</button>
                     </div>
 
-                    <br>
                     <div class="d-flex justify-content-end mb-2">
                         <input type="text" id="filterTextBox" class="form-control form-control-sm" placeholder="퀵 서치"
                             style="width: 300px;">

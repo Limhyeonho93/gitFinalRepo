@@ -88,7 +88,7 @@
             <jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
             
             <div class="center-div">
-                <h2 class="mb-4">화물 등록</h2>
+                <h3 class="mb-4" style="font-family: Arial, sans-serif;">화물 등록</h3>
                 
                 <%-- 버튼 --%>
                 <div class="btn-group w-100 mb-3">
