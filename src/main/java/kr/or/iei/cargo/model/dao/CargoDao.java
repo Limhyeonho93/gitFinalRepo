@@ -423,6 +423,66 @@ public class CargoDao {
 
 	    return result;
 	}
+
+	
+	//T_CargoGoods 수정 
+	public int updCargoGoodsDetail(Connection conn, CargoGoods goods) {
+		PreparedStatement pstmt = null;
+	    int result = 0;
+
+	    // UPDATE 쿼리
+	    String query = "UPDATE T_cargoGoods SET "
+	            + "goods_Name = ?, unit_Price = ?, qty = ?, unit_Weight = ?, delivery_Stop = ?, "
+	    		+ "user_Id = ?, upd_date = sysdate "
+	            + "WHERE tracking_no = ? and seq = ? and comp_Cd = ?";
+
+	    try {
+	        pstmt = conn.prepareStatement(query);
+
+	        pstmt.setString(1, goods.getGoodsName());
+	        pstmt.setInt(2, goods.getUnitPrice());
+	        pstmt.setInt(3, goods.getQty());
+	        pstmt.setFloat(4, goods.getUnitWeight());
+	        pstmt.setString(5, goods.getDeliveryStop());
+	        pstmt.setString(6, goods.getUserId());
+	        
+	        pstmt.setString(7, goods.getTrackingNo());
+	        pstmt.setInt(8, goods.getSeq());
+	        pstmt.setString(9, goods.getCompCd());
+
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+	    return result;
+	}
+
+	//T_CargoGoods 삭제(송장번호+시퀀스 값 일치하는 한 개만)
+	public int deleteCargoGoods(Connection conn, CargoGoods goods) {
+		System.out.println("deleteCargoGoodsByTrackingNo");
+	    int result = 0;
+	    PreparedStatement pstmt = null;
+	    String query = "DELETE FROM T_cargoGoods WHERE tracking_No = ? AND seq = ? AND comp_Cd = ? ";
+
+	    try {
+	        pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, goods.getTrackingNo());
+	        pstmt.setInt(2, goods.getSeq());
+	        pstmt.setString(3, goods.getCompCd());
+
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return result;
+	}
+	
 		
 }
 

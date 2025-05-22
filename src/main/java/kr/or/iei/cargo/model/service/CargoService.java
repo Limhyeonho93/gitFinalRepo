@@ -115,7 +115,7 @@ public class CargoService {
 	}
 	
 
-	//수정
+	//T_CarogoMain 수정
 	public int updateCargoDetails(CargoMain cargo, CargoGoods goods) {
 		Connection conn = JDBCTemplate.getConnection();
         int result = dao.updateCargoDetails(conn, cargo);
@@ -137,7 +137,7 @@ public class CargoService {
 
 	}
 
-	//단일 삭제
+	//T_CargoMain 단 건 삭제 
 	public boolean deleteCargo(String trackingNo) {
 		Connection conn = JDBCTemplate.getConnection();
 	    boolean resultFlag = false;
@@ -166,7 +166,7 @@ public class CargoService {
 		return resultFlag;
 	}
 
-	// 체크한 항목 전부 삭제
+	// T_CargoMain 체크한 항목 전부 삭제
 	public boolean deleteMultipleTrackingNos(List<String> trackingNos) {
 	    Connection conn = JDBCTemplate.getConnection();
 	    boolean resultFlag = true;
@@ -191,4 +191,35 @@ public class CargoService {
 
         return resultFlag;
     }
+
+	//T_cargoGoods 수정
+	public int updCargoGoodsDetail(CargoGoods goods) {
+		Connection conn = JDBCTemplate.getConnection();
+        int result = dao.updCargoGoodsDetail(conn, goods);
+
+        if (result > 0) {
+            JDBCTemplate.commit(conn);
+        } else {
+            JDBCTemplate.rollback(conn);
+        }
+        JDBCTemplate.close(conn);
+        return result;
+	}
+
+	//T_CargoGoods 삭제
+	public int deleteCargoGoods(CargoGoods goods) {
+		Connection conn = JDBCTemplate.getConnection();
+        int result = dao.deleteCargoGoods(conn, goods);
+
+        if (result > 0) {
+            JDBCTemplate.commit(conn);
+        } else {
+            JDBCTemplate.rollback(conn);
+        }
+        JDBCTemplate.close(conn);
+        return result;
+	}
+	
+	
+	
 }
