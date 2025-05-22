@@ -44,7 +44,7 @@
             #myGrid {
                 width: 100%;
                 flex-grow: 1;
-                height: 100%;
+                height: 600px;
             }
 
             .toolbar {
@@ -263,7 +263,7 @@
                     // 새로운 데이터 추가한다.
                     gridApi.applyTransaction({ add: res });
 
-                    gridDiv.style.height = (window.innerHeight - offset - 150) + 'px';
+                    gridDiv.style.height = (window.innerHeight - offset - 200) + 'px';
                 }).fail(function (e) {
                     swal({
                         title: "알림",

@@ -66,7 +66,16 @@
     font-size: 12px;
     margin-top: 5px;
 }
+.center-div {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px;
+  height: 100%;
 
+  margin: 0 auto;          /* 가운대로 정렬 */
+  width: 100%;             /* 부모 너비를 기준으로 */
+  box-sizing: border-box;  /* padding 포함한 크기 계산 */
+}
 </style>
 
 </head>

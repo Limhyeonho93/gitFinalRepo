@@ -46,7 +46,7 @@
                 #myGrid {
                     width: 100%;
                     flex-grow: 1;
-                    height: 100%;
+                height: 600px;
                 }
 
                 .toolbar {
@@ -61,7 +61,7 @@
                 <jsp:include page="/WEB-INF/views/common/header.jsp" />
                 <main class="content d-flex">
                     <jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
-                    <div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
+                    <div class="container-fluid scroll-area" style="margin-top: 30px; margin-bottom: 10px;">
                     	<h3>청구서 상세 조회</h3>
 
                         <div class="input-group mb-1">
@@ -270,6 +270,7 @@
                         },
                         type: "get",
                     }).done(function (res) {
+                    	console.log(res);
                         // 기존 행 모두 제거
                         const allData = [];
                         gridApi.forEachNode(node => allData.push(node.data));
@@ -277,7 +278,7 @@
                         // 새로운 데이터 추가한다.
                         gridApi.applyTransaction({ add: res });
 
-                        gridDiv.style.height = (window.innerHeight - offset - 150) + 'px';
+                        gridDiv.style.height = (window.innerHeight - offset - 200) + 'px';
                     }).fail(function (e) {
                         swal({
                             title: "알림",
