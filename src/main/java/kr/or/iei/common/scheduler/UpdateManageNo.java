@@ -50,8 +50,8 @@ public class UpdateManageNo implements Runnable {
 
 			for (CargoMain cm : mainArr) {
 				String manageNoStr = String.format("KH%sA%06d", yymmdd, nextNo);
-				System.out.println(manageNoStr);
 				int res = service.updateCargoMainManageNo(cm, manageNoStr);
+				
 				if (res > 0) {
 					nextNo++; // 성공했을 때만 증가
 				}

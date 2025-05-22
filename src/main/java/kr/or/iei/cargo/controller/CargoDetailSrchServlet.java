@@ -33,10 +33,10 @@ public class CargoDetailSrchServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String trackingNo=request.getParameter("trackingNo");
+		String manageNo=request.getParameter("manageNo");
 		
 		CargoService service=new CargoService();
-		ArrayList<CargoGoods> goods=service.srchCargoDetail(trackingNo);
+		ArrayList<CargoGoods> goods=service.srchCargoDetail(manageNo);
 		
 		System.out.println(goods);
 		

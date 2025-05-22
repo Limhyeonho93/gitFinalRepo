@@ -125,7 +125,7 @@
                 <%-- 검색창 (AG-grid) --%>
                     <div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
                         <div>
-                            <h2 class="mb-4">화물 조회</h2>
+                            <h3 class="mb-4">화물 조회</h3>
                         </div>
                         <div class="d-flex" style="gap: 10px;">
                             <!-- 검색창 관련 버튼들은 왼쪽에 위치 -->
@@ -213,7 +213,7 @@
 
             $(function () {
                 // 팝업창 트래킹넘버
-                let selectedTrackingNo = '';
+                let selectedManageNo = '';
                 let goodsUpdList = [];
 
                 // 검색창 클릭 시 동작
@@ -265,6 +265,7 @@
                         pinned: 'left',
                         onCellClicked: function (params) {
                             const trackingNo = params.data.trackingNo;
+                            const manageNo=params.data.manageNo;
 
 
                             const contentHtml =
@@ -300,7 +301,7 @@
 
                             // 화물상세수정 버튼에 trackingNo 값을 넣어줌
                             $('#goodsUpdPopBtn').attr('data-tracking-no', trackingNo);
-                            selectedTrackingNo = trackingNo;
+                            selectedManageNo = manageNo;
                             // 모달 열기
                             const modal = new bootstrap.Modal(document.getElementById('detailModal'));
                             modal.show();
@@ -451,20 +452,21 @@
 
                 //'화물 상세 수정' 버튼 누를 시 동작 (cargoGoods 수정)
                 $(document).on('click', '#goodsUpdPopBtn', function () { // 이렇게 해야 두번 세번 클릭해도 정상적으로 데이터 가져옴
-                    const trackingNo = selectedTrackingNo;
-
+                    const manageNo = selectedManageNo;
+                	console.log(manageNo);
                     let tabs = '';
                     let tabContents = '';
                     // AJAX로 상세 데이터 가져오기
                     $.ajax({
                         url: "/srchCargoDetail",
                         type: 'get',
-                        data: { trackingNo: trackingNo },
+                        data: { manageNo: manageNo },
                         success: function (goodsList) {
                             goodsUpdList = goodsList;
-
+							console.log(goodsUpdList);
+                            
                             // 모달 제목 업데이트
-                            $('#updateGoodsModalLabel').html('<b>[화물 상세 수정] 송장번호 : ' + trackingNo + '</b>');
+                            $('#updateGoodsModalLabel').html('<b>[화물 상세 수정] 송장번호 : ' + manageNo + '</b>');
 
                             // 모달 열기
                             const modal = new bootstrap.Modal(document.getElementById('updateGoodsModal'));

@@ -102,7 +102,7 @@ public class CargoDao {
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, sysdate)";
 
 	      try {
-	         pstmt = conn.prepareStatement(query);
+	        pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, cargo.getCompCd());
 			pstmt.setString(2, cargo.getWarehouseMoveid());
@@ -121,7 +121,7 @@ public class CargoDao {
 			pstmt.setString(15, cargo.getDeliveryStop());
 			pstmt.setString(16, cargo.getUserId());
 
-	         result = pstmt.executeUpdate();
+	        result = pstmt.executeUpdate();
 
 	      } catch (SQLException e) {
 	         // TODO Auto-generated catch block
@@ -136,17 +136,17 @@ public class CargoDao {
 	
 	
 	//화물 상세 조회
-	public ArrayList<CargoGoods> srchCargoDetail(Connection conn, String trackingNo) {
+	public ArrayList<CargoGoods> srchCargoDetail(Connection conn, String manageNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
 		ArrayList<CargoGoods> goods= new ArrayList<CargoGoods>();
 
-		String query = "select * from T_cargoGoods where tracking_no = ? ";
+		String query = "select * from T_cargoGoods where manage_no = ? ";
 
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, trackingNo);
+			pstmt.setString(1, manageNo);
 			rset = pstmt.executeQuery();
 
 			while (rset.next()) {
@@ -460,7 +460,7 @@ public class CargoDao {
 	    return result;
 	}
 
-	//T_CargoGoods 삭제(송장번호+시퀀스 값 일치하는 한 개만)
+	//T_CargoGoods 삭제(송장번호+시퀀스+회사코드 값 일치하는 한 개만)
 	public int deleteCargoGoods(Connection conn, CargoGoods goods) {
 		System.out.println("deleteCargoGoodsByTrackingNo");
 	    int result = 0;
@@ -482,7 +482,57 @@ public class CargoDao {
 
 	    return result;
 	}
+
 	
+	//화물 조회(엑셀 데이터 입력 위해 compCd와 등록 일자도 비교 필요)
+	public CargoMain searchCargoForExcelImp(Connection conn, CargoMain cargoMain) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		CargoMain c=null;
+		
+		//tracking_no와 comp_cd가 일치하는 최근 2주내의 CargoMain 데이터
+		String query = "SELECT * FROM T_cargoMain WHERE tracking_no = ? AND comp_cd = ? AND reg_date BETWEEN SYSDATE - 14 AND SYSDATE";
+		try {
+			pstmt=conn.prepareStatement(query);
+			pstmt.setString(1, cargoMain.getTrackingNo());
+			pstmt.setString(2, cargoMain.getCompCd());
+			
+			rset=pstmt.executeQuery();
+			
+			if(rset.next()) {
+				c=new CargoMain();
+				c.setCompCd(rset.getString("comp_cd"));
+				c.setWarehouseMoveid(rset.getString("warehouse_moveId"));
+				c.setTrackingNo(rset.getString("tracking_no"));
+				c.setManageNo(rset.getString("manage_no"));
+				c.setReceiverName(rset.getString("receiver_name"));
+				c.setReceiverAdd(rset.getString("receiver_add"));
+				c.setReceiverZip(rset.getString("receiver_zip"));
+				c.setReceiverTel(rset.getString("receiver_tel"));
+				c.setSellerName(rset.getString("seller_name"));
+				c.setSellerAdd(rset.getString("seller_add"));
+				c.setSellerTel(rset.getString("seller_tel"));
+				c.setGw(rset.getFloat("gw"));
+				c.setGwt(rset.getString("gwt"));
+				c.setNo(rset.getInt("no"));
+				c.setDeliveryStop(rset.getString("delivery_stop"));
+				c.setUserId(rset.getString("user_id"));
+				c.setRegDate(rset.getString("reg_date"));
+				c.setUpdDate(rset.getString("upd_date"));
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+	        JDBCTemplate.close(pstmt);
+	    }
+		
+		return c;
+	}
+
 		
 }
 

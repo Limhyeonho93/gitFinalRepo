@@ -126,7 +126,7 @@ public class InvoiceDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
-		String query = "SELECT tm.*,tb.in_date,tb.out_date,tc.comp_name FROM t_impbonded tb "
+		String query = "SELECT tm.*,TO_CHAR(tb.in_date, 'YY\"년\" MM\"월\" DD\"일\" HH24:MI') AS in_date, TO_CHAR(tb.out_date, 'YY\"년\" MM\"월\" DD\"일\" HH24:MI') AS out_date,tc.comp_name FROM t_impbonded tb "
 				+ "LEFT JOIN t_cargomain tm ON tb.manage_no = tm.manage_no "
 				+ "LEFT JOIN t_customerinfo tc ON tm.comp_cd = tc.comp_cd "
 				+ "WHERE tb.out_date BETWEEN ? AND ? "
@@ -148,8 +148,8 @@ public class InvoiceDao {
 				cui.setWarehouseMoveid(rset.getString("warehouse_moveid"));
 				cui.setTrackingNo(rset.getString("tracking_no"));
 				cui.setManageNo(rset.getString("manage_no"));
-				cui.setInDate(rset.getDate("in_date"));
-				cui.setOutDate(rset.getDate("out_date"));
+				cui.setInDate(rset.getString("in_date"));
+				cui.setOutDate(rset.getString("out_date"));
 				cui.setNo(rset.getInt("no"));
 				cui.setGw(rset.getInt("gw"));
 				cui.setReceiverName(rset.getString("receiver_name"));

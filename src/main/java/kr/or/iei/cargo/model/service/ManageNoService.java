@@ -10,6 +10,7 @@ import kr.or.iei.cargo.model.dao.ManageNoDao;
 import kr.or.iei.cargo.model.vo.CargoMain;
 import kr.or.iei.cargo.model.vo.ManageNo;
 import kr.or.iei.common.JDBCTemplate;
+import kr.or.iei.tracking.model.dao.TrackingDao;
 
 public class ManageNoService {
 
@@ -48,7 +49,10 @@ public class ManageNoService {
 		// main과 goods의 manageNo업데이트
 		int res = dao.updateCargoMainManageNo(conn,cm,manageNoStr);
 		dao.updateCargoGoodsManageNo(conn,cm,manageNoStr);
-
+		// 데이터 등록과 동시에 tracking_history테이블에 데이터 등록
+		TrackingDao tarckingDao = new TrackingDao();
+		int trRes = tarckingDao.insertTrackingData(conn, manageNoStr, cm.getWarehouseMoveid(), "S1");
+		
 		if(res > 0) {
 			JDBCTemplate.commit(conn);
 		}else{

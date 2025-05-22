@@ -48,6 +48,10 @@
   overflow: hidden;
 }
 
+.range{
+	width: 600px;
+
+}
 
 
 
@@ -66,7 +70,16 @@
     font-size: 12px;
     margin-top: 5px;
 }
+.center-div {
+  flex: 1;
+  overflow-y: auto;
+  padding: 30px;
+  height: 100%;
 
+  margin: 0 auto;          /* 가운대로 정렬 */
+  width: 100%;             /* 부모 너비를 기준으로 */
+  box-sizing: border-box;  /* padding 포함한 크기 계산 */
+}
 </style>
 
 </head>
@@ -79,152 +92,152 @@
             <jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
             
             <div class="center-div">
-                <h2 class="mb-4">화물 등록</h2>
-                
-                <%-- 버튼 --%>
-                <div class="btn-group w-100 mb-3">
-                    <button id="singleRegBtn" class="btn btn-primary w-50">단건 등록</button>
-                    <button id="batchRegBtn" class="btn btn-outline-primary w-50">일괄 등록</button>
-            </div>
-                
-                <!-- 화물 단건 등록 폼 -->
-                <form id="cargoRegisterForm" action="/cargo/cargoRegister" method="POST" >
-             
-                    <table class="table table-bordered align-middle ">
-                        <tbody>
-				          	<!-- 회사명 -->
-				            <tr>
-				                <th>검색 회사</th>
-				                <td>
-				                    <select class="form-select" id="compCd" name="compCd" required>
-				                        <c:choose>
-				                            <c:when test="${user.userLevel eq '1'}">
-				                                <c:forEach var="compInfo" items="${compInfoArr}">
-				                                    <option value="${compInfo.compCd}">${compInfo.compName}</option>
-				                                </c:forEach>
-				                            </c:when>
-				                            <c:otherwise>
-				                                <option value="${user.compCd}">
-				                                    <c:forEach var="compInfo" items="${compInfoArr}">
-				                                        <c:if test="${compInfo.compCd eq user.compCd}">
-				                                            ${compInfo.compName}
-				                                        </c:if>
-				                                    </c:forEach>
-				                                </option>
-				                            </c:otherwise>
-				                        </c:choose>
-				                    </select>
-				                </td>
-				            </tr>
-
-	                        <!-- 송장 번호 -->
-							<tr>
-							    <th>송장 번호</th>
-							    <td>
-							        <input type="text" class="form-control" id="trackingNo" name="trackingNo" required>
-							    </td>
-							</tr>
+                <h3 class="mb-4">화물 등록</h3>
+                <div class="range">
+	                <%-- 버튼 --%>
+	                <div class="btn-group w-100 mb-3">
+	                    <button id="singleRegBtn" class="btn btn-primary w-50">단건 등록</button>
+	                    <button id="batchRegBtn" class="btn btn-outline-primary w-50">일괄 등록</button>
+	           		</div>
+	                
+	                <!-- 화물 단건 등록 폼 -->
+	                <form id="cargoRegisterForm" action="/cargo/cargoRegister" method="POST" >
+	             
+	                    <table class="table table-bordered align-middle ">
+	                        <tbody>
+					          	<!-- 회사명 -->
+					            <tr>
+					                <th>검색 회사</th>
+					                <td>
+					                    <select class="form-select" id="compCd" name="compCd" required>
+					                        <c:choose>
+					                            <c:when test="${user.userLevel eq '1'}">
+					                                <c:forEach var="compInfo" items="${compInfoArr}">
+					                                    <option value="${compInfo.compCd}">${compInfo.compName}</option>
+					                                </c:forEach>
+					                            </c:when>
+					                            <c:otherwise>
+					                                <option value="${user.compCd}">
+					                                    <c:forEach var="compInfo" items="${compInfoArr}">
+					                                        <c:if test="${compInfo.compCd eq user.compCd}">
+					                                            ${compInfo.compName}
+					                                        </c:if>
+					                                    </c:forEach>
+					                                </option>
+					                            </c:otherwise>
+					                        </c:choose>
+					                    </select>
+					                </td>
+					            </tr>
 	
-	                        <!-- 수취인 이름 -->
-							<tr>
-							    <th>수취인 이름</th>
-							    <td>
-							        <input type="text" class="form-control" id="receiverName" name="receiverName" required>
-							    </td>
-							</tr>
-	
-	                        <!-- 수취인 주소 -->
-							<tr>
-							    <th>수취인 주소</th>
-							    <td>
-							        <input type="text" class="form-control" id="receiverAdd" name="receiverAdd" required>
-							    </td>
-							</tr>
-	
-	                        <tr>
-							    <th>수취인 우편번호</th>
-							    <td>
-							        <input type="text" class="form-control" id="receiverZip" name="receiverZip" required>
-							    </td>
-							</tr>
-							<tr>
-							    <th>수취인 전화번호</th>
-							    <td>
-							        <input type="text" class="form-control" id="receiverTel" name="receiverTel" required pattern="\d{3}-\d{3,4}-\d{4}">
-							    </td>
-							</tr>
-							<tr>
-							    <th>판매자 이름</th>
-							    <td>
-							        <input type="text" class="form-control" id="sellerName" name="sellerName" required>
-							    </td>
-							</tr>
-							<tr>
-							    <th>판매자 주소</th>
-							    <td>
-							        <input type="text" class="form-control" id="sellerAdd" name="sellerAdd" required>
-							    </td>
-							</tr>
-							<tr>
-							    <th>판매자 전화번호</th>
-							    <td>
-							        <input type="text" class="form-control" id="sellerTel" name="sellerTel" required pattern="\d{3}-\d{3,4}-\d{4}">
-							    </td>
-							</tr>
-							<tr>
-							    <th>상품명</th>
-							    <td>
-							        <input type="text" class="form-control" id="goodsName" name="goodsName" required>
-							    </td>
-							</tr>
-							<tr>
-							    <th>상품 개수</th>
-							    <td>
-							        <input type="text" class="form-control" id="qty" name="qty" required>
-							    </td>
-							</tr>
-							<tr>
-							    <th>상품 단가</th>
-							    <td>
-							        <input type="text" class="form-control" id="unitPrice" name="unitPrice" required>
-							    </td>
-							</tr>
-							<tr>
-							    <th>총 중량</th>
-							    <td>
-							        <input type="text" class="form-control" id="gw" name="gw" required>
-							    </td>
-							</tr>
-							<tr>
-							    <th>총 중량 단위</th>
-							    <td>
-							        <input type="text" class="form-control" id="gwt" name="gwt" required>
-							    </td>
-							</tr>
-                    
-                    	</tbody>
-                    </table>
-                    
-                    
-                    <!-- 제출 버튼 -->
-                    <div class="mt-4 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-outline-primary w-100" id="registerBtn">등록</button>
-                    </div>
-                </form>
-                
-                <%--일괄 등록 폼 --%>
-               <form action="/cargo/cargoBatchReg" method="post" id="cargoBatchRegFrm" class="hidden" enctype="multipart/form-data">
-                   
-                   <div class="mb-3">
-                       <label for="cargoFile" class="form-label">파일 선택</label>
-                       <input type="file" class="form-control" id="cargoFile" name="cargoFile">
-                   </div>
-         
-                   <div class="text-center">
-                       <button class="btn btn-outline-primary w-100">등록</button>
-                   </div>
-             </form>
-    
+		                        <!-- 송장 번호 -->
+								<tr>
+								    <th>송장 번호</th>
+								    <td>
+								        <input type="text" class="form-control" id="trackingNo" name="trackingNo" required>
+								    </td>
+								</tr>
+		
+		                        <!-- 수취인 이름 -->
+								<tr>
+								    <th>수취인 이름</th>
+								    <td>
+								        <input type="text" class="form-control" id="receiverName" name="receiverName" required>
+								    </td>
+								</tr>
+		
+		                        <!-- 수취인 주소 -->
+								<tr>
+								    <th>수취인 주소</th>
+								    <td>
+								        <input type="text" class="form-control" id="receiverAdd" name="receiverAdd" required>
+								    </td>
+								</tr>
+		
+		                        <tr>
+								    <th>수취인 우편번호</th>
+								    <td>
+								        <input type="text" class="form-control" id="receiverZip" name="receiverZip" required>
+								    </td>
+								</tr>
+								<tr>
+								    <th>수취인 전화번호</th>
+								    <td>
+								        <input type="text" class="form-control" id="receiverTel" name="receiverTel" required pattern="\d{3}-\d{3,4}-\d{4}">
+								    </td>
+								</tr>
+								<tr>
+								    <th>판매자 이름</th>
+								    <td>
+								        <input type="text" class="form-control" id="sellerName" name="sellerName" required>
+								    </td>
+								</tr>
+								<tr>
+								    <th>판매자 주소</th>
+								    <td>
+								        <input type="text" class="form-control" id="sellerAdd" name="sellerAdd" required>
+								    </td>
+								</tr>
+								<tr>
+								    <th>판매자 전화번호</th>
+								    <td>
+								        <input type="text" class="form-control" id="sellerTel" name="sellerTel" required pattern="\d{3}-\d{3,4}-\d{4}">
+								    </td>
+								</tr>
+								<tr>
+								    <th>상품명</th>
+								    <td>
+								        <input type="text" class="form-control" id="goodsName" name="goodsName" required>
+								    </td>
+								</tr>
+								<tr>
+								    <th>상품 개수</th>
+								    <td>
+								        <input type="text" class="form-control" id="qty" name="qty" required>
+								    </td>
+								</tr>
+								<tr>
+								    <th>상품 단가</th>
+								    <td>
+								        <input type="text" class="form-control" id="unitPrice" name="unitPrice" required>
+								    </td>
+								</tr>
+								<tr>
+								    <th>총 중량</th>
+								    <td>
+								        <input type="text" class="form-control" id="gw" name="gw" required>
+								    </td>
+								</tr>
+								<tr>
+								    <th>총 중량 단위</th>
+								    <td>
+								        <input type="text" class="form-control" id="gwt" name="gwt" required>
+								    </td>
+								</tr>
+	                    
+	                    	</tbody>
+	                    </table>
+	                    
+	                    
+	                    <!-- 제출 버튼 -->
+	                    <div class="mt-4 d-flex justify-content-end">
+	                        <button type="submit" class="btn btn-outline-primary w-100" id="registerBtn">등록</button>
+	                    </div>
+	                </form>
+	                
+	                <%--일괄 등록 폼 --%>
+	               <form action="/cargo/cargoBatchReg" method="post" id="cargoBatchRegFrm" class="hidden" enctype="multipart/form-data">
+	                   
+	                   <div class="mb-3">
+	                       <label for="cargoFile" class="form-label">파일 선택</label>
+	                       <input type="file" class="form-control" id="cargoFile" name="cargoFile">
+	                   </div>
+	         
+	                   <div class="text-center">
+	                       <button class="btn btn-outline-primary w-100">등록</button>
+	                   </div>
+	               </form>
+    			</div>
             </div>
         </main>
         <jsp:include page="/WEB-INF/views/common/footer.jsp" />
