@@ -102,7 +102,7 @@ public class CargoDao {
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, sysdate, sysdate)";
 
 	      try {
-	         pstmt = conn.prepareStatement(query);
+	        pstmt = conn.prepareStatement(query);
 
 			pstmt.setString(1, cargo.getCompCd());
 			pstmt.setString(2, cargo.getWarehouseMoveid());
@@ -121,7 +121,7 @@ public class CargoDao {
 			pstmt.setString(15, cargo.getDeliveryStop());
 			pstmt.setString(16, cargo.getUserId());
 
-	         result = pstmt.executeUpdate();
+	        result = pstmt.executeUpdate();
 
 	      } catch (SQLException e) {
 	         // TODO Auto-generated catch block
@@ -136,17 +136,17 @@ public class CargoDao {
 	
 	
 	//화물 상세 조회
-	public ArrayList<CargoGoods> srchCargoDetail(Connection conn, String trackingNo) {
+	public ArrayList<CargoGoods> srchCargoDetail(Connection conn, String manageNo) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 
 		ArrayList<CargoGoods> goods= new ArrayList<CargoGoods>();
 
-		String query = "select * from T_cargoGoods where tracking_no = ? ";
+		String query = "select * from T_cargoGoods where manage_no = ? ";
 
 		try {
 			pstmt = conn.prepareStatement(query);
-			pstmt.setString(1, trackingNo);
+			pstmt.setString(1, manageNo);
 			rset = pstmt.executeQuery();
 
 			while (rset.next()) {
@@ -423,6 +423,116 @@ public class CargoDao {
 
 	    return result;
 	}
+
+	
+	//T_CargoGoods 수정 
+	public int updCargoGoodsDetail(Connection conn, CargoGoods goods) {
+		PreparedStatement pstmt = null;
+	    int result = 0;
+
+	    // UPDATE 쿼리
+	    String query = "UPDATE T_cargoGoods SET "
+	            + "goods_Name = ?, unit_Price = ?, qty = ?, unit_Weight = ?, delivery_Stop = ?, "
+	    		+ "user_Id = ?, upd_date = sysdate "
+	            + "WHERE tracking_no = ? and seq = ? and comp_Cd = ?";
+
+	    try {
+	        pstmt = conn.prepareStatement(query);
+
+	        pstmt.setString(1, goods.getGoodsName());
+	        pstmt.setInt(2, goods.getUnitPrice());
+	        pstmt.setInt(3, goods.getQty());
+	        pstmt.setFloat(4, goods.getUnitWeight());
+	        pstmt.setString(5, goods.getDeliveryStop());
+	        pstmt.setString(6, goods.getUserId());
+	        
+	        pstmt.setString(7, goods.getTrackingNo());
+	        pstmt.setInt(8, goods.getSeq());
+	        pstmt.setString(9, goods.getCompCd());
+
+	        result = pstmt.executeUpdate();
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+	    return result;
+	}
+
+	//T_CargoGoods 삭제(송장번호+시퀀스+회사코드 값 일치하는 한 개만)
+	public int deleteCargoGoods(Connection conn, CargoGoods goods) {
+		System.out.println("deleteCargoGoodsByTrackingNo");
+	    int result = 0;
+	    PreparedStatement pstmt = null;
+	    String query = "DELETE FROM T_cargoGoods WHERE tracking_No = ? AND seq = ? AND comp_Cd = ? ";
+
+	    try {
+	        pstmt = conn.prepareStatement(query);
+	        pstmt.setString(1, goods.getTrackingNo());
+	        pstmt.setInt(2, goods.getSeq());
+	        pstmt.setString(3, goods.getCompCd());
+
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+
+	    return result;
+	}
+
+	
+	//화물 조회(엑셀 데이터 입력 위해 compCd와 등록 일자도 비교 필요)
+	public CargoMain searchCargoForExcelImp(Connection conn, CargoMain cargoMain) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		CargoMain c=null;
+		
+		//tracking_no와 comp_cd가 일치하는 최근 2주내의 CargoMain 데이터
+		String query = "SELECT * FROM T_cargoMain WHERE tracking_no = ? AND comp_cd = ? AND reg_date BETWEEN SYSDATE - 14 AND SYSDATE";
+		try {
+			pstmt=conn.prepareStatement(query);
+			pstmt.setString(1, cargoMain.getTrackingNo());
+			pstmt.setString(2, cargoMain.getCompCd());
+			
+			rset=pstmt.executeQuery();
+			
+			if(rset.next()) {
+				c=new CargoMain();
+				c.setCompCd(rset.getString("comp_cd"));
+				c.setWarehouseMoveid(rset.getString("warehouse_moveId"));
+				c.setTrackingNo(rset.getString("tracking_no"));
+				c.setManageNo(rset.getString("manage_no"));
+				c.setReceiverName(rset.getString("receiver_name"));
+				c.setReceiverAdd(rset.getString("receiver_add"));
+				c.setReceiverZip(rset.getString("receiver_zip"));
+				c.setReceiverTel(rset.getString("receiver_tel"));
+				c.setSellerName(rset.getString("seller_name"));
+				c.setSellerAdd(rset.getString("seller_add"));
+				c.setSellerTel(rset.getString("seller_tel"));
+				c.setGw(rset.getFloat("gw"));
+				c.setGwt(rset.getString("gwt"));
+				c.setNo(rset.getInt("no"));
+				c.setDeliveryStop(rset.getString("delivery_stop"));
+				c.setUserId(rset.getString("user_id"));
+				c.setRegDate(rset.getString("reg_date"));
+				c.setUpdDate(rset.getString("upd_date"));
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rset);
+	        JDBCTemplate.close(pstmt);
+	    }
+		
+		return c;
+	}
+
 		
 }
 

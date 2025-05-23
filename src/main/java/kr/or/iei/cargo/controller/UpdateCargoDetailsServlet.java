@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import kr.or.iei.cargo.model.service.CargoService;
 import kr.or.iei.cargo.model.vo.CargoGoods;
 import kr.or.iei.cargo.model.vo.CargoMain;
+import kr.or.iei.user.model.vo.User;
 
 /**
  * Servlet implementation class UpdateCargoDetailsServlet
@@ -71,7 +72,7 @@ public class UpdateCargoDetailsServlet extends HttpServlet {
         cargo.setNo(no);
         cargo.setDeliveryStop(deliveryStop);
         HttpSession session = request.getSession();
-        cargo.setUserId((String) session.getAttribute("userId"));
+        cargo.setUserId(((User) session.getAttribute("user")).getUserId()); // 세션에 저장되어있던 아이디
         
         //deliveryStop가 Y로 바뀔 시 CargoGoods에도 반영 위해 // 이거 구현 여부 생각중
         CargoGoods goods = new CargoGoods();

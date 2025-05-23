@@ -146,9 +146,9 @@
 	<div class="wrap">
 		<jsp:include page="/WEB-INF/views/common/header.jsp" />
 		<main class="content-container">
-		<aside class="sidebar">
+
 		<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
-		</aside>
+
 		<div class="main-content">
 			<h1>개인정보 수정 페이지</h1>
 			<section class="section update-wrap">

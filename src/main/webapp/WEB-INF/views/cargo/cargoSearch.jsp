@@ -125,7 +125,7 @@
                 <%-- 검색창 (AG-grid) --%>
                     <div class="container-fluid" style="margin-top: 30px; margin-bottom: 10px;">
                         <div>
-                            <h2 class="mb-4">화물 조회</h2>
+                            <h3 class="mb-4">화물 조회</h3>
                         </div>
                         <div class="d-flex" style="gap: 10px;">
                             <!-- 검색창 관련 버튼들은 왼쪽에 위치 -->
@@ -196,11 +196,9 @@
                                             <%-- 상세 수정(const contentHtml) 내용이 여기에 들어감 --%>
                                         </div>
                                         <div class="modal-footer d-flex justify-content-end">
-                                            <button type="button" class="btn btn-primary"
-                                                id="goodsUpdateBtn">수정</button>
+                                            <button type="button" class="btn btn-primary"id="goodsUpdateBtn">수정</button>
                                             <button type="button" class="btn btn-danger" id="goodsdeleteBtn">삭제</button>
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">닫기</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                         </div>
                                     </div>
                                 </div>
@@ -215,7 +213,7 @@
 
             $(function () {
                 // 팝업창 트래킹넘버
-                let selectedTrackingNo = '';
+                let selectedManageNo = '';
                 let goodsUpdList = [];
 
                 // 검색창 클릭 시 동작
@@ -267,6 +265,7 @@
                         pinned: 'left',
                         onCellClicked: function (params) {
                             const trackingNo = params.data.trackingNo;
+                            const manageNo=params.data.manageNo;
 
 
                             const contentHtml =
@@ -302,7 +301,7 @@
 
                             // 화물상세수정 버튼에 trackingNo 값을 넣어줌
                             $('#goodsUpdPopBtn').attr('data-tracking-no', trackingNo);
-                            selectedTrackingNo = trackingNo;
+                            selectedManageNo = manageNo;
                             // 모달 열기
                             const modal = new bootstrap.Modal(document.getElementById('detailModal'));
                             modal.show();
@@ -385,7 +384,7 @@
                     });
                 }
 
-                // '화물 메인' 수정 버튼 클릭 시
+                // '화물 메인'의 수정 버튼 클릭 시
                 $('#updateBtn').on('click', function () {
 
                     const trackingNo = $('#detailModalLabel').text().split(': ')[1].trim();
@@ -449,25 +448,25 @@
                     });
                 });
 
+				//========================='화물 상세 수정' 시작========================
 
-
-                //화물 상세 수정 버튼 누를 시 동작 (cargoGoods 수정)
+                //'화물 상세 수정' 버튼 누를 시 동작 (cargoGoods 수정)
                 $(document).on('click', '#goodsUpdPopBtn', function () { // 이렇게 해야 두번 세번 클릭해도 정상적으로 데이터 가져옴
-                    const trackingNo = selectedTrackingNo;
-
+                    const manageNo = selectedManageNo;
+                	console.log(manageNo);
                     let tabs = '';
                     let tabContents = '';
                     // AJAX로 상세 데이터 가져오기
                     $.ajax({
                         url: "/srchCargoDetail",
                         type: 'get',
-                        data: { trackingNo: trackingNo },
+                        data: { manageNo: manageNo },
                         success: function (goodsList) {
                             goodsUpdList = goodsList;
-
+							console.log(goodsUpdList);
+                            
                             // 모달 제목 업데이트
-                            $('#updateGoodsModalLabel').html('<b>[화물 상세 수정] 송장번호 : ' + trackingNo + '</b>');
-
+                            $('#updateGoodsModalLabel').html('<b>[화물 상세 수정] 송장번호 : ' + manageNo + '</b>');
 
                             // 모달 열기
                             const modal = new bootstrap.Modal(document.getElementById('updateGoodsModal'));
@@ -496,11 +495,13 @@
 
                         // 탭 버튼
                         tabs += '<li class="nav-item" role="presentation">' +
-                            '<button class="nav-link ' + activeClass + '" type="button" data-tab-id="' + tabId + '">' +
+                            '<button class="nav-link ' + activeClass + '" type="button" data-tab-id="' + tabId + '"data-seq="' + item.seq + '">' + //item.seq == cargoGoods의 인덱스 값.
                             (item.goodsName ? item.goodsName : '상품' + (i + 1)) +
                             '</button>' +
                             '</li>';
-
+						
+                       console.log('Rendering tab for item seq: ', item.seq);
+ 
                         // 탭 내용
                         tabContents += '<div class="tab-pane fade ' + showClass + ' ' + activeClass + '" id="' + tabId + '">' +
                             '<table class="table table-bordered">' +
@@ -511,7 +512,7 @@
                             '<tr><th class="th-label">상품단가</th><td><input type="text" name="unitPrice" class="form-control" value="' + item.unitPrice + '"></td></tr>' +
                             '<tr><th class="th-label">상품개수</th><td><input type="text" name="qty" class="form-control" value="' + item.qty + '"></td></tr>' +
                             '<tr><th class="th-label">중량</th><td><input type="text" name="unitWeight" class="form-control" value="' + item.unitWeight + '"></td></tr>' +
-                            '<tr><th class="th-label">배송중지flg</th><td><input type="text" name="deliveryStop" class="form-control" value="' + item.deliveryStop + '"></td></tr>' +
+                            '<tr><th class="th-label">배송중지 여부</th><td><input type="text" name="deliveryStop" class="form-control" value="' + item.deliveryStop + '"></td></tr>' +
                             '</table>' +
                             '</div>';
                     }
@@ -526,6 +527,7 @@
                 $(document).on('click', '#tabList button.nav-link', function () {
                     const tabId = $(this).data('tab-id');
                     showTab(tabId, this);
+                    
                 });
 
                 // 탭 전환 기능
@@ -536,70 +538,122 @@
                     $('.tab-pane').removeClass('active show');
                     $('#' + tabId).addClass('active show');
                 }
-                /*
-                =============================
                 
-                for (var i = 0; i < goodsList.length; i++) {
-                    var item = goodsList[i];
-                    var activeClass = (i === 0) ? 'active' : '';
-                    var tabId = 'tab' + i;
+                
+                // '화물 상세 수정'의 '수정' 버튼을 눌렀을 때 동작
+                $('#goodsUpdateBtn').on('click', function () {
 
-                    // 탭 버튼
-                    tabs += '<li class="nav-item" role="presentation">' +
-                        '<button class="nav-link ' + activeClass + '" type="button" data-tab-id="' + tabId + '">' +
-                        (item.goodsName ? item.goodsName : '상품' + (i + 1)) +
-                        '</button>' +
-                        '</li>';
-                    $('#tabList').on('click', 'button.nav-link', function () {
-                        var tabId = $(this).data('tab-id');
-                        showTab(tabId, this);
+                    const trackingNo = $('#updateGoodsModalLabel').text().split(': ')[1].trim();
+                    const seq=$('#tabList .nav-link.active').data('seq'); // 현재 활성화 된 탭 버튼에 data-seq로 저장해놓은 시퀀스를 가져옴
+					
+                    const compCd = $('.tab-pane.active').find('input[name="compCd"]').val();// 활성화 된 탭에는 tab-pane.active클래스가 붙어있음 여기의 값만 가져옴
+                    const goodsName = $('.tab-pane.active').find('input[name="goodsName"]').val(); 
+                    const unitPrice = $('.tab-pane.active').find('input[name="unitPrice"]').val();
+                    const qty =  $('.tab-pane.active').find('input[name="qty"]').val();
+                    const unitWeight = $('.tab-pane.active').find('input[name="unitWeight"]').val();
+                    const deliveryStop = $('.tab-pane.active').find('input[name="deliveryStop"]').val();
+   					
+                    console.log(goodsName);
+                    console.log(unitPrice);
+                    console.log(qty);
+                    console.log(unitWeight);
+                    console.log(deliveryStop);
+                    
+                    if (isNaN(unitPrice) || isNaN(qty) || isNaN(unitWeight) ) {
+                        swal("경고", "상품단가, 상품개수, 중량은 숫자여야 합니다.", "warning");
+                        return;
+                    }
+
+                    $.ajax({
+                        url: '/cargo/updCargoGoodsDetails',
+                        type: 'POST',
+                        data: {
+                            trackingNo: trackingNo,
+                            seq:seq,
+                            compCd:compCd,
+                            goodsName: goodsName,
+                            unitPrice: unitPrice,
+                            qty: qty,
+                            unitWeight: unitWeight,
+                            deliveryStop: deliveryStop
+                        },
+                        success: function (result) {
+                            if (result > 0) {
+                                
+                                //수정된 내용으로 다시 불러오기
+                                $('#goodsUpdPopBtn').trigger('click');
+                                //renderTabs(goodsUpdList);
+                                
+                                //현재 활성화된 탭으로 다시 이동 시켜줌 // 지금 로직대로라면 하단 두 줄은 실행이 안됨. 생각 필요
+                                const updatedTab = $('#tabList .nav-link[data-seq="' + seq + '"]');
+                                showTab(updatedTab.data('tab-id'), updatedTab);
+                                
+                                swal("성공", "화물 정보가 수정되었습니다.", "success");
+                            } else {
+                                swal("실패", "수정에 실패했습니다.", "error");
+                            }
+                        },
+                        error: function () {
+                            swal("오류", "서버 요청 중 오류가 발생했습니다.", "error");
+                        }
                     });
-                    // 탭 내용
-                    tabContents += '<div class="tab-pane fade ' + ((i === 0) ? 'show active' : '') + '" id="' + tabId + '">' + 
-                        '<table class="table table-bordered">' +
-                        '<tr><th class="th-label">회사코드</th><td><input type="text" name="compCd" class="form-control" value="' + item.compCd + '" readonly></td></tr>' +
-                        '<tr><th class="th-label">창고이동ID</th><td><input type="text" name="warehouseMoveid" class="form-control" value="' + item.warehouseMoveid + '" readonly></td></tr>' +
-                        '<tr><th class="th-label">사내 관리번호</th><td><input type="text" name="manageNo" class="form-control" value="' + item.manageNo + '" readonly></td></tr>' +
-                        '<tr><th class="th-label">상품명</th><td><input type="text" name="goodsName" class="form-control" value="' + item.goodsName + '"></td></tr>' +
-                        '<tr><th class="th-label">상품단가</th><td><input type="text" name="unitPrice" class="form-control" value="' + item.unitPrice + '"></td></tr>' +
-                        '<tr><th class="th-label">상품개수</th><td><input type="text" name="qty" class="form-control" value="' + item.qty + '"></td></tr>' +
-                        '<tr><th class="th-label">중량</th><td><input type="text" name="unitWeight" class="form-control" value="' + item.unitWeight + '"></td></tr>' +
-                        '<tr><th class="th-label">배송중지flg</th><td><input type="text" name="deliveryStop" class="form-control" value="' + item.deliveryStop + '"></td></tr>' +
-                        '</table></div>';
-
-                }
+                });
                 
-                
-                
-
-                // 탭 버튼과 탭 내용 합치기
-                var contentHtml = '<ul class="nav nav-tabs" role="tablist">' + tabs + '</ul>' +
-                    '<div class="tab-content">' + tabContents + '</div>';
-
-                //모달에 탭 버튼과 탭 내용 넣기   
-                $('#updateModalContent').html(contentHtml);
-                
-                ======================================
-
-                //화물 상세 수정의 탭 기능 
-                function showTab(tabId, clickedBtn) {
-                    console.log(tabId);
-                    // 탭 버튼 활성화 처리
-                    var tabButtons = document.querySelectorAll('.nav-link');
-                    tabButtons.forEach(function (btn) {
-                        btn.classList.remove('active');
+                // '화물 상세 수정'의 '삭제' 버튼을 눌렀을 때 동작
+                $('#goodsdeleteBtn').on('click', function () {
+                	const trackingNo = $('#updateGoodsModalLabel').text().split(': ')[1].trim();
+                    const seq=$('#tabList .nav-link.active').data('seq'); // 현재 활성화 된 탭 버튼에 data-seq로 저장해놓은 시퀀스를 가져옴
+                    const compCd = $('.tab-pane.active').find('input[name="compCd"]').val();
+                    
+                    swal({
+                        title: "정말 삭제하시겠습니까?",
+                        text: "이 작업은 되돌릴 수 없습니다.",
+                        icon: "warning",
+                        buttons: {
+                            cancel: {
+                                text: "취소",
+                                value: false,
+                                visible: true,
+                                closeModal: true
+                            },
+                            confirm: {
+                                text: "삭제",
+                                value: true,
+                                visible: true,
+                                closeModal: true
+                            }
+                        }
+                    }).then(function(val) {
+                        if (val) { // 삭제 버튼을 눌렀을 경우
+                            $.ajax({
+                                url: '/cargo/delCargoGoodsServlet',
+                                type: 'POST',
+                                data: {
+                                    trackingNo: trackingNo,
+                                    seq: seq,
+                                    compCd:compCd
+                                },
+                                success: function (result) {
+                                    if (result > 0) {
+                                        swal("성공", "화물 정보가 삭제되었습니다.", "success");
+                                        
+                                        //삭제된 내용으로 갱신
+                                        $('#goodsUpdPopBtn').trigger('click');
+                                    } else {
+                                        swal("실패", "삭제에 실패했습니다.", "error");
+                                    }
+                                },
+                                error: function () {
+                                    swal("오류", "서버 요청 중 오류가 발생했습니다.", "error");
+                                }
+                            });
+                        }
                     });
-                    clickedBtn.classList.add('active');
-
-                    // 탭 콘텐츠 전환
-                    var tabContents = document.querySelectorAll('.tab-pane');
-                    tabContents.forEach(function (pane) {
-                        pane.classList.remove('active', 'show');
-                    });
-                    document.getElementById(tabId).classList.add('active', 'show');
-                }
-            */
-
+                });
+                
+                
+                
+                //=============================='화물 상세 수정' 끝==============================
 
 
                 //화물 메인 삭제

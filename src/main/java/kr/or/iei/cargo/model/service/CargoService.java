@@ -30,9 +30,9 @@ public class CargoService {
 	}
 	
 	//화물 상세 조회
-	public ArrayList<CargoGoods> srchCargoDetail(String trackingNo) {
+	public ArrayList<CargoGoods> srchCargoDetail(String manageNo) {
 		Connection conn =JDBCTemplate.getConnection();
-		ArrayList<CargoGoods>goods = dao.srchCargoDetail(conn,trackingNo);
+		ArrayList<CargoGoods>goods = dao.srchCargoDetail(conn,manageNo);
 		JDBCTemplate.close(conn);
 
 		return goods;
@@ -69,12 +69,12 @@ public class CargoService {
 	    System.out.println("insertBatchCargo");
 	    
 	 	//CargoMain에 동일한 Tracking Number가 있는지 없는지 확인
-	    String[]TraNo= {cargoMain.getTrackingNo()}; //메소드 재사용 위한 타입 변환
-	    ArrayList<CargoMain> list=searchCargo(TraNo,"tracking_no",loginUser); //화물 조회 메소드 재사용 //검색 옵션을 송장번호로 강제로 넣음
+	    
+	    CargoMain existCargo =dao.searchCargoForExcelImp(conn, cargoMain);
 	   
 	    try {
-	        // list가 비어있지 않다면 (업데이트 & 삭제 후 삽입)
-	        if (!list.isEmpty()) {
+	        // existCargo가 비어있지 않다면 (업데이트 & 삭제 후 삽입)
+	        if (existCargo!=null) {
 	            // 1. CargoMain 업데이트
 	            result = dao.updateCargoMain(conn, cargoMain);
 	            System.out.println("CargoMain 업데이트 완");
@@ -115,7 +115,7 @@ public class CargoService {
 	}
 	
 
-	//수정
+	//T_CarogoMain 수정
 	public int updateCargoDetails(CargoMain cargo, CargoGoods goods) {
 		Connection conn = JDBCTemplate.getConnection();
         int result = dao.updateCargoDetails(conn, cargo);
@@ -137,7 +137,7 @@ public class CargoService {
 
 	}
 
-	//단일 삭제
+	//T_CargoMain 단 건 삭제 
 	public boolean deleteCargo(String trackingNo) {
 		Connection conn = JDBCTemplate.getConnection();
 	    boolean resultFlag = false;
@@ -166,7 +166,7 @@ public class CargoService {
 		return resultFlag;
 	}
 
-	// 체크한 항목 전부 삭제
+	// T_CargoMain 체크한 항목 전부 삭제
 	public boolean deleteMultipleTrackingNos(List<String> trackingNos) {
 	    Connection conn = JDBCTemplate.getConnection();
 	    boolean resultFlag = true;
@@ -191,4 +191,35 @@ public class CargoService {
 
         return resultFlag;
     }
+
+	//T_cargoGoods 수정
+	public int updCargoGoodsDetail(CargoGoods goods) {
+		Connection conn = JDBCTemplate.getConnection();
+        int result = dao.updCargoGoodsDetail(conn, goods);
+
+        if (result > 0) {
+            JDBCTemplate.commit(conn);
+        } else {
+            JDBCTemplate.rollback(conn);
+        }
+        JDBCTemplate.close(conn);
+        return result;
+	}
+
+	//T_CargoGoods 삭제
+	public int deleteCargoGoods(CargoGoods goods) {
+		Connection conn = JDBCTemplate.getConnection();
+        int result = dao.deleteCargoGoods(conn, goods);
+
+        if (result > 0) {
+            JDBCTemplate.commit(conn);
+        } else {
+            JDBCTemplate.rollback(conn);
+        }
+        JDBCTemplate.close(conn);
+        return result;
+	}
+	
+	
+	
 }
