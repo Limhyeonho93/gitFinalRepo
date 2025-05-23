@@ -21,12 +21,16 @@ import kr.or.iei.user.model.vo.User;
 public class CargoMainImport {
 
 	// 엑셀 파일을 읽는 메서드
-	public String readExcel(InputStream file, User loginUser) {
+	public String readExcel(InputStream file, String compCd, User loginUser) {
 		String resultMessage="엑셀 파일이 업로드 되었습니다.";
 		
 		//시퀀스 값
 		int seq = 1;
 		
+		// 어레이 리스트로 값을 넣우주기
+		ArrayList<CargoMain> mainArr = new ArrayList<CargoMain>();
+		ArrayList<CargoGoods> goodsArr = new ArrayList<CargoGoods>();
+
 		// try-with-resources 문법: 자동으로 파일 및 리소스를 닫아줌
 		try (Workbook wb = new XSSFWorkbook(file)) { // .xlsx 전용 처리 클래스
 			// 첫 번째 시트 가져오기
@@ -107,23 +111,14 @@ public class CargoMainImport {
 				}
 
 				// 출력 (한 행을 출력)
-                System.out.println("Tracking Number: " + trackingNo + " | Receiver Name: " + receiverName);
-                System.out.println("Receiver Address: " + receiverAdd + " | Receiver Zip: " + receiverZip);
-                System.out.println("Receiver Tel: " + receiverTel);
-                System.out.println("Seller Name: " + sellerName + " | Seller Address: " + sellerAdd);
-                System.out.println("Seller Tel: " + sellerTel);
-                System.out.println("GW: " + gw + " | GWT: " + gwt + " | Quantity: " + qty);
-                System.out.println("Goods Name: " + goodsName + " | Unit Price: " + unitPrice);
-                System.out.println("No: " + no);
+                System.out.println("Tracking Number: " + trackingNo);
                 System.out.println("----------------------------------------------------");
                 
-                ManageNoService mns = new ManageNoService();
-                String wareCdId = mns.findZipWareCd(receiverZip); //창고이동ID생성
+                
                 
                 
                 CargoGoods goods=new CargoGoods();
-                goods.setCompCd(loginUser.getCompCd()); // 회사코드
-                goods.setWarehouseMoveid(wareCdId); // 창고이동ID 
+                goods.setCompCd(compCd); // 회사코드
                 goods.setTrackingNo(trackingNo); // 송장번호
                 goods.setSeq(seq); // 시퀀스
                 goods.setGoodsName(goodsName); // 상품명
@@ -133,8 +128,7 @@ public class CargoMainImport {
                 goods.setUserId(loginUser.getUserId()); // 갱신자
                 
                 CargoMain main=new CargoMain();
-                main.setCompCd(loginUser.getCompCd()); // 회사코드
-                main.setWarehouseMoveid(wareCdId); // 창고이동ID
+                main.setCompCd(compCd); // 회사코드
                 main.setTrackingNo(trackingNo); // 송장번호
                 main.setReceiverName(receiverName); // 수취인 이름
                 main.setReceiverAdd(receiverAdd); // 수취인 주소
@@ -148,16 +142,19 @@ public class CargoMainImport {
                 main.setNo(no != null && !no.isEmpty() ? Integer.parseInt(no) : 0); // 화물갯수
                 main.setDeliveryStop("N"); // 배송중지flg
                 main.setUserId(loginUser.getUserId()); // 갱신자
+                mainArr.add(main);
+                goodsArr.add(goods);
                 
-                CargoService service=new CargoService();
-                int result=service.insertBatchCargo(main,goods,loginUser);
+                
                 seq++;
                 
-                if(result<=0) {
-                	resultMessage="엑셀 파일 처리 중 오류가 발생하였습니다.";
-                	break;
-                }
                 
+			}
+			CargoService service=new CargoService();
+			int result=service.insertBatchCargo(mainArr,goodsArr,loginUser);
+			
+			if(result<=0) {
+				resultMessage="엑셀 파일 처리 중 오류가 발생하였습니다.";
 			}
 		} catch (IOException e) {
 			// 파일이 없거나 읽을 수 없을 경우 오류 출력

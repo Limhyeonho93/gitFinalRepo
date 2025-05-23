@@ -233,7 +233,7 @@ public class TrackingDao {
 				+ "LEFT JOIN t_cargomain tm ON tth.manage_no = tm.manage_no "
 				+ "LEFT JOIN t_customerinfo tc ON tm.comp_cd = tc.comp_cd "
 				+ "LEFT JOIN m_state_code ms ON tth.state_code = ms.state_code "
-				+ "WHERE ");
+				+ "WHERE tm.");
 		query.append(searchOption).append(" IN (");
 
 		for (int i = 0; i < searchValue.length; i++) {
