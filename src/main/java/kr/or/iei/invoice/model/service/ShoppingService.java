@@ -13,6 +13,9 @@ public class ShoppingService {
 	public int calculateCost(String disGrade, int weight) {
 		Connection conn = JDBCTemplate.getConnection();
 		int price = 0;
+		
+		// 삭제
+		System.out.println("Service disGrade: " + disGrade + ", weight: " + weight);
 
 		try {
 			price = dao.getPrice(conn, disGrade, weight);
