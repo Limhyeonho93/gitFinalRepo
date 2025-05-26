@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
@@ -38,15 +39,9 @@
 		<main class="content d-flex">
 			<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
 
-<<<<<<< HEAD
 			<div class="container-fluid scroll-area">
 				<div class="center-box">
-					<h2 class="text-center mb-4">청구서 요금 수정</h2>
-=======
-		<div class="container-fluid scroll-area">
-			<div class="center-box">
-				<h2 class="text-center mb-4">청구 요금 기준표</h2>
->>>>>>> master
+					<h2 class="text-center mb-4">청구 요금 기준표</h2>
 
 					<form action="/invoice/insertShopping" method="get">
 						<div class="mb-3">
@@ -101,10 +96,7 @@
 							<button type="button" class="btn btn-primary px-4"
 								onclick="calculateTotal()">요금 계산</button>
 						</div>
-					</form>
-					<form action="/invoice/updateShopping" method="get">
-						<input type="hidden" id="total" name="total" value="0">
-						<button type="submit">저장</button>
+						<button type="submit" id="total" name="total">저장</button>
 					</form>
 				</div>
 			</div>
@@ -144,6 +136,7 @@
 	        .catch(error => console.error('Error:', error));
 	    }
 	}
+	
 
      </script>
 </body>

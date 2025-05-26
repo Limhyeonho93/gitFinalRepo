@@ -2,6 +2,7 @@ package kr.or.iei.invoice.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,61 +32,40 @@ public class InsertShoppingServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		 String action = request.getParameter("action");
+		String action = request.getParameter("action");
+		ShoppingService service = new ShoppingService();
+		
+		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
 
-	        ShoppingService service = new ShoppingService();
+		if ("retrieve".equals(action)) {
+			// 조회 처리
+			String disGrade = request.getParameter("disGrade");
+			String weightParam = request.getParameter("weight");
+			int weight = 0; // 기본값 설정
 
-	        if ("retrieve".equals(action)) {
-	            // 조회 처리
-	            String disGrade = request.getParameter("disGrade");
+			if (weightParam != null && !weightParam.trim().isEmpty()) {
+				try {
+					weight = Integer.parseInt(weightParam.trim());
+				} catch (NumberFormatException e) {
+					weight = 0; // 숫자로 변환 실패 시 기본값 유지
+				}
+			}
 
-	            // 무게가 빈값일때 조회시 에러 방지
-	            String weightParam = request.getParameter("weight");
-	            int weight = 0; // 기본값 빈값(널 방지)
+			String regionName = service.getRegionName(disGrade);
+			int price = service.calculateCost(disGrade, weight);
 
-	            if (weightParam != null && !weightParam.trim().isEmpty()) {
-	                try {
-	                    weight = Integer.parseInt(weightParam.trim());
-	                } catch (NumberFormatException e) {
-	                    weight = 0;
-	                }
-	            }
+			response.setContentType("application/json; charset=UTF-8");
+			response.getWriter().write(String.format("{\"regionName\": \"%s\", \"price\": %d}", regionName, price));
+		} else if ("update".equals(action)) {
+			// 업데이트 처리
+			int total = Integer.parseInt(request.getParameter("total"));
+			boolean success = service.updateShoppingData(total);
 
-	            // grade값을 지역명으로 변환
-	            String regionName = " ";
+			response.setContentType("application/json; charset=UTF-8");
+			response.getWriter().write("{\"success\": " + success + "}");
 
-	            switch (disGrade) {
-	                case "A":
-	                    regionName = "수도권";
-	                    break;
-	                case "B":
-	                    regionName = "충청/강원";
-	                    break;
-	                case "C":
-	                    regionName = "경상/전라";
-	                    break;
-	                case "D":
-	                    regionName = "제주/도서산간";
-	                    break;
-	            }
-
-	            // 기본 요금 계산
-	            int price = service.calculateCost(disGrade, weight);
-
-	            // JSON 응답 설정
-	            response.setContentType("application/json");
-	            response.getWriter().write(String.format("{\"regionName\": \"%s\", \"price\": %d}", regionName, price));
-
-	        } else if ("update".equals(action)) {
-	            // 업데이트 처리
-	            int total = Integer.parseInt(request.getParameter("total"));
-
-	            int result = service.updateInvoice(total);
-
-	            // JSON 응답 설정
-	            response.setContentType("application/json");
-	            response.getWriter().write(String.format("{\"success\": %b}", result > 0));
-	        }
+		}
+		view.forward(request, response);
 
 	}
 
