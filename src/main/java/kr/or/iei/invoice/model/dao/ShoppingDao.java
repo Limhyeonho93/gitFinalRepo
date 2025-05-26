@@ -11,8 +11,10 @@ public class ShoppingDao {
 	public int getPrice(Connection conn, String disGrade, int weight) throws SQLException {
 		String query = "SELECT PRICE FROM m_shoppingcost WHERE dis_grade = ? AND weight = ?";
 		try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+			
 			// 삭제
 			System.out.println("Dao disGrade: " + disGrade + ", weight: " + weight);
+			
 			pstmt.setString(1, disGrade);
 			pstmt.setInt(2, weight);
 			try (ResultSet rset = pstmt.executeQuery()) {
