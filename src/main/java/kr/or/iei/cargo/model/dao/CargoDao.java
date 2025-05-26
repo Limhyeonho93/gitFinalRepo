@@ -426,39 +426,38 @@ public class CargoDao {
 
 	
 	//T_CargoGoods 수정 
-	public int updCargoGoodsDetail(Connection conn, CargoGoods goods) {
-		PreparedStatement pstmt = null;
-	    int result = 0;
+	   public int updCargoGoodsDetail(Connection conn, CargoGoods goods) {
+	      PreparedStatement pstmt = null;
+	       int result = 0;
 
-	    // UPDATE 쿼리
-	    String query = "UPDATE T_cargoGoods SET "
-	            + "goods_Name = ?, unit_Price = ?, qty = ?, unit_Weight = ?, delivery_Stop = ?, "
-	    		+ "user_Id = ?, upd_date = sysdate "
-	            + "WHERE tracking_no = ? and seq = ? and comp_Cd = ?";
+	       // UPDATE 쿼리
+	       String query = "UPDATE T_cargoGoods SET "
+	               + "goods_Name = ?, unit_Price = ?, qty = ?, unit_Weight = ?, "
+	             + "user_Id = ?, upd_date = sysdate "
+	               + "WHERE tracking_no = ? and seq = ? and comp_Cd = ?";
 
-	    try {
-	        pstmt = conn.prepareStatement(query);
+	       try {
+	           pstmt = conn.prepareStatement(query);
 
-	        pstmt.setString(1, goods.getGoodsName());
-	        pstmt.setInt(2, goods.getUnitPrice());
-	        pstmt.setInt(3, goods.getQty());
-	        pstmt.setFloat(4, goods.getUnitWeight());
-	        pstmt.setString(5, goods.getDeliveryStop());
-	        pstmt.setString(6, goods.getUserId());
-	        
-	        pstmt.setString(7, goods.getTrackingNo());
-	        pstmt.setInt(8, goods.getSeq());
-	        pstmt.setString(9, goods.getCompCd());
+	           pstmt.setString(1, goods.getGoodsName());
+	           pstmt.setInt(2, goods.getUnitPrice());
+	           pstmt.setInt(3, goods.getQty());
+	           pstmt.setFloat(4, goods.getUnitWeight());
+	           pstmt.setString(5, goods.getUserId());
+	           
+	           pstmt.setString(6, goods.getTrackingNo());
+	           pstmt.setInt(7, goods.getSeq());
+	           pstmt.setString(8, goods.getCompCd());
 
-	        result = pstmt.executeUpdate();
+	           result = pstmt.executeUpdate();
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    } finally {
-	        JDBCTemplate.close(pstmt);
-	    }
-	    return result;
-	}
+	       } catch (SQLException e) {
+	           e.printStackTrace();
+	       } finally {
+	           JDBCTemplate.close(pstmt);
+	       }
+	       return result;
+	   }
 
 	//T_CargoGoods 삭제(송장번호+시퀀스+회사코드 값 일치하는 한 개만)
 	public int deleteCargoGoods(Connection conn, CargoGoods goods) {

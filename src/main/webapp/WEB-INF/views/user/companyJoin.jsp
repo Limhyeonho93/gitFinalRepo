@@ -116,6 +116,9 @@
                                         <label for="comp_div" class="form-label">회사구분</label> <select
                                             class="form-select" id="comp_div" name="comp_div">
                                             <option value="S">셀러</option>
+                                             <c:if test="${user.compCd eq 'KHAC000000'}">
+                                            	<option value="L">물류회사</option>
+                     						</c:if>
                                         </select>
                                     </div>
                                 </form>

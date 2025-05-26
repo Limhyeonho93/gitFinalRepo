@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>청구서 추가</title>
+<title>청구 요금 기준표</title>
 
 <!-- Bootstrap & Icons -->
 <link
@@ -38,9 +38,15 @@
 		<main class="content d-flex">
 			<jsp:include page="/WEB-INF/views/common/leftSideBar.jsp" />
 
+<<<<<<< HEAD
 			<div class="container-fluid scroll-area">
 				<div class="center-box">
 					<h2 class="text-center mb-4">청구서 요금 수정</h2>
+=======
+		<div class="container-fluid scroll-area">
+			<div class="center-box">
+				<h2 class="text-center mb-4">청구 요금 기준표</h2>
+>>>>>>> master
 
 					<form action="/invoice/insertShopping" method="get">
 						<div class="mb-3">

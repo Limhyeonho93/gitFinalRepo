@@ -100,6 +100,7 @@ public class ManageNoDao {
 		String query = "UPDATE t_cargomain SET manage_no = ? WHERE comp_cd = ? AND WAREHOUSE_MOVEID = ? AND tracking_no = ?";
 		
 		try {
+			System.out.println(manageNoStr);
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, manageNoStr);
 			pstmt.setString(2, cm.getCompCd());

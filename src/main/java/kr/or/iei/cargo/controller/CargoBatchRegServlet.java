@@ -41,7 +41,7 @@ public class CargoBatchRegServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 InputStream is = request.getPart("cargoFile").getInputStream();  // "cargoFile" 파라미터 이름으로 파일을 받음
-		 
+		 String compCd = request.getParameter("compCd");
 		 //세션에서 회사코드와 유저 아이디 가져옴  
 		 HttpSession session = request.getSession(false); // false: 기존 세션 반환, 없을시 세션 생성x
 		 User loginUser = (User) session.getAttribute("user");
@@ -54,7 +54,7 @@ public class CargoBatchRegServlet extends HttpServlet {
 
          // 엑셀 파일을 처리하는 메서드 호출
          // InputStream을 직접 전달
-         String resultMessage=cargoImport.readExcel(is, loginUser);
+         String resultMessage=cargoImport.readExcel(is,compCd, loginUser);
          
          //처리 완료 후 응답 메시지 반환
          RequestDispatcher view=request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");

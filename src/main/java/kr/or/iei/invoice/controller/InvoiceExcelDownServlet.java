@@ -113,8 +113,8 @@ public class InvoiceExcelDownServlet extends HttpServlet {
 			row.createCell(2).setCellValue(c.getManageNo());
 			row.createCell(3).setCellValue(c.getWarehouseMoveid());
 			row.createCell(4).setCellValue(c.getTrackingNo());
-			row.createCell(5).setCellValue(c.getInDate() != null ? dateFormat.format(c.getInDate()) : "");
-			row.createCell(6).setCellValue(c.getOutDate() != null ? dateFormat.format(c.getOutDate()) : "");
+			row.createCell(5).setCellValue(c.getInDate() != null ? c.getInDate() : "");
+			row.createCell(6).setCellValue(c.getOutDate() != null ? c.getOutDate() : "");
 			row.createCell(7).setCellValue(c.getNo());
 			row.createCell(8).setCellValue(c.getGw());
 			row.createCell(9).setCellValue(c.getReceiverName());
@@ -124,11 +124,18 @@ public class InvoiceExcelDownServlet extends HttpServlet {
 
 		// 다운로드 응답 설정
 		String today = new SimpleDateFormat("yyyyMMdd").format(new java.util.Date());
-		response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		response.setHeader("Content-Disposition", "attachment; filename=invoice_" + today + ".xlsx");
-		System.out.println("엑셀 파일 생성 성공!");
-		wb.write(response.getOutputStream());
-		wb.close();
+		try {
+		    // ... 기존 로직 ...
+		    response.reset(); // 혹시 버퍼에 남아있는 출력 제거
+		    response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		    response.setHeader("Content-Disposition", "attachment; filename=invoice_" + today + ".xlsx");
+		    wb.write(response.getOutputStream());
+		    wb.close();
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    response.setContentType("text/html;charset=UTF-8");
+		    response.getWriter().write("<script>alert('엑셀 다운로드 실패');</script>");
+		}
 	}
 
 	/**

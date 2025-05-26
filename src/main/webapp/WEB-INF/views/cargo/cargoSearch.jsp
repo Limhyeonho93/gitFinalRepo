@@ -448,12 +448,13 @@
                     });
                 });
 
-				//========================='화물 상세 수정' 시작========================
+            //========================='화물 상세 수정' 시작========================
 
                 //'화물 상세 수정' 버튼 누를 시 동작 (cargoGoods 수정)
                 $(document).on('click', '#goodsUpdPopBtn', function () { // 이렇게 해야 두번 세번 클릭해도 정상적으로 데이터 가져옴
                     const manageNo = selectedManageNo;
-                	console.log(manageNo);
+                    const trackingNo = $('#goodsUpdPopBtn').attr('data-tracking-no');
+                
                     let tabs = '';
                     let tabContents = '';
                     // AJAX로 상세 데이터 가져오기
@@ -463,10 +464,10 @@
                         data: { manageNo: manageNo },
                         success: function (goodsList) {
                             goodsUpdList = goodsList;
-							console.log(goodsUpdList);
+                     console.log(goodsUpdList);
                             
                             // 모달 제목 업데이트
-                            $('#updateGoodsModalLabel').html('<b>[화물 상세 수정] 송장번호 : ' + manageNo + '</b>');
+                            $('#updateGoodsModalLabel').html('<b>[화물 상세 수정] 송장번호 : ' + trackingNo + '</b>');
 
                             // 모달 열기
                             const modal = new bootstrap.Modal(document.getElementById('updateGoodsModal'));
@@ -499,7 +500,7 @@
                             (item.goodsName ? item.goodsName : '상품' + (i + 1)) +
                             '</button>' +
                             '</li>';
-						
+                  
                        console.log('Rendering tab for item seq: ', item.seq);
  
                         // 탭 내용
@@ -512,7 +513,6 @@
                             '<tr><th class="th-label">상품단가</th><td><input type="text" name="unitPrice" class="form-control" value="' + item.unitPrice + '"></td></tr>' +
                             '<tr><th class="th-label">상품개수</th><td><input type="text" name="qty" class="form-control" value="' + item.qty + '"></td></tr>' +
                             '<tr><th class="th-label">중량</th><td><input type="text" name="unitWeight" class="form-control" value="' + item.unitWeight + '"></td></tr>' +
-                            '<tr><th class="th-label">배송중지 여부</th><td><input type="text" name="deliveryStop" class="form-control" value="' + item.deliveryStop + '"></td></tr>' +
                             '</table>' +
                             '</div>';
                     }
@@ -545,19 +545,13 @@
 
                     const trackingNo = $('#updateGoodsModalLabel').text().split(': ')[1].trim();
                     const seq=$('#tabList .nav-link.active').data('seq'); // 현재 활성화 된 탭 버튼에 data-seq로 저장해놓은 시퀀스를 가져옴
-					
+               
+                    //const manageNo=selectedManageNo;
                     const compCd = $('.tab-pane.active').find('input[name="compCd"]').val();// 활성화 된 탭에는 tab-pane.active클래스가 붙어있음 여기의 값만 가져옴
                     const goodsName = $('.tab-pane.active').find('input[name="goodsName"]').val(); 
                     const unitPrice = $('.tab-pane.active').find('input[name="unitPrice"]').val();
                     const qty =  $('.tab-pane.active').find('input[name="qty"]').val();
                     const unitWeight = $('.tab-pane.active').find('input[name="unitWeight"]').val();
-                    const deliveryStop = $('.tab-pane.active').find('input[name="deliveryStop"]').val();
-   					
-                    console.log(goodsName);
-                    console.log(unitPrice);
-                    console.log(qty);
-                    console.log(unitWeight);
-                    console.log(deliveryStop);
                     
                     if (isNaN(unitPrice) || isNaN(qty) || isNaN(unitWeight) ) {
                         swal("경고", "상품단가, 상품개수, 중량은 숫자여야 합니다.", "warning");
@@ -570,12 +564,12 @@
                         data: {
                             trackingNo: trackingNo,
                             seq:seq,
+                            //manageNo:manageNo,
                             compCd:compCd,
                             goodsName: goodsName,
                             unitPrice: unitPrice,
                             qty: qty,
                             unitWeight: unitWeight,
-                            deliveryStop: deliveryStop
                         },
                         success: function (result) {
                             if (result > 0) {
@@ -601,7 +595,7 @@
                 
                 // '화물 상세 수정'의 '삭제' 버튼을 눌렀을 때 동작
                 $('#goodsdeleteBtn').on('click', function () {
-                	const trackingNo = $('#updateGoodsModalLabel').text().split(': ')[1].trim();
+                   const trackingNo = $('#updateGoodsModalLabel').text().split(': ')[1].trim();
                     const seq=$('#tabList .nav-link.active').data('seq'); // 현재 활성화 된 탭 버튼에 data-seq로 저장해놓은 시퀀스를 가져옴
                     const compCd = $('.tab-pane.active').find('input[name="compCd"]').val();
                     

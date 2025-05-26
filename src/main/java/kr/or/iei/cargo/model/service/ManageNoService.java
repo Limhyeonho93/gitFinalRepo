@@ -93,4 +93,21 @@ public class ManageNoService {
 
 		return yymmdd + wareCd;
 	}
+	
+	// 우편번호 기준으로 창고코드 조회 (정확히 없을 경우 앞 3자리 like 검색)
+		// 이후 yymmdd와 창고코드로 창고ID생성
+		public String findZipWareCdForConn(Connection conn ,String zip) {
+			// 우편번호에 해당되는 창고코드 추출
+			String wareCd = dao.findZipWareCd(conn,zip);
+			// 일치하지 않으면 앞에 3자리로 like추출
+			if(wareCd == null) {
+				wareCd = dao.likeZipWareCd(conn,zip);
+			}
+			// 오늘 날짜 글자로 추출
+			LocalDate toDay = LocalDate.now();
+
+			String yymmdd = toDay.format(DateTimeFormatter.ofPattern("yyMMdd"));
+
+			return yymmdd + wareCd;
+		}
 }
