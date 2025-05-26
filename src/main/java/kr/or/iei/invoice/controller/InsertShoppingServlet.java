@@ -2,6 +2,7 @@ package kr.or.iei.invoice.controller;
 
 import java.io.IOException;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,30 +32,46 @@ public class InsertShoppingServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		String disGrade = request.getParameter("disGrade");
-		int weight = Integer.parseInt(request.getParameter("weight"));
-
-		// grade값을 지역명으로 변환
-		String regionName = "";
-		
-
-		switch (disGrade) {
-        case "A": regionName = "수도권"; break;
-        case "B": regionName = "충청/강원"; break;
-        case "C": regionName = "경상/전라"; break;
-        case "D": regionName = "제주/도서산간"; break;
-         }
-
-		// 기본 요금 계산
+		String action = request.getParameter("action");
 		ShoppingService service = new ShoppingService();
-		int total = service.calculateCost(disGrade, weight);
-		// 결과를 request에 담아 JSP로 전달
-		request.setAttribute("regionName", regionName);
-		request.setAttribute("total", total);
-		request.setAttribute("weight", weight);
+		
+		String disGrade = request.getParameter("disGrade");
+		String weightParam = request.getParameter("weight");
 
-		request.getRequestDispatcher("/WEB-INF/views/invoice/insertShopping.jsp").forward(request, response);
+		if ("retrieve".equals(action)) {
+			System.out.println("retrieve");
 
+			// 조회 처리
+			int weight = 0; // 기본값 설정
+
+			if (weightParam != null && !weightParam.trim().isEmpty()) {
+				try {
+					weight = Integer.parseInt(weightParam.trim());
+				} catch (NumberFormatException e) {
+					weight = 0; // 숫자로 변환 실패 시 기본값 유지
+				}
+			}
+
+			String regionName = service.getRegionName(disGrade);
+			int price = service.calculateCost(disGrade, weight);
+			
+			response.setContentType("application/json; charset=UTF-8");
+			response.getWriter().write(String.format("{\"data\": {\"regionName\": \"%s\", \"price\": %d}}", regionName, price));
+		} else {
+			RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+
+			System.out.println("update");
+			// 업데이트 처리
+			int total = Integer.parseInt(request.getParameter("total"));
+			boolean success = service.updateShoppingData(total,disGrade,weightParam);
+
+			request.setAttribute("title", "성공");
+	    	request.setAttribute("msg", "요금 수정 완료");
+	    	request.setAttribute("icon", "success");
+	    	request.setAttribute("loc", "/invoice/insertShoppingFrm");
+
+			view.forward(request, response);
+		}
 
 	}
 

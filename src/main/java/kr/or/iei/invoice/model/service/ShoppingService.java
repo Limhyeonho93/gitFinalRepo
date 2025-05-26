@@ -25,25 +25,57 @@ public class ShoppingService {
 		return price;
 	}
 
-	// 변경된 요금 저장
-	public boolean saveShoppingCost(String disGrade, int weight, int price) {
-		 Connection conn = JDBCTemplate.getConnection();
-		    boolean result = false;
+//	// 최종요금 업데이트(기본요금 + 추가요금)
+//	public int updateInvoice(int total) {
+//		Connection conn = JDBCTemplate.getConnection();
+//
+//		int result = new ShoppingDao().updateInvoice(conn, total);
+//
+//		if (result > 0) {
+//			JDBCTemplate.commit(conn);
+//		} else {
+//			JDBCTemplate.rollback(conn);
+//		}
+//		JDBCTemplate.close(conn);
+//
+//		return result;
+//	}
 
-		    try {
-		        result = dao.insertShoppingCost(conn, disGrade, weight, price);
-		        if (result) {
-		            JDBCTemplate.commit(conn);
-		        } else {
-		            JDBCTemplate.rollback(conn);
-		        }
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        JDBCTemplate.rollback(conn);
-		    } finally {
-		        JDBCTemplate.close(conn);
-		    }
+	public String getRegionName(String disGrade) {
 
-		    return result;
+		switch (disGrade) {
+		case "A":
+			return "수도권";
+		case "B":
+			return "충청/강원";
+		case "C":
+			return "경상/전라";
+		case "D":
+			return "제주/도서산간";
+		default:
+			return "알 수 없음";
+		}
+	}
+
+	public boolean updateShoppingData(int total, String disGrade, String weightParam) {
+		Connection conn = JDBCTemplate.getConnection();
+		boolean isSuccess = false;
+
+		try {
+			int result = dao.updateInvoice(conn, total,disGrade,weightParam);
+			if (result > 0) {
+				JDBCTemplate.commit(conn);
+				isSuccess = true;
+			} else {
+				JDBCTemplate.rollback(conn);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(conn);
+		}
+
+		return isSuccess;
+
 	}
 }
