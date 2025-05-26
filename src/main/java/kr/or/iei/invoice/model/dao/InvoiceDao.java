@@ -297,7 +297,6 @@ public class InvoiceDao {
 			}
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			JDBCTemplate.close(rset);
@@ -305,6 +304,8 @@ public class InvoiceDao {
 		}
 		return arr;
 	}
+
+
 
 
 }

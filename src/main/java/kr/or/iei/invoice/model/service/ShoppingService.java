@@ -21,29 +21,25 @@ public class ShoppingService {
 		} finally {
 			JDBCTemplate.close(conn);
 		}
+		
 
 		return price;
 	}
 
-	// 변경된 요금 저장
-	public boolean saveShoppingCost(String disGrade, int weight, int price) {
-		 Connection conn = JDBCTemplate.getConnection();
-		    boolean result = false;
 
-		    try {
-		        result = dao.insertShoppingCost(conn, disGrade, weight, price);
-		        if (result) {
-		            JDBCTemplate.commit(conn);
-		        } else {
-		            JDBCTemplate.rollback(conn);
-		        }
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		        JDBCTemplate.rollback(conn);
-		    } finally {
-		        JDBCTemplate.close(conn);
-		    }
-
-		    return result;
+	// 최종요금 업데이트(기본요금 +  추가요금)
+	public int updateInvoice(int total) {
+		Connection conn = JDBCTemplate.getConnection();
+		
+		int result = new ShoppingDao().updateInvoice(conn, total);
+		
+		if (result > 0) {
+			JDBCTemplate.commit(conn);
+		} else {
+			JDBCTemplate.rollback(conn);
+		}
+		JDBCTemplate.close(conn);
+		
+		return result;
 	}
 }

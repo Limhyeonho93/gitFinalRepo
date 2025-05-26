@@ -45,10 +45,6 @@ public class UserDao {
 				// 제발
 				loginUser.setUserLevel(rset.getString("user_level"));
 
-	            // 이거 반드시 살려주세요 ㅠㅠㅠㅠㅠㅠ
-	            // 제발
-	            loginUser.setUserLevel(rset.getString("user_level"));
-
 			}
 
 		} catch (SQLException e) {
