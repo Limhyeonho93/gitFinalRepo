@@ -20,7 +20,6 @@ public class CargoService {
 
 	// 화물 조회
 	public ArrayList<CargoMain> searchCargo(String[] searchValue, String searchOption, User loginUser) {
-		System.out.println("searchCargo service");
 
 		Connection conn = JDBCTemplate.getConnection();
 		ArrayList<CargoMain> list = dao.searchCargo(conn, searchValue, searchOption, loginUser);
@@ -45,7 +44,6 @@ public class CargoService {
 		result = dao.insertCargo(conn, cargo);
 
 		if (result > 0) {
-			System.out.println("CargoMain insert완");
 			result = dao.insertCargoGoods(conn, goods);
 			if (result > 0) {
 				JDBCTemplate.commit(conn);
@@ -65,7 +63,6 @@ public class CargoService {
 		Connection conn = JDBCTemplate.getConnection();
 		int result = 0;
 
-		System.out.println("insertBatchCargo");
 
 		// CargoMain에 동일한 Tracking Number가 있는지 없는지 확인
 
@@ -87,24 +84,19 @@ public class CargoService {
 				if (existCargo != null) {
 					// 1. CargoMain 업데이트
 					result = dao.updateCargoMain(conn, main);
-					System.out.println("CargoMain 업데이트 완");
 					if (result > 0) {
 						// 2. CargoGoods 삭제
 						result = dao.deleteCargoGoodsByTrackingNo(conn, main.getTrackingNo());
-						System.out.println("CargoGoods 삭제 완");
 						if (result > 0) {
 							// 3. CargoGoods 새로 insert
 							result = dao.insertCargoGoods(conn, goods);
-							System.out.println("CargoGoods insert완");
 						}
 					}
 				} else { // list가 비어있으면 새로운 데이터를 CargoMain, CargoGoods에 insert
 					result = dao.insertCargo(conn, main);
-					System.out.println("CargoMain insert완");
 					if (result > 0) {
 
 						result = dao.insertCargoGoods(conn, goods);
-						System.out.println("CargoGoods insert완");
 					}
 				}
 

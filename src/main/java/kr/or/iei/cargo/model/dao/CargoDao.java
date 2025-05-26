@@ -16,7 +16,6 @@ public class CargoDao {
 	
 	//화물 조회
 	public ArrayList<CargoMain> searchCargo(Connection conn, String[] searchValue, String searchOption, User loginUser) {
-		System.out.println("searchCargo dao");
 		
 		PreparedStatement pstmt = null;
 		
@@ -92,7 +91,6 @@ public class CargoDao {
 	
 	   //화물 한 건 등록(T_cargoMain)
 	   public int insertCargo(Connection conn, CargoMain cargo) {
-	      System.out.println("insertCargo");
 	      PreparedStatement pstmt = null;
 	      int result = 0;
 
@@ -183,7 +181,6 @@ public class CargoDao {
 	
 	//T_cargoMain 업데이트
 	public int updateCargoMain(Connection conn, CargoMain cargoMain) {
-		System.out.println("updateCargoMain dao");
 		
 	    int result = 0;
 	    PreparedStatement pstmt = null;
@@ -233,7 +230,6 @@ public class CargoDao {
 	
 	//T_CargoGoods 삭제(송장번호 일치 전부 삭제)
 	public int deleteCargoGoodsByTrackingNo(Connection conn, String trackingNo) {
-		System.out.println("deleteCargoGoodsByTrackingNo");
 	    int result = 0;
 	    PreparedStatement pstmt = null;
 	    String query = "DELETE FROM T_cargoGoods WHERE tracking_No = ?";
@@ -297,7 +293,6 @@ public class CargoDao {
 	
 	//T_CargoGoods 등록
 	public int insertCargoGoods(Connection conn, CargoGoods cargoGoods) {
-		System.out.println("insertCargoGoods");
 		PreparedStatement pstmt = null;
 		int result = 0;
 	  
@@ -461,7 +456,6 @@ public class CargoDao {
 
 	//T_CargoGoods 삭제(송장번호+시퀀스+회사코드 값 일치하는 한 개만)
 	public int deleteCargoGoods(Connection conn, CargoGoods goods) {
-		System.out.println("deleteCargoGoodsByTrackingNo");
 	    int result = 0;
 	    PreparedStatement pstmt = null;
 	    String query = "DELETE FROM T_cargoGoods WHERE tracking_No = ? AND seq = ? AND comp_Cd = ? ";

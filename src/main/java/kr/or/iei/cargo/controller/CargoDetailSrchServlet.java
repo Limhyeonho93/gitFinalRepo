@@ -38,7 +38,6 @@ public class CargoDetailSrchServlet extends HttpServlet {
 		CargoService service=new CargoService();
 		ArrayList<CargoGoods> goods=service.srchCargoDetail(manageNo);
 		
-		System.out.println(goods);
 		
 		//응답 데이터 JSON 변환. 백->프론트로 넘길때 객체로 넘길 수 없기 때문에 변환 필수
 		response.setContentType("application/json; charset=UTF-8");

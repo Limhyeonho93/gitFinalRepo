@@ -58,7 +58,6 @@ public class UserJoinServlet extends HttpServlet {
         user.setDeptName(deptName);
         user.setTelNo(telNo);
         user.setUserLevel(userLevel); // 기본값: 일반 사용자
-        System.out.println(userId);
         // 3. 서비스 호출하여 회원가입 처리
         UserService service = new UserService();
         int result = service.insertUser(user);

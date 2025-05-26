@@ -62,7 +62,6 @@ public class TrackingService {
 	// impBonded에 반입 반출 update
 	public int updateBondedData(String searchDate, String wareCd, String updateColumn) {
 		Connection conn = JDBCTemplate.getConnection();
-		System.out.println("updateBondedData" + updateColumn);
 
 		ArrayList<DailyWarehouseSummary> dws = dao.getManageNoJoinBonded(conn, searchDate, wareCd, updateColumn);
 

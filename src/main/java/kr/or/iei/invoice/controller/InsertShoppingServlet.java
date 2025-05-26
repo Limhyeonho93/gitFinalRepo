@@ -48,11 +48,11 @@ public class InsertShoppingServlet extends HttpServlet {
 		// 기본 요금 계산
 		ShoppingService service = new ShoppingService();
 		int total = service.calculateCost(disGrade, weight);
-
 		// 결과를 request에 담아 JSP로 전달
 		request.setAttribute("regionName", regionName);
 		request.setAttribute("total", total);
-		
+		request.setAttribute("weight", weight);
+
 		request.getRequestDispatcher("/WEB-INF/views/invoice/insertShopping.jsp").forward(request, response);
 
 

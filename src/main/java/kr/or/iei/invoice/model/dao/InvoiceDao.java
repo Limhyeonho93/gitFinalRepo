@@ -54,7 +54,6 @@ public class InvoiceDao {
 	public ArrayList<Invoice> allSelerInvoice(Connection conn, Date from, Date to, User loginUser) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		System.out.println("allSelerInvoice");
 
 		String query = "SELECT ti.comp_cd,max(comp_name) comp_name, sum(day_amount) as total_payment,sum(ti.total_weight) as total_weight  FROM t_invoice ti LEFT JOIN t_customerinfo tc ON ti.comp_cd = tc.comp_cd  WHERE deliveryed_date BETWEEN ? AND ? AND ti.comp_cd = ? GROUP BY ti.comp_cd";
 		ArrayList<Invoice> arr = new ArrayList<Invoice>();

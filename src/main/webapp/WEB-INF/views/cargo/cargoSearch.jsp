@@ -467,7 +467,7 @@
                      console.log(goodsUpdList);
                             
                             // 모달 제목 업데이트
-                            $('#updateGoodsModalLabel').html('<b>[화물 상세 수정] 송장번호 : ' + trackingNo + '</b>');
+                            $('#updateGoodsModalLabel').html('<b>[상품 상세 조회] 송장번호 : ' + trackingNo + '</b>');
 
                             // 모달 열기
                             const modal = new bootstrap.Modal(document.getElementById('updateGoodsModal'));
@@ -476,6 +476,11 @@
                             // 모달 내용 불러오기
                             $('#updateModalContent').html('');
                             renderTabs(goodsUpdList);
+                            if(goodsUpdList.length < 2){
+                            	$('#goodsdeleteBtn').hide();
+                            }else{
+                            	$('#goodsdeleteBtn').show();
+                            }
                         },
                         error: function () {
                             $('#updateModalContent').html('<p class="text-danger">상세 정보를 불러오지 못했습니다.</p>');

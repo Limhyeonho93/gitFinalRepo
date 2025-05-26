@@ -71,7 +71,6 @@ public class InsertInvoiceData implements Runnable{
             
         }
         
-        System.out.println("인보이스 테이블 작성 완료");
         
         
     }

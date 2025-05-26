@@ -61,7 +61,9 @@
 
 					<div class="mb-3">
 						<p>선택한 지역: <strong>${regionName}</strong></p>
-						<p>기본 요금: <strong>${total}</strong></p>
+						<p>기본 요금: <strong>${total} ₩</strong></p>
+						<p>무게: <strong>${weight} KG</strong></p>
+						
 					</div>
 
 					<hr>
@@ -77,7 +79,7 @@
 					<p>최종 요금 예상: <strong>${total} + ${adPrice}</strong></p>
 
 					<div class="text-center mt-4">
-						<button type="submit" class="btn btn-primary px-4">요금 계산</button>
+						<button type="submit" class="btn btn-primary px-4">요금 조회</button>
 					</div>
 				</form>
 			</div>

@@ -56,7 +56,6 @@ public class UpdateCargoGoodsServlet extends HttpServlet {
         HttpSession session = request.getSession();
         goods.setUserId(((User) session.getAttribute("user")).getUserId()); // 세션에 저장되어있던 아이디
         
-        System.out.println(goods.getCompCd());
         
         CargoService cargoService=new CargoService();
         int result=cargoService.updCargoGoodsDetail(goods);

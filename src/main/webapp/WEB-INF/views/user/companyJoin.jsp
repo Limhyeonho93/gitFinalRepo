@@ -143,6 +143,8 @@
 
             // + 버튼 클릭 시: 등록 모드
             $('#btnAddCompany').on('click', function () {
+                $('#btnCheckCompCd').show();
+
                 $('#companyModalLabel').text('회사 등록');
                 $('#companyForm')[0].reset(); // 폼 초기화
                 $('#comp_cd').prop('readonly', false); // 등록 시 회사코드 수정 가능
@@ -179,7 +181,8 @@
                         $('#companyModalLabel').text('회사 정보');
                         $('#companyForm')[0].reset(); // 폼 초기화
 
-                        $('#comp_cd').val(params.data.comp_cd).prop('readonly', true);;
+                        $('#comp_cd').val(params.data.comp_cd).prop('readonly', true);
+                        $('#btnCheckCompCd').hide();
                         $('#comp_name').val(params.data.comp_name);
                         $('#comp_addr').val(params.data.comp_addr);
                         $('#comp_zip').val(params.data.comp_zip);

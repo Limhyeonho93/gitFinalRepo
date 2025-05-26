@@ -49,8 +49,6 @@ public class ForgotPwServlet extends HttpServlet {
         UserService service = new UserService();
         User chkUser = service.userChk(userId, userName);
 
-        System.out.println("입력받은 ID: " + userId);
-        System.out.println("입력받은 이름: " + userName);
 		
         
         if (chkUser != null) {

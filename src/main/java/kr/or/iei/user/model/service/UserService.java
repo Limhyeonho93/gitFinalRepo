@@ -66,7 +66,6 @@ public class UserService {
 		Connection conn = JDBCTemplate.getConnection();
 		User chkUser = dao.forgotPw(conn, userId, userName);
 		JDBCTemplate.close(conn);
-		System.out.println("return chkUser 값 : " + chkUser);
 		return chkUser;
 	}
 
