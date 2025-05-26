@@ -36,11 +36,14 @@ public class InsertShoppingServlet extends HttpServlet {
 		ShoppingService service = new ShoppingService();
 		
 		RequestDispatcher view = request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp");
+		String disGrade = request.getParameter("disGrade");
+		String weightParam = request.getParameter("weight");
+		
+		// 삭제
+		System.out.println("Servlet disGrade: " + disGrade + ", weight: " + weightParam);
 
 		if ("retrieve".equals(action)) {
 			// 조회 처리
-			String disGrade = request.getParameter("disGrade");
-			String weightParam = request.getParameter("weight");
 			int weight = 0; // 기본값 설정
 
 			if (weightParam != null && !weightParam.trim().isEmpty()) {
@@ -59,7 +62,7 @@ public class InsertShoppingServlet extends HttpServlet {
 		} else if ("update".equals(action)) {
 			// 업데이트 처리
 			int total = Integer.parseInt(request.getParameter("total"));
-			boolean success = service.updateShoppingData(total);
+			boolean success = service.updateShoppingData(total, disGrade, weightParam);
 
 			response.setContentType("application/json; charset=UTF-8");
 			response.getWriter().write("{\"success\": " + success + "}");

@@ -46,8 +46,7 @@
 					<form action="/invoice/insertShopping" method="get">
 						<div class="mb-3">
 							<label for="disGrade" class="form-label">지역 선택</label> <select
-								name="disGrade" id="disGrade" class="form-select"
-								onchange="updateDisplay()">
+								name="disGrade" id="disGrade" class="form-select">
 								<option value="">지역 선택</option>
 								<option value="A">수도권</option>
 								<option value="B">충청/강원</option>
@@ -58,8 +57,7 @@
 
 						<div class="mb-3">
 							<label for="weight" class="form-label">무게 선택</label> <select
-								name="weight" id="weight" class="form-select"
-								onchange="updateDisplay()">
+								name="weight" id="weight" class="form-select">
 								<option value="">무게 선택</option>
 								<option value="100">100</option>
 								<option value="500">500</option>
@@ -133,7 +131,7 @@
 	            document.getElementById("selectedRegion").innerText = data.regionName;
 	            document.getElementById("basePrice").innerText = data.price.toLocaleString();
 	        })
-	        .catch(error => console.error('Error:', error));
+	        .catch(error => console.error('에러발생 에러발생:', error));
 	    }
 	}
 	

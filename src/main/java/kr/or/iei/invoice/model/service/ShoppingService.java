@@ -13,6 +13,9 @@ public class ShoppingService {
 	public int calculateCost(String disGrade, int weight) {
 		Connection conn = JDBCTemplate.getConnection();
 		int price = 0;
+		
+		// 삭제
+		System.out.println("Service disGrade: " + disGrade + ", weight: " + weight);
 
 		try {
 			price = dao.getPrice(conn, disGrade, weight);
@@ -57,12 +60,12 @@ public class ShoppingService {
 		}
 	}
 
-	public boolean updateShoppingData(int total) {
+	public boolean updateShoppingData(int total, String disGrade, String weightParam) {
 		Connection conn = JDBCTemplate.getConnection();
 		boolean isSuccess = false;
 
 		try {
-			int result = dao.updateInvoice(conn, total);
+			int result = dao.updateInvoice(conn, total, disGrade, weightParam);
 			if (result > 0) {
 				JDBCTemplate.commit(conn);
 				isSuccess = true;
